@@ -31,3 +31,85 @@ Think of Redux actions as messengers that deliver information about events happe
 on the action that occurred.
 
    -->
+<!-- 
+
+Define an Action CreatorPassed
+After creating an action, the next step is sending the action to the Redux store so it can update its state. In Redux, you define action creators to accomplish this.
+An action creator is simply a JavaScript function that returns an action(javascript object). In other words, action creators create objects that represent action events.
+
+ -->
+
+<!-- 
+
+Dispatch an Action Event
+dispatch method is what you use to dispatch actions to the Redux store.u
+Calling store.dispatch() and passing the value returned from an action creator sends an action back to the store.
+
+Recall that action creators return an object with a type property that specifies the action that has occurred.
+Then the method dispatches an action object to the Redux store. Based on the previous challenge's example, the following lines are equivalent, and both dispatch the action of type LOGIN:
+
+store.dispatch(actionCreator());
+store.dispatch({ type: 'LOGIN' });
+
+  -->
+
+<!--
+
+Handle an Action in the Store
+After an action is created and dispatched, the Redux store needs to know how to respond to that action. This is the job of a reducer function.
+Reducers in Redux are responsible for the state modifications that take place in response to actions.
+A reducer takes state and action as arguments, and it always returns a new state. It is important to see that this is the only role of the reducer.
+It has no side effects — it never calls an API endpoint and it never has any hidden surprises. The reducer is simply a pure function that takes state and action, then returns new state.
+
+Another key principle in Redux is that state is read-only. In other words, the reducer function must always return a new copy of state and never modify state directly.
+Redux does not enforce state immutability, however, you are responsible for enforcing it in the code of your reducer functions. You'll practice this in later challenges.
+
+  -->
+
+<!-- 
+
+Use a Switch Statement to Handle Multiple Actions
+You can tell the Redux store how to handle multiple action types. Say you are managing user authentication in your Redux store.
+You want to have a state representation for when users are logged in and when they are logged out. You represent this with a single state object with the property authenticated.
+You also need action creators that create actions corresponding to user login and user logout, along with the action objects themselves.
+
+ -->
+
+<!--
+
+Use const for Action Types
+A common practice when working with Redux is to assign action types as read-only constants,
+then reference these constants wherever they are used. You can refactor the code you're working with to write the action types as const declarations.
+
+   -->
+
+<!-- 
+
+Combine Multiple Reducers
+When the state of your app begins to grow more complex, it may be tempting to divide state into multiple pieces.
+Instead, remember the first principle of Redux: all app state is held in a single state object in the store.
+Therefore, Redux provides reducer composition as a solution for a complex state model. You define multiple reducers to handle different pieces of your application's state,
+then compose these reducers together into one root reducer. The root reducer is then passed into the Redux createStore() method.
+
+In order to let us combine multiple reducers together, Redux provides the combineReducers() method. This method accepts an object as an argument in which you define properties
+which associate keys to specific reducer functions. The name you give to the keys will be used by Redux as the name for the associated piece of state.
+
+Typically, it is a good practice to create a reducer for each piece of application state when they are distinct or unique in some way. For example, in a note-taking app with user authentication,
+one reducer could handle authentication while another handles the text and notes that the user is submitting. For such an application, we might write the combineReducers() method like this:
+
+const rootReducer = Redux.combineReducers({
+  auth: authenticationReducer,
+  notes: notesReducer
+});
+Now, the key notes will contain all of the state associated with our notes and handled by our notesReducer. This is how multiple reducers can be composed to manage more complex application state. In this example, the state held in the Redux store would then be a single object containing auth and notes properties.
+
+ -->
+
+<!-- 
+
+Send Action Data to the Store
+By now you've learned how to dispatch actions to the Redux store, but so far these actions have not contained any information other than a type.
+You can also send specific data along with your actions.
+In fact, this is very common because actions usually originate from some user interaction and tend to carry some data with them. The Redux store often needs to know about this data.
+
+ -->
