@@ -213,6 +213,10 @@ function objOfMatches(list1, list2, callback) {
     /* have to matched index and the return value from running the callback must equal the value in list2 */
     var valueReturnedFromCallback = callback(currentValue);
     var findIndexOfValueInList2 = list2.indexOf(valueReturnedFromCallback);
+    if (currentIndex == findIndexOfValueInList2) {
+      /* explore returning an object.assign where our buildingUp is an object instead of an array with an obj*/
+      return buildingUp.concat({ [currentValue]: valueReturnedFromCallback });
+    }
 
     return buildingUp;
   },
