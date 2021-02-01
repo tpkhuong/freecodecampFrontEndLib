@@ -179,3 +179,93 @@ const usersOnline = state.users
       username: eachValue.username,
     };
   }); // Change this line
+
+/******** CS Bin *********/
+
+/*
+Challenge 9
+Construct a function objOfMatches that accepts two arrays and a callback. objOfMatches will build an object and return it.
+To build the object, objOfMatches will test each element of the first array using the callback to see if the output matches the corresponding element (by index) of the second array.
+If there is a match, the element from the first array becomes a key in an object, and the element from the second array becomes the corresponding value.
+*/
+
+/*
+function: two arrays as parameters and a callback. 3 parameters in total.
+*/
+
+/* example of output */
+
+// console.log(objOfMatches(['hi', 'howdy', 'bye', 'later', 'hello'], ['HI', 'Howdy', 'BYE', 'LATER', 'hello'], function(str) { return str.toUpperCase(); }));
+// should log: { hi: 'HI', bye: 'BYE', later: 'LATER' }
+
+/*
+we are passing the value from the first array into the callback. we want to check if the value that is returned from the callback matches the value in the second array
+by index.
+*/
+
+function objOfMatches(list1, list2, callback) {
+  var copiedArr = [...list1];
+  var arrOfObjs = copiedArr.reduce(function returnArrWithNewValueFromCallback(
+    buildingUp,
+    currentValue,
+    currentIndex
+  ) {
+    /* have to matched index and the return value from running the callback must equal the value in list2 */
+    var valueReturnedFromCallback = callback(currentValue);
+    var findIndexOfValueInList2 = list2.indexOf(valueReturnedFromCallback);
+
+    return buildingUp;
+  },
+  []);
+
+  var whatIsThisValue = arrOfObjs.reduce(function combineObjs(
+    buildingUp,
+    currentValue
+  ) {
+    return Object.assign(buildingUp, currentValue);
+  },
+  {});
+  /* both reduce and map works if we want an array that has the returned values from passing eachValue into the callbackFunc*/
+  // var usingMapFunc = copiedArr.map(function sameLengthArr(eachValue) {
+  //   return callback(eachValue);
+  // });
+  console.log(whatIsThisValue);
+  /*checkTheseValuesWithList2Values will be an array of values that is return from passing the values in list1 to the callback*/
+
+  /***return an object. ***/
+}
+
+function upperCareLetters(strInput) {
+  return strInput.toUpperCase();
+}
+
+var ourArr =
+  /*just in case*/
+  function runOnce(callback) {
+    var counter = 0;
+
+    return function (input) {
+      if (counter < 1) {
+        var result = callback(input);
+        counter += 1;
+        return result;
+      }
+    };
+  };
+
+/*** might not have to use for loop inside of reduce
+ * var valueForOurReturnedObj;
+  for (let innerIndex = 0; innerIndex < list2.length; innerIndex++) {
+      let eachSubValue = list2[innerIndex];
+      if (
+        currentIndex == innerIndex &&
+        valueReturnedFromCallback == eachSubValue
+      ) {
+        valueForOurReturnedObj = eachSubValue;
+        /* once we use the return inside a reduce it goes to the next value in the array.
+        return buildingUp.concat([{ [currentValue]: valueForOurReturnedObj }]);
+        // if (currentIndex < innerIndex && valueForOurReturnedObj != undefined)
+        //   break;
+      }
+    }
+  ***/
