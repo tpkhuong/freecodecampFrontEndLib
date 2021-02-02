@@ -322,22 +322,19 @@ class AppWrapper extends React.Component {
 }
 
 // Redux:
-const ADD = 'ADD';
+const ADD = "ADD";
 
 const addMessage = (message) => {
   return {
     type: ADD,
-    message: message
-  }
+    message: message,
+  };
 };
 
 const messageReducer = (state = [], action) => {
   switch (action.type) {
     case ADD:
-      return [
-        ...state,
-        action.message
-      ];
+      return [...state, action.message];
     default:
       return state;
   }
@@ -354,54 +351,50 @@ class Presentational extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: ''
-    }
+      input: "",
+    };
     this.handleChange = this.handleChange.bind(this);
     this.submitMessage = this.submitMessage.bind(this);
   }
   handleChange(event) {
     this.setState({
-      input: event.target.value
+      input: event.target.value,
     });
   }
   submitMessage() {
     this.props.submitNewMessage(this.state.input);
     this.setState({
-      input: ""
-    })
+      input: "",
+    });
   }
   render() {
     return (
       <div>
         <h2>Type in a new Message:</h2>
-        <input
-          value={this.state.input}
-          onChange={this.handleChange}/><br/>
+        <input value={this.state.input} onChange={this.handleChange} />
+        <br />
         <button onClick={this.submitMessage}>Submit</button>
         <ul>
-          {this.props.messages.map( (message, idx) => {
-              return (
-                 <li key={idx}>{message}</li>
-              )
-            })
-          }
+          {this.props.messages.map((message, idx) => {
+            return <li key={idx}>{message}</li>;
+          })}
         </ul>
       </div>
     );
   }
-};
+}
 // Change code above this line
 
 const mapStateToProps = (state) => {
-  return {messages: state}
+  return { messages: state };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     submitNewMessage: (message) => {
-      dispatch(addMessage(message))
-    }
-  }
+      dispatch(addMessage(message));
+    },
+  };
 };
 
 const Container = connect(mapStateToProps, mapDispatchToProps)(Presentational);
@@ -410,12 +403,11 @@ class AppWrapper extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <Container/>
+        <Container />
       </Provider>
     );
   }
-};
-
+}
 
 /*
 import React from 'react'
@@ -441,3 +433,138 @@ ReactDOM.render(
 */
 
 // Only change code below this line
+
+/*** second go at redux ***/
+
+const reducer = (state = 5) => {
+  return state;
+};
+
+// Redux methods are available from a Redux object
+// For example: Redux.createStore()
+// Define the store here:
+
+var store = Redux.createStore(reducer);
+
+const store = Redux.createStore((state = 5) => state);
+
+// Change code below this line
+
+var currentState = store.getState();
+
+var action = {
+  type: "LOGIN",
+};
+
+/*** action creator is a JS functions that returns an action. action is an JS obj with a type of that action ***/
+
+function actionCreator(action) {
+  return action;
+}
+
+const store = Redux.createStore((state = { login: false }) => state);
+
+const loginAction = () => {
+  return {
+    type: "LOGIN",
+  };
+};
+
+// Dispatch the action here:
+
+store.dispatch(loginAction());
+
+/*** reducer let the Redux store know how to respond to the actionCreators and action object. ***/
+
+const defaultState = {
+  login: false,
+};
+
+const reducer = (state = defaultState, action) => {
+  // Change code below this line
+  if (action.type == "LOGIN") return { login: true };
+  return state;
+  // Change code above this line
+};
+
+const store = Redux.createStore(reducer);
+
+const loginAction = () => {
+  return {
+    type: "LOGIN",
+  };
+};
+
+const defaultState = {
+  authenticated: false,
+};
+
+const authReducer = (state = defaultState, action) => {
+  // Change code below this line
+  switch (action.type) {
+    case "LOGIN":
+      return { authenticated: true };
+    case "LOGOUT":
+      return { authenticated: false };
+    default:
+      return state;
+  }
+  // Change code above this line
+};
+
+const store = Redux.createStore(authReducer);
+
+const loginUser = () => {
+  return {
+    type: "LOGIN",
+  };
+};
+
+const logoutUser = () => {
+  return {
+    type: "LOGOUT",
+  };
+};
+
+const LOGIN = "LOGIN";
+
+const LOGOUT = "LOGOUT";
+
+function incrementCount(countVar) {
+  return (count += 1);
+}
+
+store.subscribe(incrementCount);
+
+const rootReducer = Redux.combineReducers({
+  count: counterReducer,
+  auth: authReducer,
+});
+
+const ADD_NOTE = "ADD_NOTE";
+
+const notesReducer = (state = "Initial State", action) => {
+  switch (action.type) {
+    // Change code below this line
+    case ADD_NOTE:
+      return action.text;
+    // Change code above this line
+    default:
+      return state;
+  }
+};
+
+const addNoteText = (note) => {
+  // Change code below this line
+  return {
+    type: ADD_NOTE,
+    text: note,
+  };
+  // Change code above this line
+};
+
+const store = Redux.createStore(notesReducer);
+
+console.log(store.getState());
+store.dispatch(addNoteText("Hello!"));
+console.log(store.getState());

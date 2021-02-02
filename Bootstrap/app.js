@@ -297,23 +297,23 @@ function multiMap(arrOfVals, arrOfCallbacks) {
   the values in our obj will be the RETURNED value of passing each value in the arrOfValues as input to each functions in the arrOfCallbacks in an array.
   */
   var [firstFunc, secondFunc, thirdFunc] = arrOfCallbacks;
-  var firstAttempt = arrOfVals.reduce(function passValIntoEachFuncInSecondList(
-    buildingUp,
-    currentValue
-  ) {
-    var firstValue = firstFunc(currentValue);
-    var secondValue = secondFunc(currentValue);
-    var thirdValue = thirdFunc(currentValue);
+  var objOfArrAsValues = arrOfVals.reduce(
+    function passValIntoEachFuncInSecondList(buildingUp, currentValue) {
+      var firstValue = firstFunc(currentValue);
+      var secondValue = secondFunc(currentValue);
+      var thirdValue = thirdFunc(currentValue);
 
-    return Object.assign(buildingUp, {
-      [currentValue]: [firstValue, secondValue, thirdValue],
-    });
-  },
-  {});
+      return Object.assign(buildingUp, {
+        [currentValue]: [firstValue, secondValue, thirdValue],
+      });
+    },
+    {}
+  );
 }
 
 var ourStrings = ["catfood", "marvel", "drinks"];
 var ourFuncs = [toUpperCase, capitalizeFirstStr, concatSameWord];
+
 function toUpperCase(strInput) {
   return strInput.toUpperCase();
 }
