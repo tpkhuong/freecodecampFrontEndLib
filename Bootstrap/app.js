@@ -205,35 +205,45 @@ by index.
 
 function objOfMatches(list1, list2, callback) {
   var copiedArr = [...list1];
-  var arrOfObjs = copiedArr.reduce(function returnArrWithNewValueFromCallback(
-    buildingUp,
-    currentValue,
-    currentIndex
-  ) {
-    /* have to matched index and the return value from running the callback must equal the value in list2 */
-    var valueReturnedFromCallback = callback(currentValue);
-    var findIndexOfValueInList2 = list2.indexOf(valueReturnedFromCallback);
-    if (currentIndex == findIndexOfValueInList2) {
-      /* explore returning an object.assign where our buildingUp is an object instead of an array with an obj*/
-      return buildingUp.concat({ [currentValue]: valueReturnedFromCallback });
-    }
+  var ourReturnedObj = copiedArr.reduce(
+    function returnArrWithNewValueFromCallback(
+      buildingUp,
+      currentValue,
+      currentIndex
+    ) {
+      /* have to matched index and the return value from running the callback must equal the value in list2 */
+      var valueReturnedFromCallback = callback(currentValue);
+      var findIndexOfValueInList2 = list2.indexOf(valueReturnedFromCallback);
+      if (currentIndex == findIndexOfValueInList2) {
+        /* explore returning an object.assign where our buildingUp is an object instead of an array with an obj*/
+        // return buildingUp.concat({ [currentValue]: valueReturnedFromCallback });
+        return Object.assign(buildingUp, {
+          [currentValue]: valueReturnedFromCallback,
+        });
+      }
 
-    return buildingUp;
-  },
-  []);
+      return buildingUp;
+    },
+    {}
+  );
 
-  var whatIsThisValue = arrOfObjs.reduce(function combineObjs(
-    buildingUp,
-    currentValue
-  ) {
-    return Object.assign(buildingUp, currentValue);
-  },
-  {});
+  return ourReturnedObj;
+  /*** we used the code below because our first attempt we looped over list1 using reduce and returned an array of objects
+   * but our algorithm using reducing and Object.assign we were able to return an object wit the key:value pairing that satisfied the challenge.
+   *  ***/
+
+  // var whatIsThisValue = arrOfObjs.reduce(function combineObjs(
+  //   buildingUp,
+  //   currentValue
+  // ) {
+  //   return Object.assign(buildingUp, currentValue);
+  // },
+  // {});
   /* both reduce and map works if we want an array that has the returned values from passing eachValue into the callbackFunc*/
   // var usingMapFunc = copiedArr.map(function sameLengthArr(eachValue) {
   //   return callback(eachValue);
   // });
-  console.log(whatIsThisValue);
+  // console.log(whatIsThisValue);
   /*checkTheseValuesWithList2Values will be an array of values that is return from passing the values in list1 to the callback*/
 
   /***return an object. ***/
@@ -243,19 +253,18 @@ function upperCareLetters(strInput) {
   return strInput.toUpperCase();
 }
 
-var ourArr =
-  /*just in case*/
-  function runOnce(callback) {
-    var counter = 0;
+/*just in case*/
+function runOnce(callback) {
+  var counter = 0;
 
-    return function (input) {
-      if (counter < 1) {
-        var result = callback(input);
-        counter += 1;
-        return result;
-      }
-    };
+  return function (input) {
+    if (counter < 1) {
+      var result = callback(input);
+      counter += 1;
+      return result;
+    }
   };
+}
 
 /*** might not have to use for loop inside of reduce
  * var valueForOurReturnedObj;
@@ -273,3 +282,46 @@ var ourArr =
       }
     }
   ***/
+
+/* 
+Challenge 10
+Construct a function multiMap that will accept two arrays: an array of values and an array of callbacks. multiMap will return an object whose keys match the elements in the array of values.
+The corresponding values that are assigned to the keys will be arrays consisting of outputs from the array of callbacks, where the input to each callback is the key.
+*/
+
+// console.log(multiMap(['catfood', 'glue', 'beer'], [function(str) { return str.toUpperCase(); }, function(str) { return str[0].toUpperCase() + str.slice(1).toLowerCase(); }, function(str) { return str + str; }]));
+// should log: { catfood: ['CATFOOD', 'Catfood', 'catfoodcatfood'], glue: ['GLUE', 'Glue', 'glueglue'], beer: ['BEER', 'Beer', 'beerbeer'] }
+
+function multiMap(arrOfVals, arrOfCallbacks) {
+  /*returning an object. the key of our obj will be the values from the arrOfVals. we will pass eachValue in the arrOfValues as input into each functions in the arrOfFuncs
+  the values in our obj will be the RETURNED value of passing each value in the arrOfValues as input to each functions in the arrOfCallbacks in an array.
+  */
+  var [firstFunc, secondFunc, thirdFunc] = arrOfCallbacks;
+  var firstAttempt = arrOfVals.reduce(function passValIntoEachFuncInSecondList(
+    buildingUp,
+    currentValue
+  ) {
+    var firstValue = firstFunc(currentValue);
+    var secondValue = secondFunc(currentValue);
+    var thirdValue = thirdFunc(currentValue);
+
+    return Object.assign(buildingUp, {
+      [currentValue]: [firstValue, secondValue, thirdValue],
+    });
+  },
+  {});
+}
+
+var ourStrings = ["catfood", "marvel", "drinks"];
+var ourFuncs = [toUpperCase, capitalizeFirstStr, concatSameWord];
+function toUpperCase(strInput) {
+  return strInput.toUpperCase();
+}
+
+function capitalizeFirstStr(strInput) {
+  return strInput.charAt(0).toUpperCase() + strInput.slice(1).tolowerCase();
+}
+
+function concatSameWord(strInput) {
+  return `${strInput}${strInput}`;
+}
