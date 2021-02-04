@@ -341,4 +341,38 @@ The new object will contain only the properties from the input object such that 
 // };
 // console.log(objectFilter(cities, city => city.toUpperCase())) // Should log { London: 'LONDON', Paris: 'PARIS'}
 
-function objectFilter(objInput, callback) {}
+function objectFilter(objInput, callback) {
+  var arrOfKeysValuesPair = Object.entries(objInput);
+
+  var ourObj = arrOfKeysValuesPair.reduce(function matchTheValue(
+    buildingUp,
+    currentValue
+  ) {
+    var [ourKey, ourValue] = currentValue;
+    var checkThisValue = callback(ourKey);
+    if (checkThisValue == ourValue) {
+      return Object.assign(buildingUp, { [ourKey]: checkThisValue });
+    }
+    return buildingUp;
+  },
+  {});
+
+  console.log(ourObj);
+}
+
+function toUpperCase(strInput) {
+  return strInput.toUpperCase();
+}
+
+/*
+Challenge 12
+Create a function majority that accepts an array and a callback. The callback will return either true or false. majority will iterate through the array and perform the callback
+on each element until it can be determined
+if the majority of the return values from the callback are true. If the number of true returns is equal to the number of false returns, majority should return false.
+
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const isOdd = function(num) { return num % 2 === 1; };
+// console.log(majority([1, 2, 3, 4, 5], isOdd)); // should log: true
+// console.log(majority([2, 3, 4, 5], isOdd)); // should log: false
