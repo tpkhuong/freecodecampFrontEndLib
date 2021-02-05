@@ -376,3 +376,37 @@ if the majority of the return values from the callback are true. If the number o
 // const isOdd = function(num) { return num % 2 === 1; };
 // console.log(majority([1, 2, 3, 4, 5], isOdd)); // should log: true
 // console.log(majority([2, 3, 4, 5], isOdd)); // should log: false
+
+function majority(arrInput, callbackFunc) {
+  var objOfBooleanFreqCount = arrInput.reduce(function countTheBoolean(
+    buildingUp,
+    currentValue
+  ) {
+    var ourBoolean = callbackFunc(currentValue);
+    buildingUp[ourBoolean] = (buildingUp[ourBoolean] || 0) + 1;
+    return buildingUp;
+  },
+  {});
+
+  return objOfBooleanFreqCount["true"] <= objOfBooleanFreqCount["false"]
+    ? false
+    : true;
+}
+
+function isOdd(numInput) {
+  return numInput % 2 !== 0;
+}
+
+/*
+Challenge 13
+Create a function prioritize that accepts an array and a callback.
+The callback will return either true or false. prioritize will iterate through the array and perform the callback on each element, and return a new array,
+where all the elements that yielded a return value of true come first in the array, and the rest of the elements come second.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const startsWithS = function(str) { return str[0] === 's' || str[0] === 'S'; };
+// console.log(prioritize(['curb', 'rickandmorty', 'seinfeld', 'sunny', 'friends'], startsWithS)); // should log:
+//['seinfeld', 'sunny', 'curb', 'rickandmorty', 'friends']
+
+// make two arrays. one will hold values that the callback returned true and one array will hold values that the callback returned false.
