@@ -410,3 +410,81 @@ where all the elements that yielded a return value of true come first in the arr
 //['seinfeld', 'sunny', 'curb', 'rickandmorty', 'friends']
 
 // make two arrays. one will hold values that the callback returned true and one array will hold values that the callback returned false.
+function prioritize(arrInput, callbackFunc) {
+  var valuesThatPassedCheck = [];
+  var valuesThatDidNotPassCheck = [];
+
+  arrInput.forEach(function separateTheValues(eachValue) {
+    var ourBooleanValue = callbackFunc(eachValue);
+
+    if (ourBooleanValue) {
+      valuesThatPassedCheck.push(eachValue);
+    } else {
+      valuesThatDidNotPassCheck.push(eachValue);
+    }
+  });
+  return [...valuesThatPassedCheck, ...valuesThatDidNotPassCheck];
+}
+
+/* 
+Challenge 14
+Create a function countBy that accepts an array and a callback, and returns an object. countBy will iterate through the array and perform the callback on each element.
+Each return value from the callback will be saved as a key on the object.
+The value associated with each key will be the number of times that particular return value was returned.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// console.log(countBy([1, 2, 3, 4, 5], function(num) {
+// if (num % 2 === 0) return 'even';
+// else return 'odd';
+// })); // should log: { odd: 3, even: 2 }
+
+function countBy(arrInput, callbackFunc) {
+  return arrInput.reduce(function freqCounter(buildingUp, currentValue) {
+    var oddOrEven = callbackFunc(currentValue);
+
+    buildingUp[oddOrEven] = (buildingUp[oddOrEven] || 0) + 1;
+    return buildingUp;
+  }, {});
+}
+
+/*
+Challenge 15
+Create a function groupBy that accepts an array and a callback, and returns an object. groupBy will iterate through the array and perform the callback on each element.
+Each return value from the callback will be saved as a key on the object.
+The value associated with each key will be an array consisting of all the elements that resulted in that return value when passed into the callback.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const decimals = [1.3, 2.1, 2.4];
+// const floored = function(num) { return Math.floor(num); };
+// console.log(groupBy(decimals, floored)); // should log: { 1: [1.3], 2: [2.1, 2.4] }
+
+function groupBy(arrInput, callbackFunc) {
+  return arrInput.reduce(function returnObj(buildingUp, currentValue) {
+    var ourKey = callbackFunc(currentValue);
+    // var ourArray = []
+
+    if (!buildingUp[ourKey]) {
+      buildingUp[ourKey] = [];
+    }
+    // works
+    // return Object.assign(buildingUp, {
+    //   [ourKey]: [...buildingUp[ourKey], currentValue],
+    // });
+    return Object.assign(buildingUp, {
+      [ourKey]: [...buildingUp[ourKey], currentValue],
+    });
+  }, {});
+  /*or*/
+  /* 
+  var ourKey = callbackFunc(currentValue);
+    if (!buildingUp[ourKey]) {
+      buildingUp[ourKey] = [];
+    }
+    buildingUp[ourKey].push(currentValue);
+    return buildingUp;
+  },
+  {});
+  */
+}

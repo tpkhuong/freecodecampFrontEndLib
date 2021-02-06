@@ -975,3 +975,78 @@ class App extends React.Component {
 // Change code below this line
 
 ReactDOMServer.renderToString(<App />);
+
+const JSX = (
+  <div>
+    <h1>Hello World</h1>
+    <p>Lets render this to the DOM</p>
+  </div>
+);
+// Change code below this line
+ReactDOM.render(JSX, document.getElementById("challenge-mode"))
+
+const MyComponent = function () {
+  // Change code below this line
+    return <div>Hello World!</div>
+  // Change code above this line
+};
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
+    return (
+      <div>
+        <h1>Hello React!</h1>
+      </div>
+    )
+  }
+}
+
+const ChildComponent = () => {
+  return (
+    <div>
+      <p>I am the child</p>
+    </div>
+  );
+};
+
+class ParentComponent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1>I am the parent</h1>
+        { /* Change code below this line */ }
+        <ChildComponent/>
+
+        { /* Change code above this line */ }
+      </div>
+    );
+  }
+};
+
+
+class TypesOfFood extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1>Types of Food:</h1>
+        {/* Change code below this line */}
+        <Fruits />
+        <Vegetables />
+        {/* Change code above this line */}
+      </div>
+    );
+  }
+}
+
+// Change code below this line
+
+ReactDOM.render(<TypesOfFood />, document.querySelector("#challenge-node");)
