@@ -488,3 +488,97 @@ function groupBy(arrInput, callbackFunc) {
   {});
   */
 }
+
+/*
+Challenge 16
+Create a function goodKeys that accepts an object and a callback. The callback will return either true or false.
+goodKeys will iterate through the object and perform the callback on each value.
+goodKeys will then return an array consisting only the keys whose associated values yielded a true return value from the callback.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const sunny = { mac: 'priest', dennis: 'calculating', charlie: 'birdlaw', dee: 'bird', frank: 'warthog' };
+// const startsWithBird = function(str) { return str.slice(0, 4).toLowerCase() === 'bird'; };
+// console.log(goodKeys(sunny, startsWithBird)); // should log: ['charlie', 'dee']
+
+function goodKeys(objInput, callbackFunc) {
+  /* using for in loop: works!*/
+  // var arrOfKeys = []
+  // for (let eachKey in objInput) {
+  //   var ourBooleanCheck = callbackFunc(objInput[eachKey]);
+
+  //   if (ourBooleanCheck) {
+  //     arrOfKeys.push(eachKey);
+  //   }
+  // }
+
+  // console.log(arrOfKeys);
+  /* using reduce: works! */
+  var convertObjToArray = Object.entries(objInput);
+
+  var returnThisArr = convertObjToArray.reduce(function getObjKeys(
+    buildingUp,
+    currentValue
+  ) {
+    var [objKey, objValue] = currentValue;
+    var ourBoolean = callbackFunc(objValue);
+    if (ourBoolean) {
+      return [...buildingUp, objKey];
+    }
+    return buildingUp;
+  },
+  []);
+
+  console.log(returnThisArr);
+}
+
+var testObj = {
+  mac: "priest",
+  dennis: "calculating",
+  charlie: "birdlaw",
+  dee: "bird",
+  frank: "warthog",
+};
+
+var addToObj = {};
+
+for (let eachKey in testObj) {
+  Object.assign(addToObj, { [eachKey]: testObj[eachKey] + "!" });
+}
+
+/* 
+Challenge 17
+Create a function commutative that accepts two callbacks and a value. commutative will return a boolean indicating if the passing the value into the first function,
+and then passing the resulting output into the second function, yields the same output as the same operation with the order of the functions reversed
+(passing the value into the second function, and then passing the output into the first function).
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const multBy3 = n => n * 3;
+// const divBy4 = n => n / 4;
+// const subtract5 = n => n - 5;
+// console.log(commutative(multBy3, divBy4, 11)); // should log: true
+// console.log(commutative(multBy3, subtract5, 10)); // should log: false
+// console.log(commutative(divBy4, subtract5, 48)); // should log: false
+
+function commutative(firstCallback, secondCallback, valueInput) {
+  var firstOrder = secondCallback(firstCallback(valueInput));
+  var secondOrder = firstCallback(secondCallback(valueInput));
+
+  return firstOrder == secondOrder ? true : false;
+  /* return a boolean */
+}
+
+/*
+Challenge 18
+Create a function objFilter that accepts an object and a callback. objFilter should make a new object, and then iterate through the passed-in object, using each key as input for the callback.
+If the output from the callback is equal to the corresponding value, then that key-value pair is copied into the new object. objFilter will return this new object.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const startingObj = {};
+// startingObj[6] = 3;
+// startingObj[2] = 1;
+// startingObj[12] = 4;
+// const half = n => n / 2;
+// console.log(objFilter(startingObj, half)); // should log: { 2: 1, 6: 3 }
