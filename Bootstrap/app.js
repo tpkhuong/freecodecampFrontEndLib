@@ -582,3 +582,58 @@ If the output from the callback is equal to the corresponding value, then that k
 // startingObj[12] = 4;
 // const half = n => n / 2;
 // console.log(objFilter(startingObj, half)); // should log: { 2: 1, 6: 3 }
+
+function objFilter(objInput, callbackFunc) {
+  /* using for in */
+  // var ourObj = {};
+
+  // for (let eachKey in objInput) {
+  //   var resultOfCalculation = callbackFunc(eachKey);
+  //   var eachValue = objInput[eachKey];
+
+  //   if (resultOfCalculation == eachValue) {
+  //     Object.assign(ourObj, { [eachKey]: objInput[eachKey] });
+  //   }
+  // }
+  // console.log(ourObj);
+  /* using reduce */
+  var convertObjToArray = Object.entries(objInput);
+  var returnThisObj = convertObjToArray.reduce(function filterTheValues(
+    buildingUp,
+    currentValue
+  ) {
+    var [ourKey, ourValue] = currentValue;
+    var calculatedValue = callbackFunc(ourKey);
+    if (calculatedValue == ourValue) {
+      return Object.assign(buildingUp, { [ourKey]: ourValue });
+    }
+  },
+  {});
+}
+
+function half(numInput) {
+  return numInput / 2;
+}
+
+const half = (numInput) => numInput / 2;
+
+var passObjIntoFunc = {
+  6: 3,
+  2: 1,
+  12: 4,
+};
+
+/* 
+Challenge 19
+Create a function rating that accepts an array (of functions) and a value. All the functions in the array will return true or false.
+rating should return the percentage of functions from the array that return true when the value is used as input.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const isEven = n => n % 2 === 0;
+// const greaterThanFour = n => n > 4;
+// const isSquare = n => Math.sqrt(n) % 1 === 0;
+// const hasSix = n => n.toString().includes('6');
+// const checks = [isEven, greaterThanFour, isSquare, hasSix];
+// console.log(rating(checks, 64)); // should log: 100
+// console.log(rating(checks, 66)); // should log: 75
