@@ -637,3 +637,129 @@ rating should return the percentage of functions from the array that return true
 // const checks = [isEven, greaterThanFour, isSquare, hasSix];
 // console.log(rating(checks, 64)); // should log: 100
 // console.log(rating(checks, 66)); // should log: 75
+
+function ratings(arrOfFuncs, valueInput) {
+  var lengthOfFuncArr = arrOfFuncs.length;
+
+  var numOfTimesCallbackReturnedTrue = arrOfFuncs.reduce(
+    function lengthToUseInCalc(buildingUp, currentValue) {
+      //currentValue will be each callback
+      var ourBoolean = currentValue(valueInput);
+      if (ourBoolean) {
+        return [...buildingUp, ourBoolean];
+      }
+      return buildingUp;
+    },
+    []
+  );
+  //we want to use the length of the array that numOfTimesCallbackReturnedTrue return to calculate the percentage
+  var lengthOftruthyArr = numOfTimesCallbackReturnedTrue.length;
+  var getPercentage = (lengthOftruthyArr / lengthOfFuncArr) * 100;
+  console.log(getPercentage);
+}
+
+/*
+Challenge 20
+Create a function pipe that accepts an array (of functions) and a value. pipe should input the value into the first function in the array,
+and then use the output from that function as input for the second function, and then use the output from that function as input for the third function, and so forth,
+until we have an output from the last function in the array. Pipe should return the final output.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const capitalize = str => str.toUpperCase();
+// const addLowerCase = str => str + str.toLowerCase();
+// const repeat = str => str + str;
+// const capAddlowRepeat = [capitalize, addLowerCase, repeat];
+// console.log(pipe(capAddlowRepeat, 'cat')); // should log: 'CATcatCATcat'
+
+function pipe(arrOfFuncs, valueInput) {
+  // var strOrNum = (typeof valueInput == 'string') ? "" : (typeof valueInput == "number") ? 0 : [];
+  var calculatedValue = arrOfFuncs.reduce(function passTheValue(
+    buildingUp,
+    currentValue
+  ) {
+    return currentValue(buildingUp);
+  },
+  valueInput);
+
+  console.log(calculatedValue);
+}
+
+/*
+Challenge 21
+Create a function highestFunc that accepts an object (which will contain functions) and a subject (which is any value).
+highestFunc should return the key of the object whose associated value (which will be a function) returns the largest number, when the subject is given as input.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const groupOfFuncs = {};
+// groupOfFuncs.double = n => n * 2;
+// groupOfFuncs.addTen = n => n + 10;
+// groupOfFuncs.inverse = n => n * -1;
+// console.log(highestFunc(groupOfFuncs, 5)); // should log: 'addTen'
+// console.log(highestFunc(groupOfFuncs, 11)); // should log: 'double'
+// console.log(highestFunc(groupOfFuncs, -20)); // should log: 'inverse'
+
+function highestFunc(objOfFunctions, subjectInput) {
+  /* return the key  */
+  var convertingObjToArr = Object.entries(objOfFunctions);
+  /* use Math.max() */
+  var arrWithHighestValueAndFunc;
+  convertingObjToArr.reduce(function returnObjWithKeyAndCalcSubjInput(
+    buildingUp,
+    currentValue
+  ) {
+    var [ourKey, ourFuncAsValue] = currentValue;
+    var checkThisValue = ourFuncAsValue(subjectInput);
+
+    if (buildingUp < checkThisValue) {
+      arrWithHighestValueAndFunc = [ourKey, checkThisValue];
+    }
+    return Math.max(buildingUp, checkThisValue);
+  },
+  0);
+
+  return arrWithHighestValueAndFunc[0];
+}
+
+/*
+Challenge 22
+Create a function, combineOperations, that takes two parameters: a starting value and an array of functions.
+combineOperations should pass the starting value into the first function in the array.
+combineOperations should pass the value returned by the first function into the second function, and so on until every function in the array has been called.
+combineOperations should return the final value returned by the last function in the array.
+*/
+
+function add100(num) {
+  return num + 100;
+}
+
+function divByFive(num) {
+  return num / 5;
+}
+
+function multiplyByThree(num) {
+  return num * 3;
+}
+
+function addTen(num) {
+  return num + 10;
+}
+
+function multiplyFive(num) {
+  return num * 5;
+}
+
+// /*** Uncomment these to check your work! ***/
+// console.log(combineOperations(0, [add100, divByFive, multiplyByThree])); // Should output 60 -->
+// console.log(combineOperations(0, [divByFive, multiplyFive, addTen])); // Should output 10
+
+function combineOperations(startingValue, arrOfOurFunctions) {
+  return arrOfOurFunctions.reduce(function passingValuesIntoEachFuncInArr(
+    buildingUp,
+    currentValue
+  ) {
+    return currentValue(buildingUp);
+  },
+  startingValue);
+}
