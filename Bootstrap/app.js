@@ -763,3 +763,59 @@ function combineOperations(startingValue, arrOfOurFunctions) {
   },
   startingValue);
 }
+
+/*
+Challenge 23
+Define a function myFunc that takes an array and a callback. myFunc should pass each element from the array (in order) into the callback.
+If the callback returns true, myFunc should return the index of the current element. If the callback never returns true, myFunc should return -1;
+
+*/
+
+const numbers = [2, 3, 6, 64, 10, 8, 12];
+const evens = [2, 4, 6, 8, 10, 12, 64];
+
+function isOdd(num) {
+  return num % 2 !== 0;
+}
+
+// /*** Uncomment these to check your work! ***/
+// console.log(myFunc(numbers, isOdd)); // Output should be 1
+// console.log(myFunc(evens, isOdd)); // Output should be -1
+
+function myFunc(arrInput, callbackFunc) {
+  var lengthOfArr = arrInput.length;
+
+  for (let i = 0; i < lengthOfArr; i++) {
+    let eachValue = arrInput[i];
+    let lastIndex = arrInput.length - 1;
+    let ourBoolean = callbackFunc(eachValue);
+
+    if (ourBoolean) {
+      return i;
+    }
+  }
+  return -1;
+}
+
+/*
+Challenge 24
+Write a function myForEach that accepts an array and a callback function. Your function should pass each element of the array (in order) into the callback function.
+The behavior of this function should mirror the functionality of the native .forEach() JavaScript array method as closely as possible.
+*/
+
+let sum = 0;
+
+function addToSum(num) {
+  sum += num;
+}
+
+// /*** Uncomment these to check your work! ***/
+// const nums = [1, 2, 3];
+// myForEach(nums, addToSum);
+// console.log(sum); // Should output 6
+
+function myForEach(list, callback) {
+  for (let index = 0; index < list.length; index++) {
+    callback(list[index], index, list);
+  }
+}
