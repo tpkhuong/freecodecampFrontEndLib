@@ -241,3 +241,57 @@ function cycleIterator(arrInput) {
 
   return innerFunc;
 }
+
+/*
+Challenge 10
+Create a function defineFirstArg that accepts a function and an argument. Also, the function being passed in will accept at least one argument.
+defineFirstArg will return a new function that invokes the passed-in function with the passed-in argument as the passed-in function's first argument.
+Additional arguments needed by the passed-in function will need to be passed into the returned function.
+
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const subtract = function(big, small) { return big - small; };
+// const subFrom20 = defineFirstArg(subtract, 20);
+// console.log(subFrom20(5)); // => should log 15
+
+function defineFirstArg(callbackFunc, userInput) {
+  function innerFunc(...args) {
+    /* this function will invoked the callbackFunc*/
+    /*the callbackFunc will take at least one argument*/
+    /*userInput will be the first argument for the callbackFunc*/
+    var result = callbackFunc(userInput, ...args);
+    /*we can use callbackFunc.apply(null, args) because args will be an array of the arguments/values passed in */
+    return result;
+  }
+
+  return innerFunc;
+}
+
+/*
+Challenge 11
+Create a function dateStamp that accepts a function and returns a function.
+The returned function will accept however many arguments the passed-in function accepts, and return an object with a date key that contains a timestamp with the time of invocation,
+and an output key that contains the result from invoking the passed-in function.
+HINT: You may need to research how to access information on Date objects.
+
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const stampedMultBy2 = dateStamp(n => n * 2);
+// console.log(stampedMultBy2(4)); // => should log { date: (today's date), output: 8 }
+// console.log(stampedMultBy2(6)); // => should log { date: (today's date), output: 12 }
+
+function dateStamp(callbackFunc) {
+  function innerFunc(...args) {
+    var date = Date().slice(0, 15);
+
+    var output = callbackFunc(...args);
+    return {
+      date,
+      output,
+    };
+  }
+
+  return innerFunc;
+}
