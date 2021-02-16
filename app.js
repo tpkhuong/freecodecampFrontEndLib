@@ -295,3 +295,80 @@ function dateStamp(callbackFunc) {
 
   return innerFunc;
 }
+
+/*
+
+Challenge 12
+Create a function censor that accepts no arguments. censor will return a function that will accept either two strings, or one string. When two strings are given,
+the returned function will hold onto the two strings as a pair, for future use. When one string is given,
+the returned function will return the same string, except all instances of first strings (of saved pairs) will be replaced with their corresponding second strings (of those saved pairs).
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const changeScene = censor();
+// changeScene('dogs', 'cats');
+// changeScene('quick', 'slow');
+// console.log(changeScene('The quick, brown fox jumps over the lazy dogs.')); // => should log 'The slow, brown fox jumps over the lazy cats.'
+
+function censor() {
+  // check the length of our array
+  // if the length is two save the pair of strings in an array. if the length is 1 and the array of pair values is 0 we will return the string.
+  //if the array of pair of strings is greater than 0 we will look for the first value in the array in the string and replace it with the second value in the array.
+  //we will return -1 if the single string does not include the first value of our two pair array
+  var lengthOfListOfArgs;
+  var arrOfPairOfStrings = [];
+
+  function innerFunc(...listOfArgs) {
+    lengthOfListOfArgs = listOfArgs.length;
+    console.log(lengthOfListOfArgs);
+    if (lengthOfListOfArgs == 0) {
+      return `We require 1 string. Thank you. Try again`;
+    } else if (lengthOfListOfArgs < 2) {
+      if (arrOfPairOfStrings.length < 1) {
+        return `Please add a pair of strings. There is no pair of strings in our array. We can't replace the first value with the second value.`;
+      } else {
+        // work on this algorithm
+        //in the single string, look for the first value then replace it with the second value in the array.
+        var splitThisStr = listOfArgs[0].split(" "); //loop through arrOfPairOfStrings, search for the index of the first value in that arr in the splitThisStr array or we can use reduce build our string that way
+
+        /* split the punctuation from the word first */
+        var rebuiltStringArr = splitThisStr.reduce(
+          function rebuildStrWithPuncSeparated(buildingUp, currentValue) {
+            /* what to do if our string contains a punctuation */
+            var nonLettersAndNum = currentValue.match(/\W/);
+
+            if (nonLettersAndNum == null) {
+              return [...buildingUp, currentValue];
+            } else {
+              if (currentValue.includes(...nonLettersAndNum)) {
+                let indexOfPunc = currentValue.indexOf(...nonLettersAndNum);
+                let ourWord = currentValue.slice(0, indexOfPunc);
+                let ourPunctuation = currentValue.slice(indexOfPunc);
+                return [...buildingUp, ourWord, ourPunctuation];
+              }
+            }
+          },
+          []
+        );
+
+        /* working with an array of strings and punctuations */
+
+        console.log(rebuiltStringArr);
+      }
+    } else {
+      // here we will be working with two string values. we want to add these pair of strings to our array
+      //list of args is an array.
+      arrOfPairOfStrings = arrOfPairOfStrings.concat([[...listOfArgs]]);
+    }
+    console.log(arrOfPairOfStrings);
+  }
+
+  return innerFunc;
+}
+
+// var ourBoolean = arrOfPairOfStrings.every(function getBoolean(eachSubarray) {
+//   var [firstValue, secondValue] = eachSubarray;
+//   return eachValue != firstValue;
+// })
+// console.log(ourBoolean);
+// var thisStrIsNotOneOfTheValueInOurArrOfStrings;
