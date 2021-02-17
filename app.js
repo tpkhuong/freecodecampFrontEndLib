@@ -315,6 +315,7 @@ function censor() {
   // if the length is two save the pair of strings in an array. if the length is 1 and the array of pair values is 0 we will return the string.
   //if the array of pair of strings is greater than 0 we will look for the first value in the array in the string and replace it with the second value in the array.
   //we will return -1 if the single string does not include the first value of our two pair array
+
   var lengthOfListOfArgs;
   var arrOfPairOfStrings = [];
 
@@ -325,14 +326,14 @@ function censor() {
       return `We require 1 string. Thank you. Try again`;
     } else if (lengthOfListOfArgs < 2) {
       if (arrOfPairOfStrings.length < 1) {
-        return `Please add a pair of strings. There is no pair of strings in our array. We can't replace the first value with the second value.`;
+        return `Please add a pair of strings. There is no pair of strings in our array. Which means we can't replace the first value with the second value.`;
       } else {
         // work on this algorithm
         //in the single string, look for the first value then replace it with the second value in the array.
         var splitThisStr = listOfArgs[0].split(" "); //loop through arrOfPairOfStrings, search for the index of the first value in that arr in the splitThisStr array or we can use reduce build our string that way
 
         /* split the punctuation from the word first */
-        var rebuiltStringArr = splitThisStr.reduce(
+        var arrayWithWordAndPuncSeperated = splitThisStr.reduce(
           function rebuildStrWithPuncSeparated(buildingUp, currentValue) {
             /* what to do if our string contains a punctuation */
             var nonLettersAndNum = currentValue.match(/\W/);
@@ -351,9 +352,60 @@ function censor() {
           []
         );
 
-        /* working with an array of strings and punctuations */
+        /* working with an array of strings and punctuations:["The", "quick", ",", "brown", "fox", "jumps", "over",  "the",  "lazy", "dogs", "."]  */
+        var arrayOfReplacedMatchingStr = arrayWithWordAndPuncSeperated.reduce(
+          function findAndReplace(buildingUp, currentValue) {
+            /* if our currentValue is a puncturation use this line of code to copy the current array of str which will be buildingUp(using spread operator) with currentValue. [...buildingUp, currentValue] */
+            var replaceCurrStrWithThisStr;
+            var addPunctuation = currentValue.match(/\W/);
+            if (addPunctuation == null) {
+              /* might have to loop through another array inside this reduce */
+              /* loop through arrOfPairOfStrings check if the first value of each subarray match currentValue of arrayWithWordAndPuncSeperated */
+              arrOfPairOfStrings.forEach(function findTheMatchingStr(
+                eachSubarray
+              ) {
+                var [
+                  checkThisValue,
+                  assignThisValueToReplaceCurrStrVariable,
+                ] = eachSubarray;
+                if (checkThisValue == currentValue) {
+                  replaceCurrStrWithThisStr = assignThisValueToReplaceCurrStrVariable;
+                }
+              });
+              if (replaceCurrStrWithThisStr == undefined) {
+                return [...buildingUp, currentValue];
+              } else {
+                return [...buildingUp, replaceCurrStrWithThisStr];
+              }
+            } else {
+              /* currentValue is a punctuation. we can split the str before our punctuation and combine our str and punctuation into a single str */
+              /* using the currentIndex will not work because the length of the buildingUp array will be different once we combine the string with the punctuaion
+              better to use the length of the buildingUp array and copy the last value in that array and the values before the last value in that array.
+              */
+              var lengthOfBuildingUpArray = buildingUp.length;
+              let stringsBeforeReplacedWord = buildingUp.slice(
+                0,
+                lengthOfBuildingUpArray - 1
+              );
+              let wordBeforePunc = buildingUp.slice(
+                lengthOfBuildingUpArray - 1
+              )[0];
+              /* spliting wordBeforePunc then combine it with our punctuation into a single string. */
+              let replacedWordCombinedWithPunctuation = [
+                ...wordBeforePunc,
+                currentValue,
+              ].join("");
 
-        console.log(rebuiltStringArr);
+              return [
+                ...stringsBeforeReplacedWord,
+                replacedWordCombinedWithPunctuation,
+              ];
+            }
+          },
+          []
+        );
+        /* combine the strings into a single string */
+        return arrayOfReplacedMatchingStr.join(" ");
       }
     } else {
       // here we will be working with two string values. we want to add these pair of strings to our array
