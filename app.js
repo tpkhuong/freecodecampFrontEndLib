@@ -424,3 +424,86 @@ function censor() {
 // })
 // console.log(ourBoolean);
 // var thisStrIsNotOneOfTheValueInOurArrOfStrings;
+
+/* 
+Challenge 13
+There's no such thing as private properties on a JavaScript object! But, maybe there are? Implement a function createSecretHolder(secret)
+which accepts any value as secret and returns an object with ONLY two methods. getSecret() which returns the secret setSecret() which sets the secret
+*/
+
+// /*** Uncomment these to check your work! ***/
+// obj = createSecretHolder(5)
+// obj.getSecret() // => returns 5
+// obj.setSecret(2)
+// obj.getSecret() // => returns 2
+
+function createSecretHolder(secret) {
+  var objFullOfSecrets = { secret };
+
+  // objFullOfSecrets[secret] = secret;
+
+  console.log(objFullOfSecrets);
+  function getSecret() {
+    return objFullOfSecrets.secret;
+  }
+  function setSecret(secretForSetMethod) {
+    objFullOfSecrets = Object.assign(objFullOfSecrets, {
+      secret: secretForSetMethod,
+    });
+
+    /* if we want to have more than one secrets in our obj */
+
+    // var hasProperty = objFullOfSecrets.hasOwnProperty(secretForSetMethod);
+    // if (!hasProperty) {
+    // } else {
+    //   return `Sorry this secret already exist, Try Again`;
+    // }
+  }
+
+  return {
+    getSecret,
+    setSecret,
+  };
+}
+
+/*
+Challenge 14
+Write a function, callTimes, that returns a new function. The new function should return the number of times it’s been called.
+
+*/
+
+// CHALLENGE 14
+
+// /*** Uncomment these to check your work! ***/
+// let myNewFunc1 = callTimes();
+// let myNewFunc2 = callTimes();
+// myNewFunc1(); // => 1
+// myNewFunc1(); // => 2
+// myNewFunc2(); // => 1
+// myNewFunc2(); // => 2
+
+function callTimes() {
+  var counter = 0;
+
+  function innerFunc() {
+    counter += 1;
+    return counter;
+  }
+
+  return innerFunc;
+}
+
+/*
+Challenge 15
+Create a function russianRoulette that accepts a number (let us call it n), and returns a function.
+The returned function will take no arguments, and will return the string 'click' the first n - 1 number of times it is invoked. On the very next invocation (the nth invocation), the returned function will return the string 'bang'.
+On every invocation after that, the returned function returns the string 'reload to play again'.
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const play = russianRoulette(3);
+// console.log(play()); // => should log 'click'
+// console.log(play()); // => should log 'click'
+// console.log(play()); // => should log 'bang'
+// console.log(play()); // => should log 'reload to play again'
+// console.log(play()); // => should log 'reload to play again'
