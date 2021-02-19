@@ -507,3 +507,63 @@ On every invocation after that, the returned function returns the string 'reload
 // console.log(play()); // => should log 'bang'
 // console.log(play()); // => should log 'reload to play again'
 // console.log(play()); // => should log 'reload to play again'
+
+function russianRoulette(numInput) {
+  var counter = 1;
+  function innerFunc() {
+    if (counter < numInput) {
+      counter += 1;
+      return `click`;
+    } else if (counter > numInput) {
+      return `reload to play again`;
+    } else {
+      counter += 1;
+      return `bang`;
+    }
+  }
+
+  return innerFunc;
+}
+
+/*
+
+Challenge 16
+
+Create a function average that accepts no arguments, and returns a function (that will accept either a number as its lone argument, or no arguments at all).
+When the returned function is invoked with a number, the output should be average of all the numbers have ever been passed into that function (duplicate numbers count just like any other number).
+When the returned function is invoked with no arguments, the current average is outputted. If the returned function is invoked with no arguments before any numbers are passed in, then it should return 0.
+
+*/
+
+// /*** Uncomment these to check your work! ***/
+// const avgSoFar = average();
+// console.log(avgSoFar()); // => should log 0
+// console.log(avgSoFar(4)); // => should log 4
+// console.log(avgSoFar(8)); // => should log 6
+// console.log(avgSoFar()); // => should log 6
+// console.log(avgSoFar(12)); // => should log 8
+// console.log(avgSoFar()); // => should log 8
+
+function average() {
+  var storageOfNumInputs = [];
+  var sum = 0;
+  var avgSoFar = 0;
+
+  function innerFunc(numInput) {
+    if (numInput != undefined) {
+      storageOfNumInputs = [...storageOfNumInputs, numInput];
+      var lengthOfArr = storageOfNumInputs.length;
+      var addThisValue = storageOfNumInputs[lengthOfArr - 1];
+      sum += addThisValue;
+
+      avgSoFar = sum / lengthOfArr;
+    } else {
+      if (numInput == undefined && storageOfNumInputs.length === 0) {
+        return avgSoFar;
+      } else if (numInput == undefined && storageOfNumInputs.length > 0) {
+        return avgSoFar;
+      }
+    }
+  }
+  return innerFunc;
+}
