@@ -588,8 +588,14 @@ Otherwise, the returned function should return false.
 // console.log(shouldCapitalizeLast(capLastAttempt1)); // => should log false
 // console.log(shouldCapitalizeLast(capLastAttempt2)); // => should log true
 
-function makeFuncTest(arrInput) {
-  function innerFunc(callackFunc) {}
+function makeFuncTester(arrInput) {
+  function innerFunc(callbackFunc) {
+    return arrInput.every(function matchSecondValue(eachSubarray) {
+      var [passAsArg, matchReturnValue] = eachSubarray;
+      var returnValueFromCallback = callbackFunc(passAsArg);
+      return returnValueFromCallback == matchReturnValue;
+    });
+  }
 
   return innerFunc;
 }
