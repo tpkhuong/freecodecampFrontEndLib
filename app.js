@@ -620,3 +620,37 @@ If 'undo' is passed into the function and the function's history is empty, then 
 // console.log(myActions('undo')); // => should log 'pose undone'
 // console.log(myActions('undo')); // => should log 'code undone'
 // console.log(myActions('undo')); // => should log 'nothing to undo'
+
+function makeHistory(limitInput) {
+  var history = [];
+  function innerFunc(strInput) {
+    if (strInput == "undo" && history.length == 0) {
+      return "nothing to undo";
+    }
+
+    if (strInput != "undo" && history.length >= 0) {
+      history = [...history, strInput];
+      if (history.length > limitInput) {
+        let limitExceeded = history.length - limitInput;
+        return `${strInput} done. we passed the limit. use 'undo' ${limitExceeded} times to reach our max limit`;
+      } else {
+        return `${strInput} done`;
+      }
+    } else {
+      if (history.length > limitInput) {
+        let removeMostRecentEntry = history.pop();
+        /***** calculate how many time we need to use undo to get to limit number *****/
+        var exceededLimit = history.length - limitInput;
+        return history.length == limitInput
+          ? `${removeMostRecentEntry} undone. we are at our limit`
+          : `${removeMostRecentEntry} undone. We exceeded the limit by ${exceededLimit}, pass in 'undo' ${exceededLimit} times to reach our limit`;
+      } else {
+        let removeEntry = history.pop();
+        console.log("We are at or below our limit");
+        return `${removeEntry} undone`;
+      }
+    }
+  }
+
+  return innerFunc;
+}
