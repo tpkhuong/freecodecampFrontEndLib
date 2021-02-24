@@ -672,7 +672,8 @@ output will NOT use a number in the array). If it is NOT 'bust', then the next i
 the most recent sum plus the next number in the array (a new sum) if that new sum is 21 or less, OR
 the string 'bust' if the new sum is over 21.
 
-And again, if it is 'bust', then every subsequent invocation of the PLAYER function will return the string 'you are done!'. Otherwise, it can continue on to give the next sum with the next number in the array, and so forth.
+And again, if it is 'bust', then every subsequent invocation of the PLAYER function will return the string 'you are done!'.
+Otherwise, it can continue on to give the next sum with the next number in the array, and so forth.
 You may assume that the given array is long enough to give a 'bust' before running out of numbers.
 
 BONUS: Implement blackjack so the DEALER function can return more PLAYER functions that will each continue to take the next number in the array after the previous PLAYER function left off.
@@ -713,3 +714,22 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'bust'
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
+function blackjack(arrOfNumbers) {
+  var deckOfCards = [...arrOfNumbers];
+
+  function dealer(firstNum, secondNum) {
+    var firstSum = firstNum + secondNum;
+    function player() {
+      console.log(firstSum);
+      // console.log(firstNum, secondNum);
+      /***** more than one player have each player function return a player function *****/
+      // function secondPlayer() {
+      //   console.log(firstNum.secondNum)
+      // }
+      // return secondPlayer;
+    }
+
+    return player;
+  }
+  return dealer;
+}
