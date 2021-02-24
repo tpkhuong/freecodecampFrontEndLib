@@ -1132,26 +1132,162 @@ class CampSite extends React.Component {
       </div>
     );
   }
-};
+}
 // Change code below this line
 
+class Camper extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return <p>{this.props.name}</p>;
+  }
+}
 
+Camper.defaultProps = {
+  name: "CamperBot",
+};
 
-class Camper extends React.Component{
+Camper.propTypes = {
+  name: PropTypes.string.isRequired,
+};
+
+const JSX = (
+  <div>
+    <h1></h1>
+    <p></p>
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+);
+
+var MyComponent = function doStuff() {
+  return <div>Hello World</div>;
+};
+
+class MyComponent extends React.Component {
   constructor(props) {
     super(props);
   }
   render() {
     return (
-      <p>{ this.props.name}</p>
-    )
+      <div>
+        <h1>Hello React!</h1>
+      </div>
+    );
   }
 }
 
-Camper.defaultProps = {
-  name: "CamperBot"
+class ParentComponent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1>I am the parent</h1>
+        {/* Change code below this line */}
+        <ChildComponent />
+
+        {/* Change code above this line */}
+      </div>
+    );
+  }
 }
 
-Camper.propTypes = {
-  name: PropTypes.string.isRequired
+class TypesOfFood extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1></h1>
+      </div>
+    );
+  }
+}
+
+var MyComponent = () => {
+  return (
+    <div>
+      <h1>My First React Component!</h1>
+    </div>
+  );
+};
+
+ReactDOM.render(<MyComponent />, document.querySelector("#challenge-node"));
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1>My First React Component!</h1>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<MyComponent />, document.querySelector("#challenge-node"));
+
+const CurrentDate = (props) => {
+  return (
+    <div>
+      {/* Change code below this line */}
+      <p>{props.date}</p>
+      {/* Change code above this line */}
+    </div>
+  );
+};
+
+class Calendar extends React.Component {
+  constructor(props) {
+    super(props);
+    a;
+  }
+  render() {
+    return (
+      <div>
+        <h3>What date is it?</h3>
+        {/* Change code below this line */}
+        <CurrentDate date={Date()} />
+        {/* Change code above this line */}
+      </div>
+    );
+  }
+}
+
+const List = (props) => {
+  {
+    /* Change code below this line */
+  }
+  return <p>{props.tasks.join(", ")}</p>;
+  {
+    /* Change code above this line */
+  }
+};
+
+class ToDo extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return (
+      <div>
+        <h1>To Do Lists</h1>
+        <h2>Today</h2>
+        {/* Change code below this line */}
+        <List tasks={["walking", "talking", "speaking"]} />
+        <h2>Tomorrow</h2>
+        <List tasks={["yahoo", "google", "twitter"]} />
+        {/* Change code above this line */}
+      </div>
+    );
+  }
 }
