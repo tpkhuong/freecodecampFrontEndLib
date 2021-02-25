@@ -198,12 +198,12 @@ function saveOutput(callbackFunc, passwordStr) {
     if (inputForCallback == passwordStr) {
       console.log(returnThisObj);
     } else {
-      var resultFromInvokingCallback = callbackFunc(inputForCallback);
+      var resultFromInvo"king"Callback = callbackFunc(inputForCallback);
 
       returnThisObj = Object.assign(returnThisObj, {
-        [inputForCallback]: resultFromInvokingCallback,
+        [inputForCallback]: resultFromInvo"king"Callback,
       });
-      console.log(resultFromInvokingCallback);
+      console.log(resultFromInvo"king"Callback);
     }
   }
 
@@ -272,7 +272,7 @@ function defineFirstArg(callbackFunc, userInput) {
 Challenge 11
 Create a function dateStamp that accepts a function and returns a function.
 The returned function will accept however many arguments the passed-in function accepts, and return an object with a date key that contains a timestamp with the time of invocation,
-and an output key that contains the result from invoking the passed-in function.
+and an output key that contains the result from invo"king" the passed-in function.
 HINT: You may need to research how to access information on Date objects.
 
 */
@@ -352,7 +352,7 @@ function censor() {
           []
         );
 
-        /* working with an array of strings and punctuations:["The", "quick", ",", "brown", "fox", "jumps", "over",  "the",  "lazy", "dogs", "."]  */
+        /* wor"king" with an array of strings and punctuations:["The", "quick", ",", "brown", "fox", "jumps", "over",  "the",  "lazy", "dogs", "."]  */
         var arrayOfReplacedMatchingStr = arrayWithWordAndPuncSeperated.reduce(
           function findAndReplace(buildingUp, currentValue) {
             /* if our currentValue is a puncturation use this line of code to copy the current array of str which will be buildingUp(using spread operator) with currentValue. [...buildingUp, currentValue] */
@@ -408,7 +408,7 @@ function censor() {
         return arrayOfReplacedMatchingStr.join(" ");
       }
     } else {
-      // here we will be working with two string values. we want to add these pair of strings to our array
+      // here we will be wor"king" with two string values. we want to add these pair of strings to our array
       //list of args is an array.
       arrOfPairOfStrings = arrOfPairOfStrings.concat([[...listOfArgs]]);
     }
@@ -715,7 +715,7 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
-  var deckOfCards = [...arrOfNumbers];
+  var copyOfArrOfNums = [...arrOfNumbers];
 
   function dealer(firstNum, secondNum) {
     var firstSum = firstNum + secondNum;
@@ -732,4 +732,45 @@ function blackjack(arrOfNumbers) {
     return player;
   }
   return dealer;
+}
+
+function drawCards() {
+  var deckOfCards = {
+    spades: ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"],
+    clubs: ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"],
+    diamonds: ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"],
+    hearts: ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"],
+  };
+  pickRandomCards(deckOfCards)
+  var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
+}
+
+function pickRandomCards(objDeckOfCards) {
+  var arrayCardSuits = Object.keys(objDeckOfCards);
+  var lengthOfCardSuits = arrayCardSuits.length;
+  var lengthOfArrayDeckOfCards;
+  /***** since we are using the length of an array, we don't want to use +1 to include the length of the array because the index of an array starts at 0 and ends 1 length below the
+   * length of array.
+   * *****/
+  var arrOfCardDraw = [];
+
+  for (let i = 0; i < 2; i++) {
+    let randomIndexForShapes = Math.floor(Math.random() * lengthOfCardSuits);
+    let randomSingleCardSuit = arrayCardSuits[randomIndexForShapes];
+    let lengthDeckOfCards = objDeckOfCards[randomSingleCardSuit].length
+    let randomIndexForDeckOfCards = Math.floor(
+      Math.random() * lengthDeckOfCards
+    );
+    let cardValue = objDeckOfCards[randomSingleCardSuit][randomIndexForDeckOfCards];
+  
+    arrOfCardDraw = [...arrOfCardDraw, {[randomSingleCardSuit]: cardValue}]
+  }
+  console.log(arrOfCardDraw)
+}
+
+function randomNumber() {
+  var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
+  var randomIndexForShapes = Math.floor(Math.random() * arrOfCardShape.length);
+
+  return randomIndexForShapes;
 }
