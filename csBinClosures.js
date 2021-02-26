@@ -718,9 +718,26 @@ function blackjack(arrOfNumbers) {
   var copyOfArrOfNums = [...arrOfNumbers];
 
   function dealer(firstNum, secondNum) {
-    var firstSum = firstNum + secondNum;
+    var firstSum;
+    var firstCard;
+    var firstCardValue;
+    var secondCard;
+    var secondCardValue;
     function player() {
-      console.log(firstSum);
+      var [{cardSuit:first, cardValue:firstValue},{cardSuit:second, cardValue:secondValue}] = drawCards();
+      firstCard = first;
+      firstCardValue = firstValue;
+      secondCard = second;
+      secondCardValue = secondValue;
+      console.log(firstCard);
+      console.log(firstCardValue);
+      console.log(secondCard);
+      console.log(secondCardValue);
+      // firstSum = drawCards().reduce(function getSum(buildingUp, currentValue) {
+
+      //   return buildingUp += currentValue;
+      // }, 0);
+      // return firstSum;
       // console.log(firstNum, secondNum);
       /***** more than one player have each player function return a player function *****/
       // function secondPlayer() {
@@ -741,8 +758,9 @@ function drawCards() {
     diamonds: ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"],
     hearts: ["ace", 2, 3, 4, 5, 6, 7, 8, 9, 10, "jack", "queen", "king"],
   };
-  pickRandomCards(deckOfCards)
-  var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
+  
+  return pickRandomCards(deckOfCards);
+  // var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
 }
 
 function pickRandomCards(objDeckOfCards) {
@@ -763,9 +781,9 @@ function pickRandomCards(objDeckOfCards) {
     );
     let cardValue = objDeckOfCards[randomSingleCardSuit][randomIndexForDeckOfCards];
   
-    arrOfCardDraw = [...arrOfCardDraw, {[randomSingleCardSuit]: cardValue}]
+    arrOfCardDraw = [...arrOfCardDraw, {cardSuit: randomSingleCardSuit, cardValue}]
   }
-  console.log(arrOfCardDraw)
+  return arrOfCardDraw;
 }
 
 function randomNumber() {
