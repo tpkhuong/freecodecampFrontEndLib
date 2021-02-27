@@ -719,6 +719,8 @@ function blackjack(arrOfNumbers) {
 
   function dealer(firstNum, secondNum) {
     var firstSum;
+    var faceCards = ["jack", "queen", "king"];
+    
     var firstCard;
     var firstCardValue;
     var secondCard;
