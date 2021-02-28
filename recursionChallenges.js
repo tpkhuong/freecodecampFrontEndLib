@@ -63,3 +63,40 @@ maxOf([1, 4, 5, 3])
 maxOf([3, 1, 6, 8, 2, 4, 5])
 // => 8
 */
+
+function largestInteger(arrInput) {
+  if (arrInput.length == 1) {
+    let firstValueToCheck = arrInput.shift();
+    return Math.max(0, firstValueToCheck);
+  }
+  var valueUsedInMathMax = arrInput.shift();
+  return Math.max(valueUsedInMathMax, largestInteger(arrInput));
+}
+
+/* Instruction:
+Given an array and a number, write a recursive function to see if the array includes the given element. 
+// Examples:
+includesNumber([1, 4, 5, 3], 5)
+// => true
+includesNumber([3, 1, 6, 8, 2, 4, 5], 9)
+// => false
+*/
+function includesNumber(arrInput, valueInput) {
+  var valueToCheck = arrInput.shift();
+  if (valueToCheck == valueInput) {
+    return true;
+  } else if (arrInput.length === 0 && valueToCheck != valueInput) {
+    return false;
+  } else {
+    return includesNumber(arrInput, valueInput);
+  }
+}
+
+/* Instruction:
+Given a string, write a recursive function to see if a word is a palindrome. 
+// Examples:
+isPalindrome('madam')
+// => true
+isPalindrome('covid')
+// => false
+*/
