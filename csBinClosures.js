@@ -720,21 +720,53 @@ function blackjack(arrOfNumbers) {
   function dealer(firstNum, secondNum) {
     var firstSum;
     var faceCards = ["jack", "queen", "king"];
-    
-    var firstCard;
-    var firstCardValue;
-    var secondCard;
-    var secondCardValue;
+    /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
+    var [{ cardSuit: firstCard, cardValue: firstCardValue }, { cardSuit: secondCard, cardValue: secondCardValue }] = drawCards();
+    /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
+    // var firstCard;
+    // var firstCardValue;
+    // var secondCard;
+    // var secondCardValue;
+
+    if (faceCards.includes(firstCardValue)) {
+      firstCardValue = 10;
+    } else if (faceCards.includes(secondCardValue)) {
+      secondCardValue = 10;
+    }
+  /***** algorithm to calculate when we get an "ace" *****/
+    if (firstCardValue == "ace") {
+      if (secondCardValue == 10) {
+        return `Blackjack!!! You Win!!!`
+      } else {
+        firstSum = firstCardValue + secondCardValue;
+      }
+    } else if (secondCardValue == "ace") {
+      if (firstCardValue == 10) {
+        return `Blackjack!!! You Win!!!`;
+      } else {
+        firstSum = firstCardValue + secondCardValue;
+      }
+    } else {
+      if (firstCardValue == "ace" && secondCardValue == "ace") {
+        firstSum = 12;
+      } else {
+      /***** when we get to this "else" both card are not "ace" ****/
+        firstSum = firstCardValue + secondCardValue;
+        /***** when we get to this "else" both card are not "ace" ****/ 
+      }
+    }
+
+    /***** algorithm to calculate when we get an "ace" *****/ 
     function player() {
-      var [{cardSuit:first, cardValue:firstValue},{cardSuit:second, cardValue:secondValue}] = drawCards();
-      firstCard = first;
-      firstCardValue = firstValue;
-      secondCard = second;
-      secondCardValue = secondValue;
+      // firstCard = first;
+      // firstCardValue = firstValue;
+      // secondCard = second;
+      // secondCardValue = secondValue;
       console.log(firstCard);
       console.log(firstCardValue);
       console.log(secondCard);
       console.log(secondCardValue);
+      return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
       // firstSum = drawCards().reduce(function getSum(buildingUp, currentValue) {
 
       //   return buildingUp += currentValue;
@@ -766,6 +798,7 @@ function drawCards() {
 }
 
 function pickRandomCards(objDeckOfCards) {
+  
   var arrayCardSuits = Object.keys(objDeckOfCards);
   var lengthOfCardSuits = arrayCardSuits.length;
   var lengthOfArrayDeckOfCards;
