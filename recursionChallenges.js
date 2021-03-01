@@ -100,3 +100,9 @@ isPalindrome('madam')
 isPalindrome('covid')
 // => false
 */
+
+function isPalindrome(strInput) {
+    if () {
+        
+    }
+}
