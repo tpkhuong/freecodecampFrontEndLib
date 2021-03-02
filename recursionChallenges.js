@@ -95,14 +95,57 @@ function includesNumber(arrInput, valueInput) {
 /* Instruction:
 Given a string, write a recursive function to see if a word is a palindrome. 
 // Examples:
-isPalindrome('madam')
+isPalindrome('maddam')
 // => true
 isPalindrome('covid')
 // => false
 */
 
-function isPalindrome(strInput) {
-    if () {
-        
-    }
+function isPalindrome(
+  strInput,
+  startIndex = 0,
+  endIndex = strInput.length - 1
+) {
+  var beginningStr = strInput[startIndex];
+  var lastStr = strInput[endIndex];
+
+  if (startIndex === endIndex) {
+    return true;
+  } else if (startIndex > endIndex && beginningStr === lastStr) {
+    return true;
+  }
+
+  if (beginningStr != lastStr) {
+    return false;
+  } else {
+    return isPalindrome(strInput, startIndex + 1, endIndex - 1);
+  }
+}
+
+/***** solution below will mutate the string. *****/
+
+function isPalindrome(str) {
+  // base case: reaching midpoint, or empty str
+  if (str.length <= 1) {
+    return true;
+  }
+  if (str[0] !== str[str.length - 1]) {
+    return false;
+  } else {
+    return isPalindrome(str.substring(1, str.length - 1));
+  }
+}
+
+/* Instruction:
+Given a string, write a recursive function to print out an array of all possible permutations of the string. */
+// Examples:
+permutations("abc");
+// => ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
+permutations("aabc");
+// => ["aabc", "aacb", "abac", "abca", "acab", "acba", "baac", "baca", "bcaa", "caab", "caba", "cbaa"]
+
+function permutations(strInput) {
+  var arrOfStrings = [];
+
+  /*strings in our array have to be unique*/
 }
