@@ -715,29 +715,36 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
-  var copyOfArrOfNums = [...arrOfNumbers];
+  var dealerDeckOfCards = [...arrOfNumbers];
 
   function dealer(firstNum, secondNum) {
-    var firstSum;
+    /***** we want to return the str of card shapes and value the first time. use the once function helper *****/ 
+      var counter = 0;
+      /***** we want to return the str of card shapes and value the first time. use the once function helper *****/ 
+    var firstPlayerSum;
+    var firstDealerSum;
     var faceCards = ["jack", "queen", "king"];
     /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
-    var [{ cardSuit: firstCard, cardValue: firstCardValue }, { cardSuit: secondCard, cardValue: secondCardValue }] = drawCards();
+    var [{ cardSuit: firstPlayerCard, cardValue: firstPlayerCardValue }, { cardSuit: secondPlayerCard, cardValue: secondPlayerCardValue }] = drawCards();
+    var [{ cardSuit: firstDealerCard, cardValue: firstDealerCardValue }, { cardSuit: secondDealerCard, cardValue: secondDealerCardValue }] = drawCards();
     /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
     // var firstCard;
     // var firstCardValue;
     // var secondCard;
     // var secondCardValue;
-
+/***** change string of "jack", "queen", "king" to the value 10 *****/ 
     if (faceCards.includes(firstCardValue)) {
       firstCardValue = 10;
     } else if (faceCards.includes(secondCardValue)) {
       secondCardValue = 10;
     }
+/***** change string of "jack", "queen", "king" to the value 10 *****/ 
   /***** algorithm to calculate when we get an "ace" *****/
     if (firstCardValue == "ace") {
       if (secondCardValue == 10) {
         return `Blackjack!!! You Win!!!`
       } else {
+
         firstSum = firstCardValue + secondCardValue;
       }
     } else if (secondCardValue == "ace") {
@@ -757,18 +764,44 @@ function blackjack(arrOfNumbers) {
     }
 
     /***** algorithm to calculate when we get an "ace" *****/ 
-    function player() {
-      // firstCard = first;
-      // firstCardValue = firstValue;
-      // secondCard = second;
-      // secondCardValue = secondValue;
-      console.log(firstCard);
-      console.log(firstCardValue);
-      console.log(secondCard);
-      console.log(secondCardValue);
-      return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
-      // firstSum = drawCards().reduce(function getSum(buildingUp, currentValue) {
+    function player(strInput) {
+      
+      var currrentSum = firstSum;
+    /***** return this string the first time and only once. use the once helper function *****/
+      if (counter == 0) {
+        let dealerAndPlayerCards = {
+          dealer: {
+            firsrCard
+          },
+          player:{
 
+          }
+        };
+        return dealerAndPlayerCards;
+        // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
+      } else {
+      /***** check if player want to "hit" or "hold" *****/
+        
+        /***** check if player want to "hit" or "hold" *****/ 
+      }
+      /***** return this string the first time and only once. use the once helper function *****/ 
+      /***** if firstCardValue or secondCardValue is an "ace" *****/
+      /***** the value of "ace" will depend on the currentSum. if currentSum/firstSum is <= 10, value of "ace" will be 11 
+       * if currentSum/firstSum is greater than >= 11 value of "ace" will be 1
+       * *****/ 
+      /***** if firstCardValue or secondCardValue is an "ace" *****/
+      /***** if strInput is "hit" we will draw a card from deal deck else  *****/ 
+      
+      // firstSum = drawCards().reduce(function getSum(buildingUp, currentValue) {
+        // firstCard = first;
+        // firstCardValue = firstValue;
+        // secondCard = second;
+        // secondCardValue = secondValue;
+        // console.log(firstCard);
+        // console.log(firstCardValue);
+        // console.log(secondCard);
+        // console.log(secondCardValue);
+        
       //   return buildingUp += currentValue;
       // }, 0);
       // return firstSum;
@@ -795,6 +828,47 @@ function drawCards() {
   
   return pickRandomCards(deckOfCards);
   // var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
+}
+
+function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
+  var sum;
+
+  if (arrOfFaceCards.includes(firstValueInput)) {
+      firstValueInput = 10;
+    } else if (arrOfFaceCards.includes(secondValueInput)) {
+      secondValueInput = 10;
+    }
+  /***** algorithm to calculate when we get an "ace" *****/
+    if (firstValueInput == "ace") {
+      if (secondValueInput == 10) {
+        sum = 21;
+        
+        // return `Blackjack!!! You Win!!!`
+      } else {
+        sum = firstValueInput + secondValueInput;
+      }
+    } else if (secondValueInput == "ace") {
+      if (firstValueInput == 10) {
+        sum = 21;
+        // return `Blackjack!!! You Win!!!`;
+      } else {
+        sum = firstValueInput + secondValueInput;
+      }
+    } else {
+      if (firstValueInput == "ace" && secondValueInput == "ace") {
+        sum = 12;
+      } else {
+      /***** when we get to this "else" both card are not "ace" ****/
+        sum = firstValueInput + secondValueInput;
+        /***** when we get to this "else" both card are not "ace" ****/ 
+      }
+  }
+  
+  return sum;
+}
+
+function handleFaceCardValue() {
+  
 }
 
 function pickRandomCards(objDeckOfCards) {
