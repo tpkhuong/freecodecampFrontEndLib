@@ -732,37 +732,9 @@ function blackjack(arrOfNumbers) {
     // var firstCardValue;
     // var secondCard;
     // var secondCardValue;
-/***** change string of "jack", "queen", "king" to the value 10 *****/ 
-    if (faceCards.includes(firstCardValue)) {
-      firstCardValue = 10;
-    } else if (faceCards.includes(secondCardValue)) {
-      secondCardValue = 10;
-    }
-/***** change string of "jack", "queen", "king" to the value 10 *****/ 
-  /***** algorithm to calculate when we get an "ace" *****/
-    if (firstCardValue == "ace") {
-      if (secondCardValue == 10) {
-        return `Blackjack!!! You Win!!!`
-      } else {
 
-        firstSum = firstCardValue + secondCardValue;
-      }
-    } else if (secondCardValue == "ace") {
-      if (firstCardValue == 10) {
-        return `Blackjack!!! You Win!!!`;
-      } else {
-        firstSum = firstCardValue + secondCardValue;
-      }
-    } else {
-      if (firstCardValue == "ace" && secondCardValue == "ace") {
-        firstSum = 12;
-      } else {
-      /***** when we get to this "else" both card are not "ace" ****/
-        firstSum = firstCardValue + secondCardValue;
-        /***** when we get to this "else" both card are not "ace" ****/ 
-      }
-    }
-
+    firstPlayerSum = calculateSum(faceCards, firstPlayerCardValue, secondPlayerCardValue);
+    firstDealerSum = calculateSum(faceCards, firstDealerCardValue,secondDealerCardValue);
     /***** algorithm to calculate when we get an "ace" *****/ 
     function player(strInput) {
       
@@ -771,10 +743,18 @@ function blackjack(arrOfNumbers) {
       if (counter == 0) {
         let dealerAndPlayerCards = {
           dealer: {
-            firsrCard
+            firstPlayerCard,
+            firstPlayerCardValue,
+            secondPlayerCard,
+            secondPlayerCardValue,
+            firstDealerSum
           },
           player:{
-
+            firstDealerCard,
+            firstDealerCardValue,
+            secondDealerCard,
+            secondDealerCardValue,
+            firstPlayerSum
           }
         };
         return dealerAndPlayerCards;
@@ -845,6 +825,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
         
         // return `Blackjack!!! You Win!!!`
       } else {
+        firstValueInput = 10;
         sum = firstValueInput + secondValueInput;
       }
     } else if (secondValueInput == "ace") {
@@ -852,6 +833,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
         sum = 21;
         // return `Blackjack!!! You Win!!!`;
       } else {
+        secondValueInput = 10;
         sum = firstValueInput + secondValueInput;
       }
     } else {
@@ -867,9 +849,9 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
   return sum;
 }
 
-function handleFaceCardValue() {
+// function handleFaceCardValue() {
   
-}
+// }
 
 function pickRandomCards(objDeckOfCards) {
   
@@ -895,9 +877,40 @@ function pickRandomCards(objDeckOfCards) {
   return arrOfCardDraw;
 }
 
-function randomNumber() {
-  var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
-  var randomIndexForShapes = Math.floor(Math.random() * arrOfCardShape.length);
+// function randomNumber() {
+//   var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
+//   var randomIndexForShapes = Math.floor(Math.random() * arrOfCardShape.length);
 
-  return randomIndexForShapes;
-}
+//   /***** change string of "jack", "queen", "king" to the value 10 *****/ 
+//     if (faceCards.includes(firstCardValue)) {
+//       firstCardValue = 10;
+//     } else if (faceCards.includes(secondCardValue)) {
+//       secondCardValue = 10;
+//     }
+// /***** change string of "jack", "queen", "king" to the value 10 *****/ 
+//   /***** algorithm to calculate when we get an "ace" *****/
+//     if (firstCardValue == "ace") {
+//       if (secondCardValue == 10) {
+//         return `Blackjack!!! You Win!!!`
+//       } else {
+
+//         firstSum = firstCardValue + secondCardValue;
+//       }
+//     } else if (secondCardValue == "ace") {
+//       if (firstCardValue == 10) {
+//         return `Blackjack!!! You Win!!!`;
+//       } else {
+//         firstSum = firstCardValue + secondCardValue;
+//       }
+//     } else {
+//       if (firstCardValue == "ace" && secondCardValue == "ace") {
+//         firstSum = 12;
+//       } else {
+//       /***** when we get to this "else" both card are not "ace" ****/
+//         firstSum = firstCardValue + secondCardValue;
+//         /***** when we get to this "else" both card are not "ace" ****/ 
+//       }
+//     }
+
+//   return randomIndexForShapes;
+// }
