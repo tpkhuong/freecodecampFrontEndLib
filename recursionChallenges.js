@@ -148,4 +148,5 @@ function permutations(strInput) {
   var arrOfStrings = [];
 
   /*strings in our array have to be unique*/
+  /* use a helper swap function*/
 }
