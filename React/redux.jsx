@@ -541,3 +541,23 @@ const wakeUp = () => {
 };
 
 const store = Redux.createStore(immutableReducer);
+
+const reducer = (state = 5) => {
+  return state;
+};
+
+// Redux methods are available from a Redux object
+// For example: Redux.createStore()
+// Define the store here:
+
+var store = Redux.createStore(reducer);
+
+const store = Redux.createStore((state = 5) => state);
+
+// Change code below this line
+
+var currentState = store.getState();
+
+var action = {
+  type: "LOGIN",
+};
