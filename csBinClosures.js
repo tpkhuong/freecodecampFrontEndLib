@@ -718,11 +718,14 @@ function blackjack(arrOfNumbers) {
   var dealerDeckOfCards = [...arrOfNumbers];
 
   function dealer(firstNum, secondNum) {
-    /***** we want to return the str of card shapes and value the first time. use the once function helper *****/ 
+    /***** we want to return the str of card shapes and value the first time. use the once helper function *****/ 
       var counter = 0;
-      /***** we want to return the str of card shapes and value the first time. use the once function helper *****/ 
+      /***** we want to return the str of card shapes and value the first time. use the once helper function *****/ 
     var firstPlayerSum;
     var firstDealerSum;
+    var currrentSum;
+    var playerCurrentSum;
+    var dealerCurrentSum;
     var faceCards = ["jack", "queen", "king"];
     /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
     var [{ cardSuit: firstPlayerCard, cardValue: firstPlayerCardValue }, { cardSuit: secondPlayerCard, cardValue: secondPlayerCardValue }] = drawCards();
@@ -734,34 +737,50 @@ function blackjack(arrOfNumbers) {
     // var secondCardValue;
 
     firstPlayerSum = calculateSum(faceCards, firstPlayerCardValue, secondPlayerCardValue);
-    firstDealerSum = calculateSum(faceCards, firstDealerCardValue,secondDealerCardValue);
+    firstDealerSum = calculateSum(faceCards, firstDealerCardValue, secondDealerCardValue);
+    currrentSum = firstPlayerSum;
     /***** algorithm to calculate when we get an "ace" *****/ 
     function player(strInput) {
       
-      var currrentSum = firstSum;
+      
     /***** return this string the first time and only once. use the once helper function *****/
       if (counter == 0) {
         let dealerAndPlayerCards = {
-          dealer: {
-            firstPlayerCard,
-            firstPlayerCardValue,
-            secondPlayerCard,
-            secondPlayerCardValue,
-            firstDealerSum
+          player: {
+            firstCard: firstPlayerCard,
+            firstCardValue:firstPlayerCardValue,
+            secondCard: secondPlayerCard,
+            secondCardValue:secondPlayerCardValue,
+            sum: firstPlayerSum
           },
-          player:{
-            firstDealerCard,
-            firstDealerCardValue,
-            secondDealerCard,
-            secondDealerCardValue,
-            firstPlayerSum
+          dealer:{
+            firstCard:firstDealerCard,
+            firstCardValue:firstDealerCardValue,
+            secondCard:secondDealerCard,
+            secondCardValue:secondDealerCardValue,
+            sum:firstDealerSum
           }
         };
+        counter += 1;
+        setTimeout(function waitForResponse() {
+          console.log(`Dealer Sum: ${firstDealerSum}`);
+          console.log(`Player Sum: ${firstPlayerSum}`)
+          console.log("Player: Hit or Hold?")
+        },1500)
         return dealerAndPlayerCards;
         // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
       } else {
       /***** check if player want to "hit" or "hold" *****/
-        
+        if (strInput == "hold") {
+          console.log("hold");
+        /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
+          dealersTurn(firstDealerSum);
+          /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/ 
+          
+        } else {
+          playerCalledHit(firstPlayerSum)
+          // console.log(strInput);
+        }
         /***** check if player want to "hit" or "hold" *****/ 
       }
       /***** return this string the first time and only once. use the once helper function *****/ 
@@ -810,12 +829,21 @@ function drawCards() {
   // var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
 }
 
+function dealersTurn(dealerSum) {
+  console.log(dealerSum)
+}
+
+function playerCalledHit(playerSum) {
+  console.log(playerSum)
+}
+
 function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
   var sum;
 
   if (arrOfFaceCards.includes(firstValueInput)) {
       firstValueInput = 10;
-    } else if (arrOfFaceCards.includes(secondValueInput)) {
+  }
+  if (arrOfFaceCards.includes(secondValueInput)) {
       secondValueInput = 10;
     }
   /***** algorithm to calculate when we get an "ace" *****/
@@ -914,3 +942,16 @@ function pickRandomCards(objDeckOfCards) {
 
 //   return randomIndexForShapes;
 // }
+
+
+// function Foo(name) {
+//   this.name = name;
+//   this.score = 0;
+//   this.sayHi = "Hi"
+// }
+
+// Foo.prototype.sayName = function () {
+//   console.log(`my name is ${this.name}. I want to say ${this.sayHi}`);
+// }
+
+// var user1 = new Foo("Marvel");
