@@ -2106,3 +2106,88 @@ class MyToDoList extends React.Component {
     );
   }
 }
+
+const frontEndFrameworks = [
+  'React',
+  'Angular',
+  'Ember',
+  'Knockout',
+  'Backbone',
+  'Vue'
+];
+
+function Frameworks() {
+  // var randomIndex = Math.random() * 10;
+  const renderFrameworks = frontEndFrameworks.map(function makeLi(eachElement,index) {
+    return <li id={index }>{ eachElement }</li>
+  }); // Change this line
+  return (
+    <div>
+      <h1>Popular Front End JavaScript Frameworks</h1>
+      <ul>
+        {renderFrameworks}
+      </ul>
+    </div>
+  );
+};
+
+class MyComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      users: [
+        {
+          username: "Jeff",
+          online: true,
+        },
+        {
+          username: "Alan",
+          online: false,
+        },
+        {
+          username: "Mary",
+          online: true,
+        },
+        {
+          username: "Jim",
+          online: false,
+        },
+        {
+          username: "Sara",
+          online: true,
+        },
+        {
+          username: "Laura",
+          online: true,
+        },
+      ],
+    };
+  }
+  render() {
+    const usersOnline = this.state.filter(function onlyOnline(eachElement) {
+      return eachElement.online === true;
+      })// Change this line
+      const renderOnline = usersOnline.map(function makeElement(eachUser) {
+          return <li key={randomIndex()}>{ eachUser.username }</li>;
+    }); // Change this line
+    return (
+      <div>
+        <h1>Current Online Users:</h1>
+        <ul>{renderOnline}</ul>
+      </div>
+    );
+  }
+}
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {
+    return <div/>
+  }
+};
+
+// Change code below this line
+
+ReactDOMServer.renderToString(<App/>);
