@@ -738,10 +738,9 @@ function blackjack(arrOfNumbers) {
 
     firstPlayerSum = calculateSum(faceCards, firstPlayerCardValue, secondPlayerCardValue);
     firstDealerSum = calculateSum(faceCards, firstDealerCardValue, secondDealerCardValue);
-    currrentSum = firstPlayerSum;
+    playerCurrentSum = firstPlayerSum;
     /***** algorithm to calculate when we get an "ace" *****/ 
     function player(strInput) {
-      
       
     /***** return this string the first time and only once. use the once helper function *****/
       if (counter == 0) {
@@ -774,11 +773,23 @@ function blackjack(arrOfNumbers) {
         if (strInput == "hold") {
           console.log("hold");
         /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
-          dealersTurn(firstDealerSum);
+          dealersTurn(firstDealerSum, playerCurrentSum);
           /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/ 
           
         } else {
-          playerCalledHit(firstPlayerSum)
+          /***** first value we pass into playerCalledHit will be firstPlayerSum which we assigned to playerCurrentSum and passed it into playerCalledHit
+           * the second time playerCalledHit is called the value of playerCurrentSum will be
+           * the value that is return from playerCalledHit. everytime we call playerCalledHit the playerCurrentSum value that is passed into the func call will be the value returned from the 
+           * previous func call of playerCalledHit
+           *  *****/ 
+          // console.log(firstPlayerSum);
+          // console.log(playerCurrentSum);
+          playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
+          if (typeof playerCurrentSum == "string") {
+            return `${playerCurrentSum}! PLAY AGAIN!  `
+          } else {
+            console.log(playerCurrentSum);
+          }
           // console.log(strInput);
         }
         /***** check if player want to "hit" or "hold" *****/ 
@@ -829,12 +840,26 @@ function drawCards() {
   // var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
 }
 
-function dealersTurn(dealerSum) {
+function dealersTurn(dealerSum, playerSum) {
   console.log(dealerSum)
 }
 
-function playerCalledHit(playerSum) {
-  console.log(playerSum)
+function playerCalledHit(arrDrawCard,playerSum) {
+  var copiedOfArrCards = [...arrDrawCard];
+  var lengthOfDrawCards = copiedOfArrCards.length;
+  var randomIndex = Math.floor(Math.random() * lengthOfDrawCards);
+  var randomValueCard = copiedOfArrCards[randomIndex];
+
+  var newSum = playerSum + randomValueCard;
+  if (newSum > 21) {
+    return `BUST`
+  } else {
+    return newSum;
+  }
+  // console.log(playerSum)
+  // console.log(randomValueCard)
+
+  // return "hello from playerCalledHit func";
 }
 
 function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
