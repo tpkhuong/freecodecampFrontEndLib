@@ -144,9 +144,22 @@ permutations("abc");
 permutations("aabc");
 // => ["aabc", "aacb", "abac", "abca", "acab", "acba", "baac", "baca", "bcaa", "caab", "caba", "cbaa"]
 
-function permutations(strInput) {
-  var arrOfStrings = [];
+function permutations(strInput, index) {
+  if (index == strInput.length) {
+    return [];
+  }
 
+  var splitStr = strInput.split("");
+  var copiedArrOfStrChar = [...splitStr];
+  // var copiedArrOfStrChar = splitStr.slice();
+  var moveToFront = copiedArrOfStrChar.splice(index, 1);
+  var [firstChar, secondChar] = copiedArrOfStrChar;
+  var firstToAddToArr = moveToFront.concat(copiedArrOfStrChar).join("");
+  var secondToAddTOArr = [...moveToFront, secondChar, firstChar].join("");
+
+  return [firstToAddToArr, secondToAddTOArr].concat(
+    permutations(strInput, index + 1)
+  );
   /*strings in our array have to be unique*/
   /* use a helper swap function*/
 }
