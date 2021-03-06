@@ -684,7 +684,7 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // /*** Uncomment these to check your work! ***/
 
 // /*** DEALER ***/
-// const deal = blackjack([2, 6, 1, 7, 11, 4, 6, 3, 9, 8, 9, 3, 10, 4, 5, 3, 7, 4, 9, 6, 10, 11]);
+// const deal = blackjack([2, 6, "ace", 7, 11, 4, 6, 3, 9, 8,"ace", 9, 3, 10, 4, 5,"ace", 3, 7, 4, 9, 6, 10, 11]);
 
 // /*** PLAYER 1 ***/
 // const i_like_to_live_dangerously = deal(4, 5);
@@ -726,6 +726,9 @@ function blackjack(arrOfNumbers) {
     var currrentSum;
     var playerCurrentSum;
     var dealerCurrentSum;
+    var bustStr;
+    var weHaveAwinner;
+
     var faceCards = ["jack", "queen", "king"];
     /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
     var [{ cardSuit: firstPlayerCard, cardValue: firstPlayerCardValue }, { cardSuit: secondPlayerCard, cardValue: secondPlayerCardValue }] = drawCards();
@@ -739,12 +742,12 @@ function blackjack(arrOfNumbers) {
     firstPlayerSum = calculateSum(faceCards, firstPlayerCardValue, secondPlayerCardValue);
     firstDealerSum = calculateSum(faceCards, firstDealerCardValue, secondDealerCardValue);
     playerCurrentSum = firstPlayerSum;
+    dealerCurrentSum = firstDealerSum;
     /***** algorithm to calculate when we get an "ace" *****/ 
     function player(strInput) {
       
     /***** return this string the first time and only once. use the once helper function *****/
-      if (counter == 0) {
-        let dealerAndPlayerCards = {
+      var dealerAndPlayerCards = {
           player: {
             firstCard: firstPlayerCard,
             firstCardValue:firstPlayerCardValue,
@@ -760,6 +763,8 @@ function blackjack(arrOfNumbers) {
             sum:firstDealerSum
           }
         };
+      if (counter == 0) {
+
         counter += 1;
         setTimeout(function waitForResponse() {
           console.log(`Dealer Sum: ${firstDealerSum}`);
@@ -771,10 +776,32 @@ function blackjack(arrOfNumbers) {
       } else {
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
-          console.log("hold");
-        /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
-          dealersTurn(firstDealerSum, playerCurrentSum);
-          /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/ 
+          if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
+            weHaveAwinner = true;
+            return `Player Wins!`
+          } else {
+
+            while (bustStr != "BUST") {
+              /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
+              let checkForType = dealersTurn(dealerDeckOfCards, dealerCurrentSum, playerCurrentSum);
+              if (typeof checkForType == "object") {
+                let { strForm } = checkForType;
+                bustStr = strForm;
+              } else {
+                dealerCurrentSum = checkForType;
+                console.log(dealerCurrentSum);
+              }
+            /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
+              if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
+                weHaveAwinner = true;
+                return `Dealer Wins!`
+              }
+            }
+            if (bustStr == "BUST") {
+              weHaveAwinner = true;
+              return `Dealer Bust! Player wins!`
+            }
+          }
           
         } else {
           /***** first value we pass into playerCalledHit will be firstPlayerSum which we assigned to playerCurrentSum and passed it into playerCalledHit
@@ -786,7 +813,8 @@ function blackjack(arrOfNumbers) {
           // console.log(playerCurrentSum);
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
-            return `${playerCurrentSum}! PLAY AGAIN!  `
+            weHaveAwinner = true;
+            return `BUST! PLAY AGAIN!`
           } else {
             console.log(playerCurrentSum);
           }
@@ -840,16 +868,46 @@ function drawCards() {
   // var arrOfCardShape = ["spades", "clubs", "diamonds", "hearts"];
 }
 
-function dealersTurn(dealerSum, playerSum) {
-  console.log(dealerSum)
+function dealersTurn(arrOfCardsToDraw,dealerSum, playerSum) {
+  var randomValueCard = drawRandomCardFromDealerDeck(arrOfCardsToDraw);
+
+  /***** if dealer draws ace *****/
+  if (randomValueCard == "ace") {
+    if (dealerSum >= 11) {
+      randomValueCard = 1;
+    } else {
+      randomValueCard = 11;
+    }
+  }
+/***** if dealer draws ace *****/
+  var newSum = dealerSum + randomValueCard;
+  if (newSum > 21) {
+    return {
+      strForm: `BUST`,
+      newSum
+    }
+  } else {
+    return newSum;
+  }
 }
 
-function playerCalledHit(arrDrawCard,playerSum) {
-  var copiedOfArrCards = [...arrDrawCard];
-  var lengthOfDrawCards = copiedOfArrCards.length;
-  var randomIndex = Math.floor(Math.random() * lengthOfDrawCards);
-  var randomValueCard = copiedOfArrCards[randomIndex];
+function playerCalledHit(arrDrawCard, playerSum) {
+  
+  // var copiedOfArrCards = [...arrDrawCard];
+  // var lengthOfDrawCards = copiedOfArrCards.length;
+  // var randomIndex = Math.floor(Math.random() * lengthOfDrawCards);
+  var randomValueCard = drawRandomCardFromDealerDeck(arrDrawCard);
+  
 
+/***** if player draws ace *****/
+  if (randomValueCard == "ace") {
+    if (playerSum >= 11) {
+      randomValueCard = 1;
+    } else {
+      randomValueCard = 11;
+    }
+  }
+  /***** if player draws ace *****/ 
   var newSum = playerSum + randomValueCard;
   if (newSum > 21) {
     return `BUST`
@@ -860,6 +918,15 @@ function playerCalledHit(arrDrawCard,playerSum) {
   // console.log(randomValueCard)
 
   // return "hello from playerCalledHit func";
+}
+
+function drawRandomCardFromDealerDeck(arrDrawCard) {
+  var copiedOfArrCards = [...arrDrawCard];
+  var lengthOfDrawCards = copiedOfArrCards.length;
+  var randomIndex = Math.floor(Math.random() * lengthOfDrawCards);
+  var randomValueCard = copiedOfArrCards[randomIndex];
+
+  return randomValueCard;
 }
 
 function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
@@ -878,7 +945,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
         
         // return `Blackjack!!! You Win!!!`
       } else {
-        firstValueInput = 10;
+        firstValueInput = 11;
         sum = firstValueInput + secondValueInput;
       }
     } else if (secondValueInput == "ace") {
@@ -886,7 +953,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
         sum = 21;
         // return `Blackjack!!! You Win!!!`;
       } else {
-        secondValueInput = 10;
+        secondValueInput = 11;
         sum = firstValueInput + secondValueInput;
       }
     } else {
