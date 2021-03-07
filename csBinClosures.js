@@ -777,11 +777,11 @@ function blackjack(arrOfNumbers) {
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
-            weHaveAwinner = true;
-            return `Player Wins!`
+            weHaveAwinner = "player";
+            console.log( `Player Wins!`)
           } else {
 
-            while (bustStr != "BUST") {
+            while (bustStr != "BUST" || !weHaveAwinner) {
               /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
               let checkForType = dealersTurn(dealerDeckOfCards, dealerCurrentSum, playerCurrentSum);
               if (typeof checkForType == "object") {
@@ -793,34 +793,44 @@ function blackjack(arrOfNumbers) {
               }
             /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
               if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
-                weHaveAwinner = true;
-                return `Dealer Wins!`
+                weHaveAwinner = "dealer";
+                console.log( `Dealer Wins!`)
               }
             }
             if (bustStr == "BUST") {
-              weHaveAwinner = true;
-              return `Dealer Bust! Player wins!`
+              weHaveAwinner = "dealer";
+              console.log( `Dealer Bust! Player wins!`)
             }
           }
           
         } else {
           /***** first value we pass into playerCalledHit will be firstPlayerSum which we assigned to playerCurrentSum and passed it into playerCalledHit
            * the second time playerCalledHit is called the value of playerCurrentSum will be
-           * the value that is return from playerCalledHit. everytime we call playerCalledHit the playerCurrentSum value that is passed into the func call will be the value returned from the 
+           * the value that is return from playerCalledHit. everytime we call playerCalledHit the playerCurrentSum value that is passed into the func call will be the value console.log(ed from the 
            * previous func call of playerCalledHit
            *  *****/ 
           // console.log(firstPlayerSum);
           // console.log(playerCurrentSum);
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
-            weHaveAwinner = true;
-            return `BUST! PLAY AGAIN!`
+            weHaveAwinner = "dealer";
+            console.log( `BUST! PLAY AGAIN!`)
           } else {
             console.log(playerCurrentSum);
           }
           // console.log(strInput);
         }
-        /***** check if player want to "hit" or "hold" *****/ 
+      /***** check if player want to "hit" or "hold" *****/
+        /***** play again algorithm *****/ 
+        console.log(weHaveAwinner);
+        if (weHaveAwinner) {
+          console.log("Play Again? Enter the string 'Yes' or 'No'");
+          strInput.toLowerCase();
+          if (strInput == "yes") {
+            return dealer;
+          }
+        }
+        /***** play again algorithm *****/ 
       }
       /***** return this string the first time and only once. use the once helper function *****/ 
       /***** if firstCardValue or secondCardValue is an "ace" *****/
@@ -849,11 +859,16 @@ function blackjack(arrOfNumbers) {
       //   console.log(firstNum.secondNum)
       // }
       // return secondPlayer;
+      
     }
 
     return player;
   }
   return dealer;
+}
+
+function checkForWinner(strInput) {
+  
 }
 
 function drawCards() {
@@ -943,7 +958,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
       if (secondValueInput == 10) {
         sum = 21;
         
-        // return `Blackjack!!! You Win!!!`
+        return `Blackjack!!! You Win!!!`
       } else {
         firstValueInput = 11;
         sum = firstValueInput + secondValueInput;
@@ -951,7 +966,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
     } else if (secondValueInput == "ace") {
       if (firstValueInput == 10) {
         sum = 21;
-        // return `Blackjack!!! You Win!!!`;
+        return `Blackjack!!! You Win!!!`;
       } else {
         secondValueInput = 11;
         sum = firstValueInput + secondValueInput;
