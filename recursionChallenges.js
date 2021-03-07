@@ -143,6 +143,7 @@ permutations("abc");
 // => ['abc', 'acb', 'bac', 'bca', 'cab', 'cba']
 permutations("aabc");
 // => ["aabc", "aacb", "abac", "abca", "acab", "acba", "baac", "baca", "bcaa", "caab", "caba", "cbaa"]
+// ABCD BACD CABD ACBD BCAD CBAD DBAC BDAC ADBC DABC BADC ABDC ACDB CADB DACB ADCB CDAB DCAB DCBA CDBA BDCA DBCA CBDA BCDA
 
 function permutations(strInput, index) {
   if (index == strInput.length) {
@@ -163,3 +164,14 @@ function permutations(strInput, index) {
   /*strings in our array have to be unique*/
   /* use a helper swap function*/
 }
+
+/***** more than 3 letters *****/
+
+function permutations() {
+  var visited = {};
+
+  function helper(strInput, index) {}
+
+  return helper;
+}
+/***** more than 3 letters *****/
