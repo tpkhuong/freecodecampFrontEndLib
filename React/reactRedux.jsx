@@ -974,3 +974,95 @@ class AppWrapper extends React.Component {
     );
   }
 }
+
+class DisplayMessages extends React.Component {
+  // Change code below this line
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      input: "",
+      messages: [],
+    };
+  }
+  // Change code above this line
+  render() {
+    return <div />;
+  }
+}
+
+class DisplayMessages extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      input: "",
+      messages: [],
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.submitMessage = this.submitMessage.bind(this);
+  }
+  // Add handleChange() and submitMessage() methods here
+  handleChange(event) {
+    this.setState({
+      input: event.input.value,
+      messages: this.state.messages,
+    });
+  }
+  submitMessage(event) {
+    this.setState({
+      input: "",
+      messages: [...this.state.messages, this.state.input],
+    });
+  }
+  render() {
+    return (
+      <div>
+        <h2>Type in a new Message:</h2>
+        {/* Render an input, button, and ul below this line */}
+        <input onChange={this.handleChange} value={this.state.input} />
+        <button onClick={this.submitMessage}></button>
+        <ul>
+          {this.state.messages.map(function renderLi(eachElement, index) {
+            return <li key={index}>eachElement</li>;
+          })}
+        </ul>
+        {/* Change code above this line */}
+      </div>
+    );
+  }
+}
+
+// define ADD, addMessage(), messageReducer(), and store here:
+const ADD = "ADD";
+
+const addMessage = function formMessage(message) {
+  return {
+    type: ADD,
+    message,
+  };
+};
+
+const messageReducer = function ourReducer(state = [], action) {
+  switch (action.type) {
+    case ADD:
+      return [...state, action.message];
+    default:
+      return state;
+  }
+};
+
+// Use ES6 default paramter to give the 'previousState' parameter an initial value.
+const messageReducer = (previousState = [], action) => {
+  // Use switch statement to lay out the reducer logic in response to different action type
+  switch (action.type) {
+    case ADD:
+      // Use ES6 spread operator to return a new array where the new message is added to previousState
+      return [...previousState, action.message];
+
+    default:
+      // A default case to fall back on in case if the update to Redux store is not for this specific state.
+      return previousState;
+  }
+};
+
+const store = Redux.createStore(messageReducer);
