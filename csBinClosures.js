@@ -778,10 +778,10 @@ function blackjack(arrOfNumbers) {
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
             weHaveAwinner = "player";
-            console.log( `Player Wins!`)
+            checkForWinner(weHaveAwinner);
           } else {
 
-            while (bustStr != "BUST" || !weHaveAwinner) {
+            while (bustStr != "BUST" || typeof weHaveAwinner != "string") {
               /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
               let checkForType = dealersTurn(dealerDeckOfCards, dealerCurrentSum, playerCurrentSum);
               if (typeof checkForType == "object") {
@@ -794,12 +794,12 @@ function blackjack(arrOfNumbers) {
             /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
               if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
                 weHaveAwinner = "dealer";
-                console.log( `Dealer Wins!`)
+                checkForWinner(weHaveAwinner)
               }
             }
             if (bustStr == "BUST") {
               weHaveAwinner = "dealer";
-              console.log( `Dealer Bust! Player wins!`)
+              checkForWinner(weHaveAwinner,bustStr)
             }
           }
           
@@ -814,7 +814,7 @@ function blackjack(arrOfNumbers) {
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
-            console.log( `BUST! PLAY AGAIN!`)
+            checkForWinner(weHaveAwinner, bustStr);
           } else {
             console.log(playerCurrentSum);
           }
@@ -867,8 +867,16 @@ function blackjack(arrOfNumbers) {
   return dealer;
 }
 
-function checkForWinner(strInput) {
-  
+function checkForWinner(strInput, isItBust) {
+  var lowerCaseBust = isItBust.toLowerCase();
+  if (strInput == "dealer" && lowerCaseBust == "bust") {
+    return `Player Bust. Dealer Wins`;
+  } else if (strInput == "player" && lowerCaseBust == "bust") {
+    return `Dealer bust. Player Wins`;
+  } else {
+    if (strInput == "dealer") return `Dealer Wins`
+    return `Player Wins`
+  }
 }
 
 function drawCards() {
