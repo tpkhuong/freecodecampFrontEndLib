@@ -778,29 +778,35 @@ function blackjack(arrOfNumbers) {
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
             weHaveAwinner = "player";
-            checkForWinner(weHaveAwinner);
+            return checkForWinner(weHaveAwinner);
+          } else if(dealerCurrentSum == playerCurrentSum) {
+            return "Push"
           } else {
-
-            while (bustStr != "BUST" || typeof weHaveAwinner != "string") {
+            let checkForType;
+            while (typeof weHaveAwinner != "string") {
               /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
-              let checkForType = dealersTurn(dealerDeckOfCards, dealerCurrentSum, playerCurrentSum);
+              checkForType = dealersTurn(dealerDeckOfCards, dealerCurrentSum, playerCurrentSum);
               if (typeof checkForType == "object") {
                 let { strForm } = checkForType;
                 bustStr = strForm;
+                weHaveAwinner = "player";
+                
               } else {
                 dealerCurrentSum = checkForType;
+                if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
+                weHaveAwinner = "dealer";
+                } else if(typeof checkForType == "number" && dealerCurrentSum == playerCurrentSum) {
+                  return "Push";
+              }
                 console.log(dealerCurrentSum);
               }
+            }
+            if (weHaveAwinner == "player") {
+              return checkForWinner(weHaveAwinner, bustStr)
+            } else {
+              return checkForWinner(weHaveAwinner)
+            }
             /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
-              if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
-                weHaveAwinner = "dealer";
-                checkForWinner(weHaveAwinner)
-              }
-            }
-            if (bustStr == "BUST") {
-              weHaveAwinner = "dealer";
-              checkForWinner(weHaveAwinner,bustStr)
-            }
           }
           
         } else {
@@ -814,7 +820,7 @@ function blackjack(arrOfNumbers) {
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
-            checkForWinner(weHaveAwinner, bustStr);
+            return checkForWinner(weHaveAwinner, bustStr);
           } else {
             console.log(playerCurrentSum);
           }
@@ -867,7 +873,7 @@ function blackjack(arrOfNumbers) {
   return dealer;
 }
 
-function checkForWinner(strInput, isItBust) {
+function checkForWinner(strInput, isItBust = "") {
   var lowerCaseBust = isItBust.toLowerCase();
   if (strInput == "dealer" && lowerCaseBust == "bust") {
     return `Player Bust. Dealer Wins`;
