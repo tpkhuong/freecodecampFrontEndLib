@@ -167,11 +167,39 @@ function permutations(strInput, index) {
 
 /***** more than 3 letters *****/
 
-function permutations() {
+function memoize(callback) {
   var visited = {};
-
-  function helper(strInput, index) {}
+  /***** we know how to get permutations of string with a length of 3.
+   * with a length of 4, we want to run the algorithm of permutations on the three letters after the first character of the string.
+   * we will keep track or change the first character of the string then run the algorithm for permutation with 3 string.
+   * *****/
+  /***** if we move the str char at index to the beginning already/second time or more than once, we will call function again with the next str char in the string. *****/
+  function helper(strInput, index) {
+    if (visited[strInput]) {
+      return callback(strInput, index + 1);
+    } else {
+      visited[strInput] = true;
+      return callback(strInput, index);
+    }
+  }
 
   return helper;
 }
+
+var permutation = memoize(function (strInput, index) {});
+
 /***** more than 3 letters *****/
+
+function testingOurIdea(strInput, index) {
+  if (index == strInput.length) {
+    return [];
+  }
+
+  var splitTheStr = strInput.split("");
+  var copyTheStr = [...splitTheStr];
+
+  var moveCharToFrontOfStr = copyTheStr.splice(index, 1);
+  /***** we want to call/run algorithm on the next three chars then repeat each time we increase the index and pass that increased index to our recursive call *****/
+
+  /***** we want to call/run algorithm on the next three chars then repeat each time we increase the index and pass that increased index to our recursive call *****/
+}
