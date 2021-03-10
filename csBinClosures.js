@@ -764,7 +764,7 @@ function blackjack(arrOfNumbers) {
           }
         };
       if (counter == 0) {
-
+alert("getting close to making our playAgain function work")
         counter += 1;
         setTimeout(function waitForResponse() {
           console.log(`Dealer Sum: ${firstDealerSum}`);
@@ -774,11 +774,23 @@ function blackjack(arrOfNumbers) {
         return dealerAndPlayerCards;
         // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
       } else {
+        if (typeof firstDealerSum == "string") {
+          if (firstDealerSum.includes('Blackjack')) {
+            console.log(`Dealer got BlackJack. Dealer Wins`)
+            return playAgain;
+          }
+        } else {
+          if (firstPlayerSum.includes('Blackjack')) {
+            console.log(`Player got BlackJack. Player Wins`)
+              return playAgain;
+          }
+        }
+        
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
             weHaveAwinner = "player";
-            return checkForWinner(weHaveAwinner);
+            return checkForWinner(weHaveAwinner,playAgain);
           } else if(dealerCurrentSum == playerCurrentSum) {
             return "Push"
           } else {
@@ -802,9 +814,9 @@ function blackjack(arrOfNumbers) {
               }
             }
             if (weHaveAwinner == "player") {
-              return checkForWinner(weHaveAwinner, bustStr)
+              return checkForWinner(weHaveAwinner,playAgain, bustStr)
             } else {
-              return checkForWinner(weHaveAwinner)
+              return checkForWinner(weHaveAwinner,playAgain)
             }
             /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
           }
@@ -820,23 +832,14 @@ function blackjack(arrOfNumbers) {
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
-            return checkForWinner(weHaveAwinner, bustStr);
+            return checkForWinner(weHaveAwinner,playAgain, bustStr);
           } else {
             console.log(playerCurrentSum);
           }
           // console.log(strInput);
         }
       /***** check if player want to "hit" or "hold" *****/
-        /***** play again algorithm *****/ 
-        console.log(weHaveAwinner);
-        if (weHaveAwinner) {
-          console.log("Play Again? Enter the string 'Yes' or 'No'");
-          strInput.toLowerCase();
-          if (strInput == "yes") {
-            return dealer;
-          }
-        }
-        /***** play again algorithm *****/ 
+        
       }
       /***** return this string the first time and only once. use the once helper function *****/ 
       /***** if firstCardValue or secondCardValue is an "ace" *****/
@@ -866,6 +869,22 @@ function blackjack(arrOfNumbers) {
       // }
       // return secondPlayer;
       
+    /***** play again? *****/
+    /***** play again algorithm *****/
+      function playAgain(askPlayer) {
+        console.log(weHaveAwinner);
+        if (weHaveAwinner) {
+          console.log("Play Again? Enter the string 'Yes' or 'No'");
+          askPlayer.toLowerCase();
+          if (askPlayer == "yes") {
+            console.log("we are in the playAgain function");
+            // return dealer;
+          }
+        }
+        
+      }
+      /***** play again algorithm *****/ 
+    /***** play again? *****/ 
     }
 
     return player;
@@ -873,15 +892,22 @@ function blackjack(arrOfNumbers) {
   return dealer;
 }
 
-function checkForWinner(strInput, isItBust = "") {
+function checkForWinner(strInput,playAgainCallback, isItBust = "") {
   var lowerCaseBust = isItBust.toLowerCase();
   if (strInput == "dealer" && lowerCaseBust == "bust") {
-    return `Player Bust. Dealer Wins`;
+    console.log(`Player Bust. Dealer Wins`);
+    return playAgainCallback;
   } else if (strInput == "player" && lowerCaseBust == "bust") {
-    return `Dealer bust. Player Wins`;
+    console.log(`Dealer bust. Player Wins`)
+    return playAgainCallback;
   } else {
-    if (strInput == "dealer") return `Dealer Wins`
-    return `Player Wins`
+    if (strInput == "dealer") {
+      console.log(`Dealer Wins`)
+      return playAgainCallback
+    } else {
+      console.log(`Player Wins`);
+      return playAgainCallback
+    }
   }
 }
 
@@ -908,6 +934,7 @@ function dealersTurn(arrOfCardsToDraw,dealerSum, playerSum) {
       randomValueCard = 11;
     }
   }
+  console.log(`DrawnValue: ${randomValueCard}`);
 /***** if dealer draws ace *****/
   var newSum = dealerSum + randomValueCard;
   if (newSum > 21) {
@@ -936,7 +963,8 @@ function playerCalledHit(arrDrawCard, playerSum) {
       randomValueCard = 11;
     }
   }
-  /***** if player draws ace *****/ 
+/***** if player draws ace *****/
+  console.log(`DrawnValue: ${randomValueCard}`);
   var newSum = playerSum + randomValueCard;
   if (newSum > 21) {
     return `BUST`
