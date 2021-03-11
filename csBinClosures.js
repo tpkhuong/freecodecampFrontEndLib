@@ -764,35 +764,37 @@ function blackjack(arrOfNumbers) {
           }
         };
       if (counter == 0) {
-alert("getting close to making our playAgain function work")
+
         counter += 1;
         setTimeout(function waitForResponse() {
           console.log(`Dealer Sum: ${firstDealerSum}`);
           console.log(`Player Sum: ${firstPlayerSum}`)
           console.log("Player: Hit or Hold?")
-        },1500)
-        return dealerAndPlayerCards;
-        // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
-      } else {
-        if (typeof firstDealerSum == "string") {
+          if (typeof firstDealerSum == "string") {
           if (firstDealerSum.includes('Blackjack')) {
             console.log(`Dealer got BlackJack. Dealer Wins`)
             return playAgain;
           }
-        } else {
-          if (firstPlayerSum.includes('Blackjack')) {
+          }
+          if (typeof firstPlayerSum == "string") {
+            if (firstPlayerSum.includes('Blackjack')) {
             console.log(`Player got BlackJack. Player Wins`)
               return playAgain;
           }
-        }
+          }
+        }, 1500)
         
+        return dealerAndPlayerCards;
+        // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
+      } else {
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
             weHaveAwinner = "player";
             return checkForWinner(weHaveAwinner,playAgain);
-          } else if(dealerCurrentSum == playerCurrentSum) {
-            return "Push"
+          } else if (dealerCurrentSum == playerCurrentSum) {
+            console.log("Push");
+            return playAgain
           } else {
             let checkForType;
             while (typeof weHaveAwinner != "string") {
@@ -807,8 +809,9 @@ alert("getting close to making our playAgain function work")
                 dealerCurrentSum = checkForType;
                 if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
                 weHaveAwinner = "dealer";
-                } else if(typeof checkForType == "number" && dealerCurrentSum == playerCurrentSum) {
-                  return "Push";
+                } else if (typeof checkForType == "number" && dealerCurrentSum == playerCurrentSum) {
+                  console.log("Push")
+                  return playAgain;
               }
                 console.log(dealerCurrentSum);
               }
@@ -869,28 +872,31 @@ alert("getting close to making our playAgain function work")
       // }
       // return secondPlayer;
       
-    /***** play again? *****/
-    /***** play again algorithm *****/
-      function playAgain(askPlayer) {
-        console.log(weHaveAwinner);
-        if (weHaveAwinner) {
-          console.log("Play Again? Enter the string 'Yes' or 'No'");
-          askPlayer.toLowerCase();
-          if (askPlayer == "yes") {
-            console.log("we are in the playAgain function");
-            // return dealer;
-          }
-        }
-        
-      }
-      /***** play again algorithm *****/ 
-    /***** play again? *****/ 
+    
     }
 
     return player;
   }
   return dealer;
 }
+
+/***** play again? *****/
+/***** play again algorithm *****/
+  function playAgain(askPlayer = "") {
+    console.log(weHaveAwinner);
+    if (weHaveAwinner) {
+      console.log("Play Again? Enter the string 'Yes' or 'No'");
+      askPlayer.toLowerCase();
+      if (askPlayer == "yes") {
+        blackjack([2, 6, "ace", 7, 11, 4, 6, 3, 9, 8,"ace", 9, 3, 10, 4, 5,"ace", 3, 7, 4, 9, 6, 10, 11])
+        console.log("we are in the playAgain function");
+        // return dealer;
+      }
+    }
+    
+  }
+  /***** play again algorithm *****/ 
+/***** play again? *****/
 
 function checkForWinner(strInput,playAgainCallback, isItBust = "") {
   var lowerCaseBust = isItBust.toLowerCase();
