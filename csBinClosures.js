@@ -715,6 +715,7 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
+  alert("add betting to our blackjack game");
   var dealerDeckOfCards = [...arrOfNumbers];
 
   function dealer(firstNum, secondNum) {
@@ -783,9 +784,10 @@ function blackjack(arrOfNumbers) {
           }
           }
         }, 1500)
-        
+        alert("check this if else statement when working on playAgain algorithm")
         return dealerAndPlayerCards;
         // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
+        
       } else {
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
@@ -794,6 +796,7 @@ function blackjack(arrOfNumbers) {
             return checkForWinner(weHaveAwinner,playAgain);
           } else if (dealerCurrentSum == playerCurrentSum) {
             console.log("Push");
+            weHaveAwinner = "Push";
             return playAgain
           } else {
             let checkForType;
@@ -804,13 +807,14 @@ function blackjack(arrOfNumbers) {
                 let { strForm } = checkForType;
                 bustStr = strForm;
                 weHaveAwinner = "player";
-                
+                return playAgain;
               } else {
                 dealerCurrentSum = checkForType;
                 if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
                 weHaveAwinner = "dealer";
                 } else if (typeof checkForType == "number" && dealerCurrentSum == playerCurrentSum) {
-                  console.log("Push")
+                  console.log("Push");
+                  weHaveAwinner = "Push";
                   return playAgain;
               }
                 console.log(dealerCurrentSum);
@@ -872,6 +876,9 @@ function blackjack(arrOfNumbers) {
       // }
       // return secondPlayer;
       
+      if (weHaveAwinner) {
+        return "We are done!"
+      }
     
     }
 
@@ -882,14 +889,14 @@ function blackjack(arrOfNumbers) {
 
 /***** play again? *****/
 /***** play again algorithm *****/
-  function playAgain(askPlayer = "") {
+  function playAgain(askPlayer = "", blackjackFunc) {
     console.log(weHaveAwinner);
     if (weHaveAwinner) {
       console.log("Play Again? Enter the string 'Yes' or 'No'");
       askPlayer.toLowerCase();
       if (askPlayer == "yes") {
-        blackjack([2, 6, "ace", 7, 11, 4, 6, 3, 9, 8,"ace", 9, 3, 10, 4, 5,"ace", 3, 7, 4, 9, 6, 10, 11])
         console.log("we are in the playAgain function");
+        return blackjack;
         // return dealer;
       }
     }
