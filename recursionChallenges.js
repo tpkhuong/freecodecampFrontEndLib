@@ -200,6 +200,37 @@ function testingOurIdea(strInput, index) {
 
   var moveCharToFrontOfStr = copyTheStr.splice(index, 1);
   /***** we want to call/run algorithm on the next three chars then repeat each time we increase the index and pass that increased index to our recursive call *****/
-
+  /***** ["a","b","c","d"] if index was 1. moveCharToFrontOfStr will be ["b"] copyTheStr will be ["a","c","d"] *****/
+  /***** we want to call permutationLengthThree on chars that are still in copyTheStr array since we are using splice it will remove the char/value at index *****/
+  alert(
+    "idea: we can pass in the char we are moving to the front into our permutationLengthThree function then we can add/use that str in that function"
+  );
+  alert(
+    "then we can return an array with a length of 4 including the char we assigned to moveCharToFrontOfStr"
+  );
+  var arrOfWordsBeforeRecursiveCall = [...moveCharToFrontOfStr];
+  return;
   /***** we want to call/run algorithm on the next three chars then repeat each time we increase the index and pass that increased index to our recursive call *****/
 }
+
+function permutationLengthThree(strInput, index, charFromParentFunc) {
+  if (index == strInput.length) {
+    return [];
+  }
+
+  var splitStr = strInput.split("");
+  var copiedArrOfChar = [...splitStr];
+  // var copiedArrOfChar = splitStr.slice()
+  var charMoveToFront = copiedArrOfChar.splice(index, 1);
+  var [secondChar, thirdChar] = copiedArrOfChar;
+  var firstStrToAddToArr = [...charMoveToFront, ...copiedArrOfChar].join("");
+  var secondStrToaddToArr = [...charMoveToFront, thirdChar, secondChar].join(
+    ""
+  );
+
+  return [firstStrToAddToArr, secondStrToaddToArr].concat(
+    permutationLengthThree(strInput, index + 1, charFromParentFunc)
+  );
+}
+
+/***** more than 3 letters *****/
