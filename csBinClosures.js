@@ -784,11 +784,13 @@ function blackjack(arrOfNumbers) {
           }
           }
         }, 1500)
-        alert("check this if else statement when working on playAgain algorithm")
+        
         return dealerAndPlayerCards;
         // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
         
-      } else {
+      } else if (typeof strInput == 'string') {
+          alert("we have to separate the checkForWinner function and our algorithm when the player or dealer is drawing cards")
+        
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
@@ -836,6 +838,7 @@ function blackjack(arrOfNumbers) {
            *  *****/ 
           // console.log(firstPlayerSum);
           // console.log(playerCurrentSum);
+          alert("we have to separate the checkForWinner function and our algorithm when the player or dealer is drawing cards")
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
@@ -847,6 +850,10 @@ function blackjack(arrOfNumbers) {
         }
       /***** check if player want to "hit" or "hold" *****/
         
+      } else {
+        if (weHaveAwinner) {
+        return "We are done!"
+      }
       }
       /***** return this string the first time and only once. use the once helper function *****/ 
       /***** if firstCardValue or secondCardValue is an "ace" *****/
@@ -876,9 +883,7 @@ function blackjack(arrOfNumbers) {
       // }
       // return secondPlayer;
       
-      if (weHaveAwinner) {
-        return "We are done!"
-      }
+      
     
     }
 
