@@ -715,7 +715,6 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
-  alert("add betting to our blackjack game");
   var dealerDeckOfCards = [...arrOfNumbers];
 
   function dealer(firstNum, secondNum) {
@@ -789,17 +788,19 @@ function blackjack(arrOfNumbers) {
         // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
         
       } else if (typeof strInput == 'string') {
-          alert("we have to separate the checkForWinner function and our algorithm when the player or dealer is drawing cards")
         
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
             weHaveAwinner = "player";
-            return checkForWinner(weHaveAwinner,playAgain);
+            return checkForWinner(weHaveAwinner);
+          } else if (dealerCurrentSum >= 17 && dealerCurrentSum > playerCurrentSum) {
+            weHaveAwinner = "dealer";
+            return checkForWinner(weHaveAwinner);
           } else if (dealerCurrentSum == playerCurrentSum) {
             console.log("Push");
-            weHaveAwinner = "Push";
-            return playAgain
+            weHaveAwinner = "push";
+            return checkForWinner(weHaveAwinner)
           } else {
             let checkForType;
             while (typeof weHaveAwinner != "string") {
@@ -809,26 +810,22 @@ function blackjack(arrOfNumbers) {
                 let { strForm } = checkForType;
                 bustStr = strForm;
                 weHaveAwinner = "player";
-                return playAgain;
+                return checkForWinner(weHaveAwinner,bustStr);
               } else {
                 dealerCurrentSum = checkForType;
                 if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
                 weHaveAwinner = "dealer";
                 } else if (typeof checkForType == "number" && dealerCurrentSum == playerCurrentSum) {
                   console.log("Push");
-                  weHaveAwinner = "Push";
-                  return playAgain;
+                  weHaveAwinner = "push";
+                  return checkForWinner(weHaveAwinner);
               }
                 console.log(dealerCurrentSum);
               }
             }
-            if (weHaveAwinner == "player") {
-              return checkForWinner(weHaveAwinner,playAgain, bustStr)
-            } else {
-              return checkForWinner(weHaveAwinner,playAgain)
-            }
             /***** function to calculate dealer sum. if dealer sum is less than 16 hit else dealer has to hit until dealer wins or bust(player will win) *****/
           }
+
           
         } else {
           /***** first value we pass into playerCalledHit will be firstPlayerSum which we assigned to playerCurrentSum and passed it into playerCalledHit
@@ -838,11 +835,11 @@ function blackjack(arrOfNumbers) {
            *  *****/ 
           // console.log(firstPlayerSum);
           // console.log(playerCurrentSum);
-          alert("we have to separate the checkForWinner function and our algorithm when the player or dealer is drawing cards")
+          
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
-            return checkForWinner(weHaveAwinner,playAgain, bustStr);
+            return checkForWinner(weHaveAwinner, bustStr);
           } else {
             console.log(playerCurrentSum);
           }
@@ -851,9 +848,16 @@ function blackjack(arrOfNumbers) {
       /***** check if player want to "hit" or "hold" *****/
         
       } else {
-        if (weHaveAwinner) {
-        return "We are done!"
-      }
+        if (strInput == "yes") {
+          console.log("player wants to play again");
+        } else {
+          return "We are done!"
+        }
+        // if (weHaveAwinner == "player") {
+        //       return checkForWinner(weHaveAwinner,playAgain, bustStr)
+        //     } else {
+        //       return checkForWinner(weHaveAwinner,playAgain)
+        //     }
       }
       /***** return this string the first time and only once. use the once helper function *****/ 
       /***** if firstCardValue or secondCardValue is an "ace" *****/
@@ -910,21 +914,24 @@ function blackjack(arrOfNumbers) {
   /***** play again algorithm *****/ 
 /***** play again? *****/
 
-function checkForWinner(strInput,playAgainCallback, isItBust = "") {
+function checkForWinner(strInput, isItBust = "") {
   var lowerCaseBust = isItBust.toLowerCase();
   if (strInput == "dealer" && lowerCaseBust == "bust") {
     console.log(`Player Bust. Dealer Wins`);
-    return playAgainCallback;
+    console.log("Enter 'yes' to play again or 'no'")
   } else if (strInput == "player" && lowerCaseBust == "bust") {
     console.log(`Dealer bust. Player Wins`)
-    return playAgainCallback;
+    console.log("Enter 'yes' to play again or 'no'")
+  } else if(strInput == "push") {
+    console.log("Push!")
+    console.log("Enter 'yes' to play again or 'no'")
   } else {
     if (strInput == "dealer") {
       console.log(`Dealer Wins`)
-      return playAgainCallback
+      console.log("Enter 'yes' to play again or 'no'");
     } else {
       console.log(`Player Wins`);
-      return playAgainCallback
+      console.log("Enter 'yes' to play again or 'no'");
     }
   }
 }
