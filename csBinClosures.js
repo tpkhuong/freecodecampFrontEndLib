@@ -787,7 +787,7 @@ function blackjack(arrOfNumbers) {
         return dealerAndPlayerCards;
         // return `Drawn Cards: [suit: ${firstCard},value:${firstCardValue}][suit:${secondCard},value:${secondCardValue}]. Sum:${firstSum}`;
         
-      } else if (typeof strInput == 'string') {
+      } else if (strInput == 'hold' || strInput == "hit") {
         
       /***** check if player want to "hit" or "hold" *****/
         if (strInput == "hold") {
@@ -848,6 +848,7 @@ function blackjack(arrOfNumbers) {
       /***** check if player want to "hit" or "hold" *****/
         
       } else {
+        alert("work on this. our algorithm will run this else code block, we user pass in 'yes' or 'no'");
         if (strInput == "yes") {
           console.log("player wants to play again");
         } else {
