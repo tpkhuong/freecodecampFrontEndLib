@@ -188,7 +188,7 @@ function memoize(callback) {
 
 /***** more than 3 letters *****/
 alert(
-  "use function express with memoize. we will think of a way to cached the strWeMoveToTheFront. so we don't repeat the algorithm for a char we already called permutation on"
+  "use function expression with memoize. we will think of a way to cached the strWeMoveToTheFront. so we don't repeat the algorithm for a char we already called permutation on"
 );
 var permutation = memoize(function (strInput, index) {});
 /***** permutation with str length greater than 3 works =) *****/
