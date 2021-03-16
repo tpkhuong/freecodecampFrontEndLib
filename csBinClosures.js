@@ -716,6 +716,7 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
   var dealerDeckOfCards = [...arrOfNumbers];
+  
 
   function dealer(firstNum, secondNum) {
     /***** we want to return the str of card shapes and value the first time. use the once helper function *****/ 
@@ -772,14 +773,14 @@ function blackjack(arrOfNumbers) {
           console.log("Player: Hit or Hold?")
           if (typeof firstDealerSum == "string") {
           if (firstDealerSum.includes('Blackjack')) {
-            console.log(`Dealer got BlackJack. Dealer Wins`)
-            return playAgain;
+            console.log(`Dealer got BlackJack. Dealer Wins`);
+            console.log(`Call the function again with 'yes' to play again or 'no' to stop. Save it to a variable`);
           }
-          }
-          if (typeof firstPlayerSum == "string") {
-            if (firstPlayerSum.includes('Blackjack')) {
-            console.log(`Player got BlackJack. Player Wins`)
-              return playAgain;
+        }
+        if (typeof firstPlayerSum == "string") {
+          if (firstPlayerSum.includes('Blackjack')) {
+            console.log(`Player got BlackJack. Player Wins`);
+            console.log(`Call the function again with 'yes' to play again or 'no' to stop. Save it to a variable`);
           }
           }
         }, 1500)
@@ -832,7 +833,7 @@ function blackjack(arrOfNumbers) {
            * the second time playerCalledHit is called the value of playerCurrentSum will be
            * the value that is return from playerCalledHit. everytime we call playerCalledHit the playerCurrentSum value that is passed into the func call will be the value console.log(ed from the 
            * previous func call of playerCalledHit
-           *  *****/ 
+           *  *****/
           // console.log(firstPlayerSum);
           // console.log(playerCurrentSum);
           
@@ -842,15 +843,23 @@ function blackjack(arrOfNumbers) {
             return checkForWinner(weHaveAwinner, bustStr);
           } else {
             console.log(playerCurrentSum);
+
           }
           // console.log(strInput);
         }
       /***** check if player want to "hit" or "hold" *****/
         
       } else {
-        alert("work on this. our algorithm will run this else code block, we user pass in 'yes' or 'no'");
+        
         if (strInput == "yes") {
-          console.log("player wants to play again");
+          console.log("Pass in 'yes' to save the blackjack function to a variable.");
+          console.log("Call that variable with a new deck of cards.");
+          console.log("The variable will hold the value that is returned from blackjack func which is another func");
+          console.log("save return function to a var/identifier");
+          console.log("that function will return another function, save that to a variable.");
+          console.log("Call that variable it will be a function.");
+          console.log("The game will start again");
+          return blackjack;
         } else {
           return "We are done!"
         }
@@ -1022,7 +1031,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
       secondValueInput = 10;
     }
   /***** algorithm to calculate when we get an "ace" *****/
-    if (firstValueInput == "ace") {
+    if (firstValueInput == "ace" && secondValueInput != "ace") {
       if (secondValueInput == 10) {
         sum = 21;
         
@@ -1031,7 +1040,7 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
         firstValueInput = 11;
         sum = firstValueInput + secondValueInput;
       }
-    } else if (secondValueInput == "ace") {
+    } else if (secondValueInput == "ace" && firstValueInput != "ace") {
       if (firstValueInput == 10) {
         sum = 21;
         return `Blackjack!!! You Win!!!`;
@@ -1039,15 +1048,13 @@ function calculateSum(arrOfFaceCards,firstValueInput, secondValueInput) {
         secondValueInput = 11;
         sum = firstValueInput + secondValueInput;
       }
-    } else {
-      if (firstValueInput == "ace" && secondValueInput == "ace") {
+    } else if(firstValueInput == "ace" && secondValueInput == "ace") {
         sum = 12;
-      } else {
+    } else {
       /***** when we get to this "else" both card are not "ace" ****/
         sum = firstValueInput + secondValueInput;
         /***** when we get to this "else" both card are not "ace" ****/ 
       }
-  }
   
   return sum;
 }
