@@ -174,23 +174,120 @@ function memoize(callback) {
    * we will keep track or change the first character of the string then run the algorithm for permutation with 3 string.
    * *****/
   /***** if we move the str char at index to the beginning already/second time or more than once, we will call function again with the next str char in the string. *****/
-  function helper(strInput, index) {
-    if (visited[strInput]) {
+  function helper(strInput, index, charStrToCheck = strInput[index]) {
+    /***** get the first char in str, make it true in visited obj for first iteration *****/
+    // use default value in parameter
+    /***** get the first char in str, make it true in visited obj for first iteration *****/
+    if (visited[charStrToCheck]) {
+      /***** when we run into a repeat char str and run permutation on the next char str we want to say we visited that char str before running permutation on it *****/
+      let nextCharStr = strInput[index + 1];
+      visited[nextCharStr] = true;
       return callback(strInput, index + 1);
     } else {
-      visited[strInput] = true;
+      visited[charStrToCheck] = true;
       return callback(strInput, index);
     }
   }
-
   return helper;
 }
 
 /***** more than 3 letters *****/
-alert(
-  "use function expression with memoize. we will think of a way to cached the strWeMoveToTheFront. so we don't repeat the algorithm for a char we already called permutation on"
-);
-var permutation = memoize(function (strInput, index) {});
+
+/***** using cached/visited and memorize to run permutations on unique char str. do not want to run permutations on char str that show up in original str more than once *****/
+
+var permutation = memoize(function (strInput, index) {
+  // var visited = {};
+  if (index == strInput.length) {
+    return [];
+  }
+
+  var splitTheStr = strInput.split("");
+  /***** when we use splice on copyTheStr, it will mutate copyTheStr. it will remove the value at index and the array will the values that wasn't remove in order
+   * we will use .join() method to convert it into a string then pass it in to the permutation helper function.
+   *  *****/
+  var copyTheStr = [...splitTheStr];
+  var moveCharToFrontOfStr = copyTheStr.splice(index, 1);
+  /***** if the charStr we remove using splice method is in our visited object go to the next iteration or recursive call *****/
+  /***** if the charStr we remove using splice method is in our visited object go to the next iteration or recursive call *****/
+  var turnIntoStrThenPassToHelperFunc = copyTheStr.join("");
+  /***** we want to call/run algorithm on the next three chars then repeat each time we increase the index and pass that increased index to our recursive call *****/
+  /***** ["a","b","c","d"] if index was 1. moveCharToFrontOfStr will be ["b"] copyTheStr will be ["a","c","d"] *****/
+  /***** we want to call permutationLengthThree on chars that are still in copyTheStr array since we are using splice it will remove the char/value at index *****/
+  // alert(
+  //   "idea: we can pass in the char we are moving to the front into our permutationLengthThree function then we can add/use that str in that function"
+  // );
+  // alert(
+  //   "then we can return an array with a length of 4 including the char we assigned to moveCharToFrontOfStr"
+  // );
+  /***** both our permutation and helperPermutation will return an array *****/
+  var arrOfWordsBeforeRecursiveCall = permutationLengthThree(
+    turnIntoStrThenPassToHelperFunc,
+    0,
+    moveCharToFrontOfStr
+  );
+
+  /***** work on only return unique strings *****/
+  var arrOfUniqueStr = arrOfWordsBeforeRecursiveCall.reduce(
+    function findUniqueStr(buildingUp, currentValue) {
+      if (buildingUp.indexOf(currentValue) == -1) {
+        return [...buildingUp, currentValue];
+      } else {
+        return buildingUp;
+      }
+    },
+    []
+  );
+  // test on this array ["aabc", "aacb", "abac", "abca", "acab", "acba", "baac", "baca", "baac", "baca", "bcaa", "bcaa", "caab", "caba", "caab", "caba", "cbaa", "cbaa"]
+  /***** work on only return unique strings *****/
+
+  return [
+    ...arrOfUniqueStr,
+    /***** if we call ...permutation(strInput, index + 1, ...moveCharToFrontOfStr), if we pass in a str "aabb" our algorithm will run permutation on the second "b"
+     * we should not pass in a charStrToCheck when we recusively call permutation we want to check the char str before we run permutation.
+     * function helper(strInput, index, charStrToCheck = strInput[index]) {}
+     * *****/
+    ...permutation(strInput, index + 1),
+  ];
+
+  function permutationLengthThree(
+    helperStrInput,
+    helperIndex,
+    charFromParentFunc
+  ) {
+    if (helperIndex == helperStrInput.length) {
+      return [];
+    }
+
+    var splitStr = helperStrInput.split("");
+    var copiedArrOfChar = [...splitStr];
+    // var copiedArrOfChar = splitStr.slice()
+    var charMoveToFront = copiedArrOfChar.splice(helperIndex, 1);
+    var [secondChar, thirdChar] = copiedArrOfChar;
+    var firstStrToAddToArr = [
+      ...charFromParentFunc,
+      ...charMoveToFront,
+      ...copiedArrOfChar,
+    ].join("");
+    var secondStrToaddToArr = [
+      ...charFromParentFunc,
+      ...charMoveToFront,
+      thirdChar,
+      secondChar,
+    ].join("");
+
+    return [firstStrToAddToArr, secondStrToaddToArr].concat(
+      permutationLengthThree(
+        helperStrInput,
+        helperIndex + 1,
+        charFromParentFunc
+      )
+    );
+  }
+  /***** we want to call/run algorithm on the next three chars then repeat each time we increase the index and pass that increased index to our recursive call *****/
+});
+
+/***** using cached/visited to run permutations on unique char str. do not want to run permutations on char str that show up in original str more than once *****/
+
 /***** permutation with str length greater than 3 works =) *****/
 function permutation(strInput, index) {
   var visited = {};
