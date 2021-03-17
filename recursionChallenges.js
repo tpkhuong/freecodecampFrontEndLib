@@ -430,3 +430,7 @@ function permutationLengthThree(
   );
 }
 /***** code block is when we declare permutationLengthThree inside permutations with string length of 4 *****/
+
+/***** permutation will work with any length *****/
+
+/***** permutation will work with any length *****/
