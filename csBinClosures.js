@@ -716,19 +716,22 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
   var dealerDeckOfCards = [...arrOfNumbers];
-  
-
-  function dealer(firstNum, secondNum) {
+  var playerAccountAmount = 1000;
+  console.log(`Enter the amount you want to bet to the next function call. Save this func call to variable`);
+  console.log(`Amount in account: $${playerInitialAmount}`);
+  function dealer(bettingAmount = 0) {
     /***** we want to return the str of card shapes and value the first time. use the once helper function *****/ 
       var counter = 0;
       /***** we want to return the str of card shapes and value the first time. use the once helper function *****/ 
     var firstPlayerSum;
     var firstDealerSum;
-    var currrentSum;
+    var currentSum;
     var playerCurrentSum;
     var dealerCurrentSum;
     var bustStr;
     var weHaveAwinner;
+    var playerBettingAmount;
+    console.log(`Player bet is $${bettingAmount}`);
 
     var faceCards = ["jack", "queen", "king"];
     /***** when we called/execute/invoked drawCards() in player(). everytime we called player() we got two new cards *****/ 
@@ -840,6 +843,9 @@ function blackjack(arrOfNumbers) {
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
+            playerAccountAmount -= bettingAmount;
+            console.log(`Player lost. Substracting ${bettingAmount} from CurrentAmount`);
+            console.log(`Player current amount is: ${playerAccountAmount}`);
             return checkForWinner(weHaveAwinner, bustStr);
           } else {
             console.log(playerCurrentSum);
@@ -924,7 +930,7 @@ function blackjack(arrOfNumbers) {
   /***** play again algorithm *****/ 
 /***** play again? *****/
 
-function checkForWinner(strInput, isItBust = "") {
+function checkForWinner(strInput, isItBust = "", playerAccountAmount) {
   var lowerCaseBust = isItBust.toLowerCase();
   if (strInput == "dealer" && lowerCaseBust == "bust") {
     console.log(`Player Bust. Dealer Wins`);
