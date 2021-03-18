@@ -169,6 +169,7 @@ function permutations(strInput, index) {
 
 function memoize(callback) {
   var visited = {};
+
   /***** we know how to get permutations of string with a length of 3.
    * with a length of 4, we want to run the algorithm of permutations on the three letters after the first character of the string.
    * we will keep track or change the first character of the string then run the algorithm for permutation with 3 string.
@@ -432,5 +433,30 @@ function permutationLengthThree(
 /***** code block is when we declare permutationLengthThree inside permutations with string length of 4 *****/
 
 /***** permutation will work with any length *****/
+function permutation(strInput, index) {
+  if (index == strInput.length) {
+    return [];
+  }
+  //copy two str to pass into help permutations
+  var longStr = strInput.slice(1);
+  var shortStr = strInput.slice(2);
+  //one str will have most char
+  //one str will have the least char
+  //copy the first two char of the str
+  //copy the first char of the str
+  var twoCharStr = strInput.slice(0, 2);
+  var oneCharStr = strInput.slice(0, 1);
+  //pass the variable with the one char into the permutations call with the str with the most char
+  //pass the variable with the two char str into the permutations call with the str with the least char
 
+  if (strInput.length == 3) {
+    return [...permutationHelper()];
+  }
+
+  function permutationLongStr(longStr, oneCharStr) {}
+
+  function permutationShortStr(shortStr, twoCharStr) {}
+
+  function permutationHelper(strInput, index, charFromParentFunc) {}
+}
 /***** permutation will work with any length *****/
