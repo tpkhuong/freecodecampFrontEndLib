@@ -437,6 +437,7 @@ function permutation(strInput, index) {
   if (index == strInput.length) {
     return [];
   }
+
   //copy two str to pass into help permutations
   var longStr = strInput.slice(1);
   var shortStr = strInput.slice(2);
