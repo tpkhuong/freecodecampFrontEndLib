@@ -722,9 +722,19 @@ function blackjack(arrOfNumbers) {
   function dealer(arrOfNumbers, bettingAmount = 0) {
     dealerDeckOfCards = [...arrOfNumbers];
     var initialAmount = 1000;
-    console.log(`Amount in account: $${initialAmount}`);
-    if (bettingAmount > playerAccountAmount) {
-      console.log(`Don't have enough chips. Your bet have to be equal or less than ${playerAccountAmount}`);
+    if (playerAccountAmount == undefined) {
+      if (bettingAmount > initialAmount) {
+        console.log(`Don't have enough chips. Your bet have to be equal or less than ${playerAccountAmount}`);
+      } else {
+        console.log(`Amount in account: $${initialAmount}`);
+      }
+    } else {
+      if (bettingAmount > playerAccountAmount) {
+        console.log(`Don't have enough chips. Your bet have to be equal or less than ${playerAccountAmount}`);
+      } else {
+      console.log(`Amount in account: $${playerAccountAmount}`);
+        
+      }
     }
     /***** we want to return the str of card shapes and value the first time. use the once helper function *****/ 
       var counter = 0;
@@ -801,13 +811,20 @@ function blackjack(arrOfNumbers) {
         if (strInput == "hold") {
           if (dealerCurrentSum >= 17 && playerCurrentSum > dealerCurrentSum) {
             weHaveAwinner = "player";
-            alert("write if statement to check if playerAccountAmount is undefined")
-            playerAccountAmount += bettingAmount;
-            return checkForWinner(weHaveAwinner);
+            if (playerAccountAmount == undefined) {
+              playerAccountAmount = initialAmount + bettingAmount;
+            } else {
+              playerAccountAmount += bettingAmount;
+            }
+            return checkForWinner(weHaveAwinner,playerAccountAmount);
           } else if (dealerCurrentSum >= 17 && dealerCurrentSum > playerCurrentSum) {
             weHaveAwinner = "dealer";
-            playerAccountAmount -= bettingAmount;
-            return checkForWinner(weHaveAwinner);
+            if (playerAccountAmount == undefined) {
+              playerAccountAmount = initialAmount - bettingAmount;
+            } else {
+              playerAccountAmount -= bettingAmount;
+            }
+            return checkForWinner(weHaveAwinner,playerAccountAmount);
           } else if (dealerCurrentSum == playerCurrentSum) {
             console.log("Push");
             weHaveAwinner = "push";
@@ -821,12 +838,22 @@ function blackjack(arrOfNumbers) {
                 let { strForm } = checkForType;
                 bustStr = strForm;
                 weHaveAwinner = "player";
-                playerAccountAmount += bettingAmount;
+                if (playerAccountAmount == undefined) {
+                    playerAccountAmount = initialAmount + bettingAmount;
+                  } else {
+                    playerAccountAmount += bettingAmount;
+                  }
                 return checkForWinner(weHaveAwinner,playerAccountAmount,bustStr);
               } else {
                 dealerCurrentSum = checkForType;
                 if (typeof checkForType == "number" && dealerCurrentSum > playerCurrentSum) {
-                weHaveAwinner = "dealer";
+                  weHaveAwinner = "dealer";
+                  if (playerAccountAmount == undefined) {
+                      playerAccountAmount = initialAmount - bettingAmount;
+                    } else {
+                      playerAccountAmount -= bettingAmount;
+                  }
+                  return checkForWinner(weHaveAwinner, playerAccountAmount);
                 } else if (typeof checkForType == "number" && dealerCurrentSum == playerCurrentSum) {
                   console.log("Push");
                   weHaveAwinner = "push";
@@ -851,10 +878,14 @@ function blackjack(arrOfNumbers) {
           playerCurrentSum = playerCalledHit(dealerDeckOfCards, playerCurrentSum);
           if (typeof playerCurrentSum == "string") {
             weHaveAwinner = "dealer";
-            playerAccountAmount -= bettingAmount;
+            if (playerAccountAmount == undefined) {
+              playerAccountAmount = initialAmount - bettingAmount;
+            } else {
+              playerAccountAmount -= bettingAmount;
+            }
             console.log(`Player lost. Substracting ${bettingAmount} from CurrentAmount`);
             console.log(`Player current amount is: ${playerAccountAmount}`);
-            return checkForWinner(weHaveAwinner, bustStr, playerAccountAmount);
+            return checkForWinner(weHaveAwinner, playerAccountAmount,bustStr);
           } else {
             console.log(playerCurrentSum);
 
@@ -866,14 +897,15 @@ function blackjack(arrOfNumbers) {
       } else {
         
         if (strInput == "yes") {
-          console.log("Pass in 'yes' to save the blackjack function to a variable.");
-          console.log("Call that variable with a new deck of cards.");
-          console.log("The variable will hold the value that is returned from blackjack func which is another func");
-          console.log("save return function to a var/identifier");
-          console.log("that function will return another function, save that to a variable.");
-          console.log("Call that variable it will be a function.");
-          console.log("The game will start again");
-          return blackjack;
+          console.log("Call that variable with a new deck of cards and your bet. Save the returned value to a variable");
+          console.log("The dealer func will show current player amount and player's bet")
+          console.log("Call the variable to start the game")
+          // console.log("The variable will hold the value that is returned from dealer func which is another func");
+          // console.log("save return function to a var/identifier");
+          // console.log("that function will return another function, save that to a variable.");
+          // console.log("Call that variable it will be a function.");
+          // console.log("The game will start again");
+          return dealer;
         } else {
           return "We are done!"
         }
@@ -944,23 +976,33 @@ function checkForWinner(strInput,playerAccountAmount, isItBust = "") {
     console.log(`Player Bust. Dealer Wins`);
     console.log(`Player current amount: ${playerAccountAmount}`);
     console.log("Enter 'yes' to play again or 'no'")
+    console.log("If 'yes' pass the str 'yes' to the next func call to save dealer func to variable")
+    console.log("Entering 'no' will return 'We are done'")
   } else if (strInput == "player" && lowerCaseBust == "bust") {
     console.log(`Dealer bust. Player Wins`)
     console.log(`Player current amount: ${playerAccountAmount}`);
     console.log("Enter 'yes' to play again or 'no'")
+    console.log("If 'yes' pass the str 'yes' to the next func call to save dealer func to variable")
+    console.log("Entering 'no' will return 'We are done'")
   } else if(strInput == "push") {
     console.log("Push!")
     console.log(`Player current amount: ${playerAccountAmount}`);
     console.log("Enter 'yes' to play again or 'no'")
+    console.log("If 'yes' pass the str 'yes' to the next func call and save dealer func to variable")
+    console.log("Entering 'no' will return 'We are done'")
   } else {
     if (strInput == "dealer") {
       console.log(`Dealer Wins`)
       console.log(`Player current amount: ${playerAccountAmount}`);
       console.log("Enter 'yes' to play again or 'no'");
+      console.log("If 'yes' pass the str 'yes' to the next func call to save dealer func to variable")
+    console.log("Entering 'no' will return 'We are done'")
     } else {
       console.log(`Player Wins`);
       console.log(`Player current amount: ${playerAccountAmount}`);
       console.log("Enter 'yes' to play again or 'no'");
+      console.log("If 'yes' pass the str 'yes' to the next func call to save dealer func to variable")
+    console.log("Entering 'no' will return 'We are done'")
     }
   }
 }
