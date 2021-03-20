@@ -716,6 +716,7 @@ You will just need to make sure the array has enough numbers for all the PLAYER 
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 // console.log(i_ALSO_like_to_live_dangerously()); // => should log 'you are done!
 function blackjack(arrOfNumbers) {
+  alert("make the game work for multiple players")
   var dealerDeckOfCards;
   var playerAccountAmount;
   console.log(`Pass in a deck of cards and Enter the amount you want to bet to the next function call. Save this func call to variable`);
@@ -787,18 +788,31 @@ function blackjack(arrOfNumbers) {
         setTimeout(function waitForResponse() {
           console.log(`Dealer Sum: ${firstDealerSum}`);
           console.log(`Player Sum: ${firstPlayerSum}`)
-          console.log("Player: Hit or Hold?")
           if (typeof firstDealerSum == "string") {
           if (firstDealerSum.includes('Blackjack')) {
             console.log(`Dealer got BlackJack. Dealer Wins`);
-            console.log(`Call the function again with 'yes' to play again or 'no' to stop. Save it to a variable`);
+            if (playerAccountAmount == undefined) {
+              playerAccountAmount = initialAmount - bettingAmount;
+            } else {
+              playerAccountAmount -= bettingAmount;
+            }
+            // console.log(`Call the function again with 'yes' to play again or 'no' to stop. Save it to a variable`);
+            return checkForWinner(weHaveAwinner, playerAccountAmount);
           }
-        }
-        if (typeof firstPlayerSum == "string") {
-          if (firstPlayerSum.includes('Blackjack')) {
-            console.log(`Player got BlackJack. Player Wins`);
-            console.log(`Call the function again with 'yes' to play again or 'no' to stop. Save it to a variable`);
-          }
+          } else if (typeof firstPlayerSum == "string") {
+            if (firstPlayerSum.includes('Blackjack')) {
+              console.log(`Player got BlackJack. Player Wins`);
+              // console.log(`Call the function again with 'yes' to play again or 'no' to stop. Save it to a variable`);
+              if (playerAccountAmount == undefined) {
+                playerAccountAmount = initialAmount + bettingAmount;
+              } else {
+                playerAccountAmount += bettingAmount;
+              }
+
+              return checkForWinner(weHaveAwinner, playerAccountAmount);
+            }
+          } else {
+          console.log("Player: Hit or Hold?")            
           }
         }, 1500)
         
@@ -915,7 +929,7 @@ function blackjack(arrOfNumbers) {
         //       return checkForWinner(weHaveAwinner,playAgain)
         //     }
       }
-      /***** return this string the first time and only once. use the once helper function *****/ 
+    /***** return this string the first time and only once. use the once helper function *****/ 
       /***** if firstCardValue or secondCardValue is an "ace" *****/
       /***** the value of "ace" will depend on the currentSum. if currentSum/firstSum is <= 10, value of "ace" will be 11 
        * if currentSum/firstSum is greater than >= 11 value of "ace" will be 1
