@@ -205,3 +205,74 @@ class DeveloperClass extends PersonClass {
     return `Hello World, my name is ${this.name}. I am ${this.age} year old`;
   }
 }
+
+/***** subclassing *****/
+
+// Challenge 10
+// Create an object adminFunctionStore that has access to all methods in the userFunctionStore object, without copying them over individually.
+
+var adminFunctionStore = {
+  sayBye() {
+    return `${this.name} says goodbye for now. I am an ${this.type}`;
+  },
+};
+
+var userFunctionStore = {
+  greet() {
+    return `${this.name} says Hello.`;
+  },
+  introduce() {
+    return `Hi my name is ${this.name}. My profession is ${this.profession}`;
+  },
+};
+
+Object.setPrototypeOf(adminFunctionStore, userFunctionStore);
+
+adminFunctionStore.greet();
+adminFunctionStore.introduce();
+
+// Challenge 11
+// Create an adminFactory function that creates an object with all the same data fields (and default values) as objects of the userFactory class,
+// but without copying each data field individually.
+
+function userFactory(name, score) {
+  let user = Object.create(userFunctionStore);
+  user.type = "User";
+  user.name = name;
+  user.score = score;
+  user.profession = "Chef";
+  return user;
+}
+
+function adminFactory(name, score) {
+  let newAdminUser = userFactory(name, score);
+  Object.setPrototypeOf(newAdminUser, adminFunctionStore);
+  return newAdminUser;
+}
+
+var marvelChar = adminFactory("Hulk", 21);
+
+// Challenge 12
+// Then make sure the value of the 'type' field for adminFactory objects is 'Admin' instead of 'User'.
+
+function adminFactory(name, score) {
+  let newAdminUser = userFactory(name, score);
+  Object.setPrototypeOf(newAdminUser, adminFunctionStore);
+  newAdminUser.type = "Admin";
+  return newAdminUser;
+}
+
+// Challenge 13
+// Make sure that adminFactory objects have access to adminFunctionStore methods, without copying them over.
+
+function adminFactory(name, score) {
+  let newAdminUser = userFactory(name, score);
+  Object.setPrototypeOf(newAdminUser, adminFunctionStore); //obj created by adminFactory funct will have access to adminFunctionMethods when we use Object.setPrototypeOf
+  return newAdminUser;
+}
+
+// Challenge 14
+// Created a method called sharePublicMessage that logs 'Welcome users!' and will be available to adminFactory objects,
+// but not userFactory objects.Do not add this method directly in the adminFactory function.
+
+/***** subclassing *****/
