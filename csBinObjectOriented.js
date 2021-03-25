@@ -303,6 +303,8 @@ const robotMixin = {
   },
 };
 
+var newRobt = Object.assign(Dog.prototype, robotMixin);
+
 let robotFido = new Dog();
 
 /***** extension: Mixins *****/
