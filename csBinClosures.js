@@ -1212,3 +1212,123 @@ function pickRandomCards(objDeckOfCards) {
 // }
 
 // var user1 = new Foo("Marvel");
+
+
+/***** Extension Challenges *****/
+
+/*
+
+Challenge 1
+Create a function functionValidator that accepts an array of functions and two different values (let's call them input and output).
+This function should return a new array containing *only* the functions from the original array that, when invoked with input, return the value output. Use reduce!
+
+// const addFive = num => num + 5;
+// const multiplyByTwo = num => num * 2;
+// const subtractOne = num => num - 1;
+// const fnArr = [addFive, multiplyByTwo, subtractOne];
+
+// console.log(functionValidator(fnArr, 5, 10)) // should log [num => num + 5, num => num * 2]
+
+*/
+
+function functionValidator(arrOfFunc, input, output) {
+  
+  var funcThatPassedCondition = arrOfFunc.reduce(function inputEqualOutput(buildingUp, currentValue) {
+    //each currentValue is a func
+    var outputFromFunc = currentValue(input);
+    if (outputFromFunc == output) {
+      return [...buildingUp, currentValue];
+    } else {
+      return buildingUp;
+    }
+  }, []);
+
+  return funcThatPassedCondition;
+
+}
+
+
+/*
+
+Challenge 2
+Create a function allClear that accepts an array of evaluator functions (each returning a boolean value),
+and a single value. Using reduce, return a single boolean value indicating whether the value "passes" every single one of the evaluator functions (i.e. returns true).
+
+*/
+
+// const isOdd = num => num % 2 === 1;
+// const isPositive = num => num > 0;
+// const multipleOfFive = num => num % 5 === 0;
+// const numFnArr = [isOdd, isPositive, multipleOfFive];
+// console.log(allClear(numFnArr, 25)) // should log true 
+// console.log(allClear(numFnArr, -25)) // should log false
+
+function allClear(arrOfEvaluatorFunc, singleInput) {
+  //each func in arr will return a boolean value
+
+  var lengthOfArrFunc = arrOfEvaluatorFunc.length;
+  var trueFreq;
+  var falseFreq;
+
+  var countBooleans = arrOfEvaluatorFunc.reduce(function freqCounter(buildingUp, currentValue) {
+    var ourBooleanVal = currentValue(singleInput);
+
+    buildingUp[ourBooleanVal] = (buildingUp[ourBooleanVal] || 0) + 1;
+    if (ourBooleanVal) {
+      trueFreq = buildingUp[ourBooleanVal];
+    } else {
+      falseFreq = buildingUp[ourBooleanVal];
+    }
+    return buildingUp;
+
+  }, {});
+
+  if (trueFreq == lengthOfArrFunc) {
+    return true;
+  } else {
+    return false;
+  }
+
+}
+
+/*
+
+Challenge 3
+Write a function numSelectString that accepts an array of numbers and returns a string.
+This function should use filter, sort, and reduce to return a string containing only the odd numbers from the array, separated by commas, in ascending order.
+
+// const nums = [17, 34, 3, 12]
+// console.log(numSelectString(nums)) // should log "3, 17"
+
+*/
+
+function numSelectString(arrOfNums) {
+  
+  var oddsNum = arrOfNums.filter(function findOddNums(eachValue) {
+    return eachValue % 2 != 0;
+  });
+
+  var sortedNums = oddsNum.sort(function ascendingOrder(firstValue, secondValue) {
+    if (firstValue < secondValue) return -1;
+    if (secondValue < firstValue) return 1;
+    return 0;
+  });
+/* using join method*/
+
+  var usingJoinMethod = sortedNums.join(", ");
+  
+/* using join method*/ 
+  var turnToString = sortedNums.reduce(function convertToSingleStr(buildingUp, currentValue, currentIndex, list) {
+    var lastIndexInArr = list.length - 1;
+    if (currentIndex == lastIndexInArr) {
+      return buildingUp + String(currentValue);
+    } else {
+      return buildingUp + String(currentValue) + ", "
+    }
+  },"");
+
+  return turnToString;
+
+}
+
+/***** Extension Challenges *****/ 
