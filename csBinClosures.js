@@ -1331,4 +1331,81 @@ function numSelectString(arrOfNums) {
 
 }
 
+/*
+
+Challenge 4
+Write a function movieSelector that accepts an array of objects containing movie information (id, title, and score). Chain together invocations of map,
+filter AND reduce to return an array containing only movies with a score greater than 5. The titles should be all uppercase strings.
+
+// const movies = [ { id: 1, title: "Pan's Labyrinth", score: 9 }, { id: 37, title: "Manos: The Hands of Fate", score: 2 }, { title: "Air Bud", score: 5 }, { title: "Hackers", score: 7 } ]
+// console.log(movieSelector(movies)) // should log [ "PAN'S LABYRINTH", "HACKERS" ]
+
+*/ 
+
+function movieSelector(arrOfObjects) {
+  var chainMapFilterReduce = arrOfObjects.map(function uppercaseTitle(eachObj) {
+    var { id, title, score } = eachObj;
+    var uppercaseStr = title.toUpperCase();
+    if (!id) {
+      return { title: uppercaseStr, score }
+    } else {
+      return { id, title: uppercaseStr, score };
+    }
+  }).filter(function scoreGreaterOnlyObj(eachObj) {
+    var { score } = eachObj;
+    return score > 5;
+  }).reduce(function getTitleOnly(buildingUp, currentValue) {
+    var { title } = currentValue;
+    return [...buildingUp, title];
+  },[]);
+  
+  return chainMapFilterReduce;
+}
+
+/*
+
+Challenge 5
+Create a function curriedAddThreeNums that adds three numbers together when run thrice in succession as follows:
+
+
+// console.log(curriedAddThreeNums(3)(-1)(1)); // should log 3
+curriedAddThreeNums(1)(3)(7) //should return 11
+*/
+
+function curriedAddThreeNums(firstInput) {
+  function innerFunc(secondInput) {
+    
+    function nestedInnerFunc(thirdInput){
+      return firstInput + secondInput + thirdInput;
+    }
+
+    return nestedInnerFunc
+  }
+
+  return innerFunc
+}
+
+/*
+
+Challenge 6
+Use partial application with your previously-defined curriedAddThreeNums to create a new function curriedAddTwoNumsToFive that when run twice in succession,
+adds two numbers to five as follows:
+curriedAddTwoNumsToFive(6)(7) //should return 18
+
+// console.log(curriedAddTwoNumsToFive(6)(7)) // should log 18
+
+
+*/ 
+
+function curriedAddTwoNumsToFive(firstInput) {
+  var addFive = 5;
+
+  function innerFunc(secondInput) {
+    return firstInput + secondInput + addFive;
+  }
+
+  return innerFunc
+
+}
+
 /***** Extension Challenges *****/ 
