@@ -95,3 +95,77 @@ Create an iterator with a next method that returns each value of a set when .nex
 // console.log(iterateSet.next()); // -> should log 'y'
 
 */
+
+function setIterator(set) {
+  var convertToArr = [...set];
+  var index = 0;
+  return {
+    next() {
+      var getValue = convertToArr[index];
+      index++;
+      return getValue;
+    },
+  };
+}
+
+/*
+
+Challenge 5
+Create an iterator with a next method that returns an array with two elements (where the first element is the index and the second is the value at that index) when .next is called.
+
+// Uncomment the lines below to test your work
+// const array5 = ['a', 'b', 'c', 'd'];
+// const iteratorWithIndex = indexIterator(array5);
+// console.log(iteratorWithIndex.next()); // -> should log [0, 'a']
+// console.log(iteratorWithIndex.next()); // -> should log [1, 'b']
+// console.log(iteratorWithIndex.next()); // -> should log [2, 'c']
+
+*/
+
+function indexIterator(arr) {
+  /*ways to copy array*/
+  // var copiedArr = [].concat(arr);
+  // var copiedArr = [...arr];
+  var copiedArr = arr.slice();
+  var index = 0;
+  // var copiedArr = Array.prototype.slice.call(arr);
+  var arrOfSubarrays = copiedArr.reduce(function keyValuePairArr(
+    buildingUp,
+    currentValue,
+    currIndex
+  ) {
+    var ourSubarray = [currIndex, currentValue];
+    /*we want an array with subarray so we have to nest our array inside another array when we use .concat*/
+    return buildingUp.concat([ourSubarray]);
+    // return [...buildingUp, ourSubarray];
+  },
+  []);
+  return {
+    next() {
+      var ourSubarray = arrOfSubarrays[index];
+      index++;
+      return ourSubarray;
+    },
+  };
+  /***** without have to make our subarrays *****/
+  // return {
+  //     next() {
+  //         var ourValue = arr[index];
+  //         index++;
+  //         return [index-1,ourValue];
+  //     }
+  // }
+  /***** without have to make our subarrays *****/
+}
+
+/*
+
+Challenge 6
+Create an iterator that returns each word from a string of words on the call of its .next method (hint: use regex!)
+Then attach it as a method to the prototype of a constructor Words. Hint: research Symbol.iterator!
+
+// Uncomment the lines below to test your work
+// const helloWorld = new Words('Hello World');
+// for (word of helloWorld) { console.log(word); } // -> should log 'Hello' and 'World'
+
+*/
