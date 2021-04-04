@@ -147,7 +147,7 @@ function indexIterator(arr) {
       return ourSubarray;
     },
   };
-  /***** without have to make our subarrays *****/
+  /***** without having to make our subarrays *****/
   // return {
   //     next() {
   //         var ourValue = arr[index];
@@ -155,7 +155,7 @@ function indexIterator(arr) {
   //         return [index-1,ourValue];
   //     }
   // }
-  /***** without have to make our subarrays *****/
+  /***** without having to make our subarrays *****/
 }
 
 /*
