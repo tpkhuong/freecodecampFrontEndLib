@@ -169,3 +169,47 @@ Then attach it as a method to the prototype of a constructor Words. Hint: resear
 // for (word of helloWorld) { console.log(word); } // -> should log 'Hello' and 'World'
 
 */
+
+class Words {
+  constructor(strInput) {
+    this.strInput = strInput;
+    this.index = 0;
+  }
+  *[Symbol.iterator]() {
+    var arrOfStr = this.strInput.split(" ");
+    for (let i = 0; i < arrOfStr.length; i++) {
+      yield arrOfStr[i];
+    }
+  }
+}
+
+/*
+
+Challenge 7
+Build a function that walks through an array and returns the element concatenated with the string "was found after index x", where x is the previous index.
+Note: if it is the first element it should say that it is the first
+
+const returnedSentence = valueAndPrevIndex([4,5,6])
+console.log(returnedSentence.sentence());
+console.log(returnedSentence.sentence());
+console.log(returnedSentence.sentence());
+
+*/
+
+function valueAndPrevIndex(arrInput) {
+  var index = 0;
+  function innerFunc() {
+    if (index == 0) {
+      var valueInArr = arrInput[index];
+      index += 1;
+      return `${valueInArr} is the first element`;
+    } else {
+      var prevIndex = index - 1;
+      var valueInArr = arrInput[index];
+      index += 1;
+      return `${valueInArr} was found after index ${prevIndex}`;
+    }
+  }
+
+  return innerFunc;
+}
