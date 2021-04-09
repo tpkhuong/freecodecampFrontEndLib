@@ -249,3 +249,9 @@ concatenates it with a hard coded verb and returns it to the async function to b
 function waitForVerb(nounInput) {
   return Promise.resolve(nounInput);
 }
+
+async function sentenceAsync(nounInput) {
+  var ourNoun = await waitForVerb(nounInput);
+
+  console.log(`Walk the ${nounInput}`);
+}
