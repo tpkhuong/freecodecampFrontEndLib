@@ -143,7 +143,26 @@ Write a function, promised, that takes in a value. This function will return a p
 
 Hint: take a look at the Promise object docs on MDN.
 
+// UNCOMMENT THESE TO TEST YOUR WORK!
+// const createPromise = promised('wait for it...');
+// createPromise.then((val) => console.log(val)); 
+// will log "wait for it..." to the console after 2 seconds
+
 */
+
+function promised(strInput) {
+  return new Promise((resolve, reject) => {
+    setTimeout(function resolved() {
+      resolve(strInput);
+    }, 2000);
+  });
+}
+
+var makePromise = promised("hello world in 2 second");
+
+makePromise.then((value) => {
+  console.log(value);
+});
 
 var _ = {};
 
