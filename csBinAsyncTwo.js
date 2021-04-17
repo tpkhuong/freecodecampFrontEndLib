@@ -152,16 +152,24 @@ Hint: take a look at the Promise object docs on MDN.
 
 function promised(strInput) {
   return new Promise((resolve, reject) => {
-    setTimeout(function resolved() {
-      resolve(strInput);
+    resolve(strInput);
+  }).then(function (value) {
+    setTimeout(function waitTwoSec() {
+      console.log(value);
     }, 2000);
   });
 }
 
 var makePromise = promised("hello world in 2 second");
 
-makePromise.then((value) => {
-  console.log(value);
+function promised(strInput) {
+  return Promise.resolve(strInput);
+}
+
+makePromise.then(function returnValue(value) {
+  setTimeout(function waitSecs() {
+    console.log(value);
+  }, 2000);
 });
 
 var _ = {};
