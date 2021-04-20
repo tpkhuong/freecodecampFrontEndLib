@@ -172,6 +172,42 @@ makePromise.then(function returnValue(value) {
   }, 2000);
 });
 
+/*
+
+Challenge 9
+Write a SecondClock class, with two methods: start and reset.​
+start: upon invocation, invokes a callback (this.cb, defined in the constructor) on an argument every second, with the argument to the callback being the current seconds "value".
+
+In other words, the callback gets invoked every second on the "seconds hand" of the clock. Always start with 1 and don't utilize the seconds value of the current computer clock time.
+
+The first "tick" with value 1 occurs 1 second after the initial "secondClock" invocation.
+The second "tick" with value 2 occurs 2 seconds after the initial "secondClock" invocation.
+...
+The sixtieth "tick" with value 60 occurs 60 seconds after the initial "secondClock" invocation.
+The sixty-first "tick" with value 1 occurs 61 seconds after the initial "secondClock" invocation.
+The sixty-second "tick" with value 2 occurs 62 seconds after the initial "secondClock" invocation.
+etc.
+reset: upon invocation, completely stops the "clock".
+Also resets the time back to the beginning.
+​
+Hint: look up setInterval and clearInterval
+
+*/
+
+class SecondClock {
+  constructor(callback) {
+    this.callback = callback;
+  }
+  start(valueInput) {
+    this.callback(valueInput);
+  }
+  reset() {}
+}
+
+var printStuff = (printValue) => {
+  console.log(printValue);
+};
+
 var _ = {};
 
 _.forEach = function (list, callbackFunc) {
