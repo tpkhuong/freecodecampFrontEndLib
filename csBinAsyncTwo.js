@@ -192,16 +192,61 @@ Also resets the time back to the beginning.
 ​
 Hint: look up setInterval and clearInterval
 
+
+// UNCOMMENT THESE TO TEST YOUR WORK!
+// const clock = new SecondClock((val) => { console.log(val) });
+// console.log("Started Clock.");
+// clock.start();
+// setTimeout(() => {
+//     clock.reset();
+//     console.log("Stopped Clock after 6 seconds.");
+// }, 6000);
 */
 
 class SecondClock {
   constructor(callback) {
     this.callback = callback;
+    this.counter = 1;
+    this.clearClock;
   }
   start(valueInput) {
-    this.callback(valueInput);
+    // var counter = this.counter;
+    // var clearClock = this.clearClock;
+    // var funcCallback = this.callback;
+    setTimeout(() => {
+      this.clearClock = setInterval(() => {
+        //when we didnt use arrow function, our this.counter, this.callback were undefined because in the callback we passed into setInterval and setTimeout, the this keyword will be what called those callback
+        //the this keyword will be the window object because setTimeout and setInterval are methods found on the global object in the browser. using arrow function will make the this keyword for
+        //setTimeout and setInterval to be the parent function scope which is start() method.
+        if (this.counter == 60) {
+          this.counter = 1;
+        } else {
+          this.callback(`${this.counter} ${valueInput}`);
+          this.counter++;
+        }
+      }, 1000);
+    }, 1000);
+    setTimeout(function testOne() {
+      console.log(Object.is(this, window)); //true
+      this.clearClock = setInterval(function testTwo() {
+        console.log(Object.is(this, window)); //true
+        //when we didnt use arrow function, our this.counter, this.callback were undefined because in the callback we passed into setInterval and setTimeout, the this keyword will be what called those callback
+        //the this keyword will be the window object because setTimeout and setInterval are methods found on the global object in the browser. there is not counter or callback variable/identifier
+        //on the window object.
+        //.using arrow function will make the this keyword for
+        //setTimeout and setInterval to be the parent function scope which is start() method.
+        if (this.counter == 60) {
+          this.counter = 1;
+        } else {
+          this.callback(`${this.counter} ${valueInput}`);
+          this.counter++;
+        }
+      }, 1000);
+    }, 1000);
   }
-  reset() {}
+  reset() {
+    clearInterval(this.clearClock);
+  }
 }
 
 var printStuff = (printValue) => {
@@ -216,3 +261,9 @@ _.forEach = function (list, callbackFunc) {
     callbackFunc(list[index], index, list);
   }
 };
+
+setTimeout(function startAfterOneSec() {
+  setInterval(function printStuff() {
+    console.log("hello");
+  }, 1000);
+}, 1000);
