@@ -226,23 +226,23 @@ class SecondClock {
         }
       }, 1000);
     }, 1000);
-    setTimeout(function testOne() {
-      console.log(Object.is(this, window)); //true
-      this.clearClock = setInterval(function testTwo() {
-        console.log(Object.is(this, window)); //true
-        //when we didnt use arrow function, our this.counter, this.callback were undefined because in the callback we passed into setInterval and setTimeout, the this keyword will be what called those callback
-        //the this keyword will be the window object because setTimeout and setInterval are methods found on the global object in the browser. there is not counter or callback variable/identifier
-        //on the window object.
-        //.using arrow function will make the this keyword for
-        //setTimeout and setInterval to be the parent function scope which is start() method.
-        if (this.counter == 60) {
-          this.counter = 1;
-        } else {
-          this.callback(`${this.counter} ${valueInput}`);
-          this.counter++;
-        }
-      }, 1000);
-    }, 1000);
+    // setTimeout(function testOne() {
+    //   console.log(Object.is(this, window)); //true
+    //   this.clearClock = setInterval(function testTwo() {
+    //     console.log(Object.is(this, window)); //true
+    //     //when we didnt use arrow function, our this.counter, this.callback were undefined because in the callback we passed into setInterval and setTimeout, the this keyword will be what called those callback
+    //     //the this keyword will be the window object because setTimeout and setInterval are methods found on the global object in the browser. there is not counter or callback variable/identifier
+    //     //on the window object.
+    //     //.using arrow function will make the this keyword for
+    //     //setTimeout and setInterval to be the parent function scope which is start() method.
+    //     if (this.counter == 60) {
+    //       this.counter = 1;
+    //     } else {
+    //       this.callback(`${this.counter} ${valueInput}`);
+    //       this.counter++;
+    //     }
+    //   }, 1000);
+    // }, 1000);
   }
   reset() {
     clearInterval(this.clearClock);
@@ -252,6 +252,31 @@ class SecondClock {
 var printStuff = (printValue) => {
   console.log(printValue);
 };
+
+/*
+
+Challenge 10
+
+Write a function called debounce that accepts a function and returns a new function that only allows invocation of the given function after
+interval milliseconds have passed since the last time the returned function ran.
+
+Additional calls to the returned function within the interval time should not be invoked or queued, but the timer should still get reset.
+
+// UNCOMMENT THESE TO TEST YOUR WORK!
+// function giveHi() { return 'hi'; }
+// const giveHiSometimes = debounce(giveHi, 3000);
+// console.log(giveHiSometimes()); // -> 'hi'
+// setTimeout(function() { console.log(giveHiSometimes()); }, 2000); // -> undefined
+// setTimeout(function() { console.log(giveHiSometimes()); }, 4000); // -> undefined
+// setTimeout(function() { console.log(giveHiSometimes()); }, 8000); // -> 'hi'
+
+*/
+
+function debounce(callback, delay) {
+  function innerFunc() {}
+
+  return innerFunc;
+}
 
 var _ = {};
 
