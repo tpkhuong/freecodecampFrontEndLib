@@ -273,14 +273,20 @@ Additional calls to the returned function within the interval time should not be
 */
 
 function debounce(callback, delay) {
+  var counter = 0;
   function innerFunc(delayOfCalls) {
-    var counter = 0;
     var [firstValue] = String(delay);
     var convertToNum = Number(firstValue);
-    return convertToNum;
+
+    callback();
+    // run the return function when counter is greater than delay
   }
 
   return innerFunc;
+}
+
+function giveHi() {
+  return "Hi";
 }
 
 var _ = {};
