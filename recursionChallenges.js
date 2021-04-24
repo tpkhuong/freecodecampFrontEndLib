@@ -461,3 +461,72 @@ function permutation(strInput, index) {
   function permutationHelper(strInput, index, charFromParentFunc) {}
 }
 /***** permutation will work with any length *****/
+
+/***** jest test *****/
+
+var assert = require("assert");
+
+describe("`const` is like `let` plus read-only for primitive values", () => {
+  // this const varialbe is declared in the parent scope
+  const notChangeable = 23;
+  test("like all variables, const variables are accessible from a child block", () => {
+    // this block is nested inside  block
+    assert.equal(notChangeable, "23");
+  });
+
+  test("like all variables, const variables are not accessible from a parent block", () => {
+    {
+      // these brackets create a block
+      var insideBrackets = 22;
+    }
+    assert.equal(insideBrackets, "22");
+  });
+  describe("scalar values are read-only", () => {
+    test("e.g. a number", () => {
+      // EDIT BELOW HERE --->
+      const constNum = 0;
+      /*constNum = 1;*/
+      // <--- EDIT ABOVE
+      assert.equal(constNum, 0);
+    });
+    test("or a string", () => {
+      // EDIT BELOW HERE --->
+      const constString = "I am a const";
+      /*constString = 'Cant change you?';*/
+      // <--- EDIT ABOVE
+      assert.equal(constString, "I am a const");
+    });
+  });
+  describe("complex types are NOT fully read-only", () => {
+    test("array items can be changed", () => {
+      // EDIT BELOW HERE --->
+      const arr = [];
+      arr[0] = 0;
+      // <--- EDIT ABOVE
+      assert.equal(arr[0], 0);
+    });
+    test("but you cannot reassign a new array to the variable", () => {
+      // EDIT BELOW HERE --->
+      const arr = [1, 2, 3];
+      /*arr = [10,11,12];*/
+      // <--- EDIT ABOVE
+      assert.equal(arr[0], 1);
+    });
+    test("object key-value pairs can be modified", () => {
+      // EDIT BELOW HERE --->
+      const obj = { x: 1 };
+      obj.x = 2;
+      // <--- EDIT ABOVE
+      assert.equal(obj.x, 2);
+    });
+    test("but you cannot reassign a new object to the variable", () => {
+      // EDIT BELOW HERE --->
+      const obj = { x: 1 };
+      /*obj = {y: 2};*/
+      // <--- EDIT ABOVE
+      assert.equal(obj.x, 1);
+    });
+  });
+});
+
+/***** jest test *****/
