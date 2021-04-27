@@ -159,4 +159,21 @@ const fakeAPICall = (i) => {
   });
 };
 
-function getAllData() {}
+function getAllData() {
+  var arrOfFakeCalls = [];
+  var count = 0;
+  while (count < 3) {
+    var randomIndex = Math.floor(Math.random() * 3);
+    arrOfFakeCalls = [...arrOfFakeCalls, fakeAPICall(randomIndex)];
+    count++;
+  }
+
+  Promise.all([...arrOfFakeCalls]).then((data) => {
+    console.log(data);
+  });
+  // var count = 3;
+  // while (count > 0) {
+
+  //     count--;
+  // }
+}
