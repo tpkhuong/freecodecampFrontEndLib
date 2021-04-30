@@ -13,6 +13,13 @@ function funcScoped() {
     }
   }
 
+  function eachRight(list, callbackFunc) {
+    for (let index = list.length - 1; index >= 0; index--) {
+      let element = list[index];
+      callbackFunc(element, index, list);
+    }
+  }
+
   function map(list, callback) {
     var result = [];
 
@@ -25,7 +32,7 @@ function funcScoped() {
 
   function reduce(list, howToCombine, initialValue) {
     var momoValue = initialValue;
-    each(list, function reduceAlgorithm(currValue, currIndex, list) {
+    each(list, function reduceAlgorithm(currValue, currIndex, reduceList) {
       if (momoValue == undefined && currIndex == 0) {
         momoValue = currValue;
       } else {
@@ -35,9 +42,28 @@ function funcScoped() {
     return momoValue;
   }
 
+  function reduceRight(list, howToCombine, initialValue) {
+    var momoValue = initialValue;
+    eachRight(
+      list,
+      function reduceRightAlgor(currValue, currIndex, reduceList) {
+        if (momoValue == undefined && currIndex == list.length - 1) {
+          momoValue = currValue;
+        } else {
+          momoValue = howToCombine(momoValue, currValue);
+        }
+      }
+    );
+
+    return momoValue;
+  }
+  // function flat()
+
   return {
     each,
+    eachRight,
     map,
     reduce,
+    reduceRight,
   };
 }
