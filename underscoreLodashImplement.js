@@ -57,6 +57,17 @@ function funcScoped() {
 
     return momoValue;
   }
+
+  function find(list, predicate) {
+    for (let index = 0; index < list.length; index++) {
+      let element = list[index];
+      if (predicate(element)) return element;
+    }
+  }
+
+  function filter(list, predicate) {}
+
+  function findWhere(list, properties) {}
   // function flat()
 
   return {
@@ -65,5 +76,8 @@ function funcScoped() {
     map,
     reduce,
     reduceRight,
+    find,
+    filter,
+    findWhere,
   };
 }
