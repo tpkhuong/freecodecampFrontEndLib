@@ -530,3 +530,27 @@ describe("`const` is like `let` plus read-only for primitive values", () => {
 });
 
 /***** jest test *****/
+
+/*
+
+7. Fibonacci
+/* Instruction:
+Given a number, write a recursive function to 
+print out the n-th entry in the fibonacci series. 
+Fibonacci series is a sequence, 
+where each number is the sum of the preceding two: 
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+// Example:
+fib(3)
+// => 2
+fib(6)
+// => 8
+
+function fib(n) {
+    if (n < 2) {
+        return n
+    }
+    return fib(n - 1) + fib(n - 2)
+}
+
+*/
