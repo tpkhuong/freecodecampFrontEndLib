@@ -554,3 +554,24 @@ function fib(n) {
 }
 
 */
+
+function memoize(callback) {
+  var visited = {};
+
+  function innerFunc(input) {
+    if (visited[input]) {
+      return visited[input];
+    } else {
+      let result = callback(input);
+      visited[input] = result;
+    }
+  }
+
+  return innerFunc;
+}
+
+var fibonacci = memoize(function cachedOurValue(numInput) {
+  if (numInput < 2) return 1;
+
+  return fibonacci(numInput - 1) + fibonacci(numInput - 2);
+});
