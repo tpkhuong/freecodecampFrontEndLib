@@ -65,7 +65,17 @@ function funcScoped() {
     }
   }
 
-  function filter(list, predicate) {}
+  function filter(list, predicate) {
+    var result = [];
+
+    each(list, function onlyTrue(currValue, currIndex, list) {
+      if (predicate(currValue, currIndex, list)) {
+        result = [...result, currValue];
+      }
+    });
+
+    return result;
+  }
 
   function findWhere(list, properties) {}
   // function flat()
