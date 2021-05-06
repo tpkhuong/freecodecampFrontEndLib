@@ -36,7 +36,7 @@ function funcScoped() {
       if (momoValue == undefined && currIndex == 0) {
         momoValue = currValue;
       } else {
-        momoValue = howToCombine(momoValue, currValue);
+        momoValue = howToCombine(momoValue, currValue, currIndex, reduceList);
       }
     });
     return momoValue;
@@ -77,7 +77,18 @@ function funcScoped() {
     return result;
   }
 
-  function findWhere(list, properties) {}
+  function findWhere(list, properties) {
+    //each value in the list is an object
+    if (list.length === 0) return undefined;
+    var keysOfObj = Object.keys(list);
+    var keyValuePairsSubarray = Object.entries(properties);
+
+    reduce(
+      list,
+      function findMatchingKeyValuePair(buildingUp, currentValue) {},
+      []
+    );
+  }
   // function flat()
 
   return {
@@ -91,3 +102,10 @@ function funcScoped() {
     findWhere,
   };
 }
+
+var testObj = {
+  year: 1918,
+  newsroom: "The New York Times",
+  reason:
+    "For its public service in publishing in full so many official reports documents and speeches by European statesmen relating to the progress and conduct of the war.",
+};
