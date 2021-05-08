@@ -80,14 +80,32 @@ function funcScoped() {
   function findWhere(list, properties) {
     //each value in the list is an object
     if (list.length === 0) return undefined;
-    var keysOfObj = Object.keys(list);
+    var keysOfObj = Object.keys(properties);
     var keyValuePairsSubarray = Object.entries(properties);
+    //if our obj in our array does not have all the properties in the properties value we pass into our func return undefined
+    var objHasAllProps = list.every(function objHasAllProps(eachObj) {
+      //loops through keysObj check if eachObj has all the props
+      return keysOfObj.every(function loopThroughKeysObj(eachProps) {
+        return eachObj.hasOwnProperty(eachProps);
+      });
+    });
+    if (!objHasAllProps) {
+      return undefined;
+    } else {
+      //or we can use some() since the some() will break after the first true
+      for (let index = 0; index < list.length; index++) {}
+    }
 
-    reduce(
-      list,
-      function findMatchingKeyValuePair(buildingUp, currentValue) {},
-      []
-    );
+    //find the obj that matches all the key-value pairs
+    // for (let index = 0; index < list.length; index++){
+    //   let element = list[index];
+
+    // }
+    // reduce(
+    //   list,
+    //   function findMatchingKeyValuePair(buildingUp, currentValue) {},
+    //   []
+    // );
   }
   // function flat()
 
@@ -102,6 +120,39 @@ function funcScoped() {
     findWhere,
   };
 }
+
+var goal = [
+  {
+    category: "other",
+    title: "harry University",
+    value: 50000,
+    id: "1",
+  },
+  {
+    category: "traveling",
+    title: "tommy University",
+    value: 50000,
+    id: "2",
+  },
+  {
+    category: "education",
+    title: "jerry University",
+    value: 50000,
+    id: "3",
+  },
+  {
+    category: "business",
+    title: "Charlie University",
+    value: 50000,
+    id: "4",
+  },
+];
+
+findWhere(goal, {
+  category: "education",
+  title: "marvel",
+  marvel: "Superheroes",
+});
 
 var testObj = {
   year: 1918,
