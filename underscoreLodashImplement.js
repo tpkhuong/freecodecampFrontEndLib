@@ -93,7 +93,26 @@ function funcScoped() {
       return undefined;
     } else {
       //or we can use some() since the some() will break after the first true
-      for (let index = 0; index < list.length; index++) {}
+      // for (let index = 0; index < list.length; index++) {
+
+      // }
+      var ourResult = list.reduce(function firstObjMatchingAllKeyValues(
+        buildingUp,
+        currentValue
+      ) {
+        var ourBoolean = keyValuePairsSubarray.every(
+          function matchingAllKeyValuesPair(eachSubarray) {
+            var [ourKey, ourValue] = eachSubarray;
+            return currentValue[ourKey] == ourValue;
+          }
+        );
+
+        if (ourBoolean) {
+          return [...buildingUp, currentValue];
+        }
+        return buildingUp;
+      },
+      []);
     }
 
     //find the obj that matches all the key-value pairs
@@ -136,7 +155,7 @@ var goal = [
   },
   {
     category: "education",
-    title: "jerry University",
+    title: "marvel",
     value: 50000,
     id: "3",
   },
@@ -152,6 +171,11 @@ findWhere(goal, {
   category: "education",
   title: "marvel",
   marvel: "Superheroes",
+});
+
+findWhere(goal, {
+  category: "education",
+  title: "marvel",
 });
 
 var testObj = {
