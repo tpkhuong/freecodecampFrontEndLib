@@ -115,6 +115,7 @@ function funcScoped() {
       []);
     }
 
+    return ourResult;
     //find the obj that matches all the key-value pairs
     // for (let index = 0; index < list.length; index++){
     //   let element = list[index];
@@ -125,6 +126,44 @@ function funcScoped() {
     //   function findMatchingKeyValuePair(buildingUp, currentValue) {},
     //   []
     // );
+  }
+
+  function where(list, properties) {
+    /*
+    Looks through each value in the list, returning an array of all the values that matches the key-value pairs listed in properties.
+    */
+    var ourProps = Object.keys(properties);
+    var keysValuesPair = Object.entries(properties);
+
+    var hasAllProps = list.every(function findAllProps(eachObj) {
+      return ourProps.every(function objHasAllProps(eachProp) {
+        return eachObj.hasOwnProperty(eachProp);
+      });
+    });
+
+    if (!hasAllProps) {
+      return undefined;
+    } else {
+      //return an array
+      var ourResult = list.reduce(function valuesMatchAllProps(
+        buildingUp,
+        currentValue
+      ) {
+        var ourBoolean = keysValuesPair.every(function matchTheValues(
+          eachSubarray
+        ) {
+          var [ourKey, ourValue] = eachSubarray;
+          return currentValue[ourKey] == ourValue;
+        });
+        if (ourBoolean) {
+          return [...buildingUp, currentValue];
+        }
+        return buildingUp;
+      },
+      []);
+
+      return ourResult;
+    }
   }
   // function flat()
 
@@ -137,6 +176,7 @@ function funcScoped() {
     find,
     filter,
     findWhere,
+    where,
   };
 }
 
@@ -156,13 +196,19 @@ var goal = [
   {
     category: "education",
     title: "marvel",
-    value: 50000,
+    value: 30000,
     id: "3",
   },
   {
     category: "business",
     title: "Charlie University",
     value: 50000,
+    id: "4",
+  },
+  {
+    category: "education",
+    title: "marvel",
+    value: 40000,
     id: "4",
   },
 ];
