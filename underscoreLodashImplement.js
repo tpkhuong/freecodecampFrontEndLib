@@ -165,7 +165,12 @@ function funcScoped() {
       return ourResult;
     }
   }
-  // function flat()
+  /*
+  
+  Returns the values in list without the elements that the truth test (predicate) passes. The opposite of filter. predicate is transformed through iteratee to facilitate shorthand syntaxes.
+
+  */
+  function reject() {}
 
   return {
     each,
