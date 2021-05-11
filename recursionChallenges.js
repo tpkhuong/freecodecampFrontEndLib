@@ -575,3 +575,28 @@ var fibonacci = memoize(function cachedOurValue(numInput) {
 
   return fibonacci(numInput - 1) + fibonacci(numInput - 2);
 });
+
+/*
+ * Removes duplicates characters from a string
+ * @param {string} str - the string
+ * @return {string} - a string without duplicates
+ */
+
+function removeDuplicates(str) {
+  var convertArray = [...str];
+  // var convertArray = str.split("");
+  var cached = {};
+
+  return convertArray
+    .reduce(function uniqueValues(buildingUp, currentValue) {
+      if (!cached[currentValue]) {
+        cached[currentValue] = true;
+        return [...buildingUp, currentValue];
+      }
+      return buildingUp;
+    }, [])
+    .join("");
+}
+
+// make this true
+console.log(removeDuplicates("mississippi") === "misp");
