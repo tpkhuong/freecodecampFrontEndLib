@@ -576,6 +576,8 @@ var fibonacci = memoize(function cachedOurValue(numInput) {
   return fibonacci(numInput - 1) + fibonacci(numInput - 2);
 });
 
+/***** code and coffee *****/
+
 /*
  * Removes duplicates characters from a string
  * @param {string} str - the string
@@ -600,3 +602,74 @@ function removeDuplicates(str) {
 
 // make this true
 console.log(removeDuplicates("mississippi") === "misp");
+
+const library = ["Aa", "Ab", "Ba", "Bb", "Ca", "Cb", "Da", "Db", "Ea", "Eb"];
+const singleBook = ["Cb"];
+const bigLibrary = [
+  ...library,
+  ...library,
+  ...library,
+  ...library,
+  ...library,
+  ...library,
+  ...library,
+  ...library,
+];
+
+function getLastBook(books) {
+  console.count("called this many times");
+  return books[books.length - 1];
+}
+
+// getLastBook(singleBook);
+// getLastBook(library);
+
+function getAllBooks(books) {
+  books.forEach((book) => {
+    console.count("called this many times");
+  });
+}
+
+// getAllBooks(singleBook)
+// getAllBooks(library)
+
+function compareBooks(books) {
+  books.forEach((book1) => {
+    books.forEach((book2) => {
+      console.log(`Does ${book1} equal ${book2}?`, book1 === book2);
+      console.count();
+    });
+  });
+}
+
+// compareBooks(singleBook)
+// compareBooks(library)
+
+function binarySearch(sortedArray, key) {
+  let start = 0;
+  let end = sortedArray.length - 1;
+
+  while (start <= end) {
+    console.count();
+    let middle = Math.floor((start + end) / 2);
+
+    if (sortedArray[middle] === key) {
+      // found the key
+      return middle;
+    } else if (sortedArray[middle] < key) {
+      // continue searching to the right
+      start = middle + 1;
+    } else {
+      // search searching to the left
+      end = middle - 1;
+    }
+  }
+  // key wasn't found
+  return -1;
+}
+
+// binarySearch(singleBook, 'Bb')
+// binarySearch(library, 'Bb')
+// binarySearch(bigLibrary, 'x')
+
+/***** code and coffee *****/
