@@ -170,7 +170,22 @@ function funcScoped() {
   Returns the values in list without the elements that the truth test (predicate) passes. The opposite of filter. predicate is transformed through iteratee to facilitate shorthand syntaxes.
 
   */
-  function reject() {}
+  function reject(list, predicate) {
+    var result = [];
+
+    each(list, onlyFalse);
+    // each(list, function justFalse(currValue, currIndex, currList) {
+    //   if (!predicate(currValue, currIndex, currList)) {
+    //     result.push(currValue);
+    //   }
+    // });
+
+    function onlyFalse(currValue, currIndex, currList) {
+      if (!predicate(currValue, currIndex, currList)) {
+        result = [...result, currValue];
+      }
+    }
+  }
 
   return {
     each,
@@ -182,6 +197,7 @@ function funcScoped() {
     filter,
     findWhere,
     where,
+    reject,
   };
 }
 
