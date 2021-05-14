@@ -187,6 +187,10 @@ function funcScoped() {
     }
   }
 
+  function every(list, predicate) {}
+
+  function some(list, predicate) {}
+
   return {
     each,
     eachRight,
@@ -198,6 +202,8 @@ function funcScoped() {
     findWhere,
     where,
     reject,
+    every,
+    some,
   };
 }
 
