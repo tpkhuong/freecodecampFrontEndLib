@@ -187,7 +187,31 @@ function funcScoped() {
     }
   }
 
-  function every(list, predicate) {}
+  function every(list, predicate) {
+    //will break when predicate returns false;
+    var result = true;
+    var index = 0;
+    while (index < list.length) {
+      if (!predicate(list[index], index, list)) {
+        return false;
+      }
+      index++;
+    }
+    return result;
+  }
+
+  function every(list, predicate) {
+    //will break when predicate returns false;
+    var result = true;
+    for (let index = 0; index < list.length; index++) {
+      let element = list[index];
+      if (!predicate(element, index, list)) {
+        return false;
+      }
+    }
+
+    return result;
+  }
 
   function some(list, predicate) {}
 
