@@ -213,7 +213,37 @@ function funcScoped() {
     return result;
   }
 
-  function some(list, predicate) {}
+  function some(list, predicate) {
+    var result = false;
+    var index = 0;
+    while (index < list.length) {
+      if (predicate(list[index], index, list)) {
+        return true;
+      }
+      index++;
+    }
+    return result;
+  }
+
+  function some(list, predicate) {
+    var result = false;
+
+    for (let index = 0; index < list.length; index++) {
+      if (predicate(list[index], index, list)) {
+        return true;
+      }
+    }
+    return result;
+  }
+
+  function contains(list, value, fromIndex = 0) {
+    if (!Array.isArray(list) && typeof list == "object" && list != null) {
+      //list is an object
+    }
+    if (Array.isArray(list)) {
+      //list is an array
+    }
+  }
 
   return {
     each,
@@ -228,6 +258,7 @@ function funcScoped() {
     reject,
     every,
     some,
+    contains,
   };
 }
 
