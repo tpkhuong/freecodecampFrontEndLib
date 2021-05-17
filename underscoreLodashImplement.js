@@ -236,12 +236,29 @@ function funcScoped() {
     return result;
   }
 
+  /*
+  
+  Returns true if the value is present in the list. Uses indexOf internally, if list is an Array. Use fromIndex to start your search at a given index.
+
+  */
   function contains(list, value, fromIndex = 0) {
     if (!Array.isArray(list) && typeof list == "object" && list != null) {
       //list is an object
+      //convert to array
+      var ourValues = Object.values(list);
+      for (let index = fromIndex; index < ourValues.length; index++) {
+        let element = ourValues[index];
+        if (element === value) return true;
+      }
+      return false;
     }
     if (Array.isArray(list)) {
       //list is an array
+      for (let index = fromIndex; index < list.length; index++) {
+        let element = list[index];
+        if (element === value) return true;
+      }
+      return false;
     }
   }
 
