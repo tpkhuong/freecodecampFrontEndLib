@@ -260,6 +260,13 @@ function funcScoped() {
       }
       return false;
     }
+    /*
+    
+    Calls the method named by methodName on each value in the list. Any extra arguments passed to invoke will be forwarded on to the method invocation.
+    
+    */
+
+    function invoke(list, methodName) {}
   }
 
   return {
@@ -276,6 +283,7 @@ function funcScoped() {
     every,
     some,
     contains,
+    invoke,
   };
 }
 
