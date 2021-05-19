@@ -266,7 +266,7 @@ function funcScoped() {
     
     */
 
-    function invoke(list, methodName) {}
+    function invoke(list, methodName, ...extraArgs) {}
   }
 
   return {
