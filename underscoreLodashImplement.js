@@ -263,7 +263,36 @@ function funcScoped() {
     /*
     
     Calls the method named by methodName on each value in the list. Any extra arguments passed to invoke will be forwarded on to the method invocation.
-    
+
+    Whats the function of args?
+    Take a look at join array method - it joins elements into a string, and if we pass something - it would be used as a separator.
+
+    var things = ['apple', 'banana', 'mango'];
+
+    things.join('#') // 'apple#banana#mango'
+    So, join can take arguments. Lets use it with invoke now.
+
+    var manyThings = [ 
+    ['apple', 'banana', 'mango'],
+    ['pepsi', 'fanta', 'sprite'],
+    ['bear', 'wolf', 'parrot'] 
+  ];
+
+    // Pass '#' as a third argument - is like join('#')
+    console.log(_.invoke(arr, 'join', '#'));
+
+    // ["apple#banana#mango", "pepsi#fanta#sprite", "bear#wolf#parrot"]
+    We passed '#' to that join method! That's the situation when we use that additional arguments.
+
+    How it works?
+
+    var args = slice.call(arguments, 2);
+    We store all arguments passed to invoke, starting from third (first is a list, second is a method name). We store '#' in our manyThings case.
+
+    Every invoke argument we pass after methodName becomes arguments for this methodName function.
+
+    _.invoke(obj, 'methodName', '#', 2, false, '--')
+    // It's like do obj.methodName('#', 2, false, '--')
     */
 
     function invoke(list, methodName, ...extraArgs) {}
