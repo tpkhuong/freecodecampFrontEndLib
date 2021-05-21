@@ -295,7 +295,23 @@ function funcScoped() {
     // It's like do obj.methodName('#', 2, false, '--')
     */
 
-    function invoke(list, methodName, ...extraArgs) {}
+    function invoke(list, methodName, ...extraArgs) {
+      //another approach get length of each subarrays
+      reduce(
+        list,
+        function loopThroughOuterArray(
+          buildingUp,
+          currentValue,
+          currIndex,
+          list
+        ) {
+          //buildingUp is our array
+          //each value in the array will be called with methodName
+          each(currentValue, function callEachValueWithMethoName(eachValue) {});
+        },
+        []
+      );
+    }
   }
 
   return {
