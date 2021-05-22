@@ -260,9 +260,14 @@ function funcScoped() {
       }
       return false;
     }
-    /*
+  }
+
+  /*
     
     Calls the method named by methodName on each value in the list. Any extra arguments passed to invoke will be forwarded on to the method invocation.
+
+    _.invoke([[5, 1, 7], [3, 2, 1]], 'sort');
+    => [[1, 5, 7], [1, 2, 3]]
 
     Whats the function of args?
     Take a look at join array method - it joins elements into a string, and if we pass something - it would be used as a separator.
@@ -295,25 +300,24 @@ function funcScoped() {
     // It's like do obj.methodName('#', 2, false, '--')
     */
 
-    function invoke(list, methodName, ...extraArgs) {
-      //another approach get length of each subarrays
-      reduce(
-        list,
-        function loopThroughOuterArray(
-          buildingUp,
-          currentValue,
-          currIndex,
-          list
-        ) {
-          //buildingUp is our array
-          //each value in the array will be called with methodName
-          each(currentValue, function callEachValueWithMethoName(eachValue) {});
-        },
-        []
-      );
-    }
+  function invoke(list, methodName, ...extraArgs) {
+    //another approach get length of each subarrays
+    var ourArgs = [...extraArgs];
+    reduce(
+      list,
+      function loopThroughOuterArray(
+        buildingUp,
+        currentValue,
+        currIndex,
+        list
+      ) {
+        //buildingUp is our array
+        //each value in the array will be called with methodName
+        var funcReference = methodName.bind(null, currentValue, ourArgs);
+      },
+      []
+    );
   }
-
   return {
     each,
     eachRight,
