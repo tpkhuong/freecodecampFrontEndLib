@@ -302,6 +302,8 @@ function funcScoped() {
 
   function invoke(list, methodName, ...extraArgs) {
     //another approach get length of each subarrays
+    var copyOfList = list.slice();
+    copyOfList = [...copyOfList, extraArgs];
     var ourArgs = [...extraArgs];
     reduce(
       list,
@@ -313,7 +315,7 @@ function funcScoped() {
       ) {
         //buildingUp is our array
         //each value in the array will be called with methodName
-        var funcReference = methodName.bind(null, currentValue, ourArgs);
+        // var funcReference = methodName.bind(null, currentValue, ourArgs);
       },
       []
     );
@@ -336,6 +338,11 @@ function funcScoped() {
   };
 }
 
+function invoke(list, methodName, ...extraArgs) {
+  //another approach get length of each subarrays
+  var copyOfList = list.slice();
+  copyOfList = [...copyOfList, extraArgs];
+}
 var goal = [
   {
     category: "other",
