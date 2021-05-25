@@ -302,23 +302,29 @@ function funcScoped() {
 
   function invoke(list, methodName, ...extraArgs) {
     //another approach get length of each subarrays
-    var copyOfList = list.slice();
-    copyOfList = [...copyOfList, extraArgs];
     var ourArgs = [...extraArgs];
-    reduce(
-      list,
-      function loopThroughOuterArray(
-        buildingUp,
-        currentValue,
-        currIndex,
-        list
-      ) {
-        //buildingUp is our array
-        //each value in the array will be called with methodName
-        // var funcReference = methodName.bind(null, currentValue, ourArgs);
-      },
-      []
-    );
+    var copyOfList = list.slice();
+    var combineListAndExtraArgsIntoArr = [...copyOfList, ourArgs];
+    if (ourArgs.length == 0) {
+      reduce(
+        combineListAndExtraArgsIntoArr,
+        function loopThroughOuterArray(
+          buildingUp,
+          currentValue,
+          currIndex,
+          list
+        ) {
+          //buildingUp is our array
+          //each value in the array will be called with methodName
+          // var funcReference = methodName.bind(null, currentValue, ourArgs);
+          var returnedArr = methodName(currentValue);
+          return [...buildingUp, returnedArr];
+        },
+        []
+      );
+    } else {
+      // what do we want to do when extraArgs is not empty it means a value is passed in
+    }
   }
   return {
     each,
