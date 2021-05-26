@@ -304,11 +304,13 @@ function funcScoped() {
     //another approach get length of each subarrays
     var ourArgs = [...extraArgs];
     var copyOfList = list.slice();
-    var combineListAndExtraArgsIntoArr = [...copyOfList, ourArgs];
+    var combineListAndExtraArgsIntoArr = [...copyOfList, ...ourArgs];
+    let result;
+
     if (ourArgs.length == 0) {
-      reduce(
+      result = reduce(
         combineListAndExtraArgsIntoArr,
-        function loopThroughOuterArray(
+        function loopThroughOuterList(
           buildingUp,
           currentValue,
           currIndex,
@@ -317,14 +319,28 @@ function funcScoped() {
           //buildingUp is our array
           //each value in the array will be called with methodName
           // var funcReference = methodName.bind(null, currentValue, ourArgs);
-          var returnedArr = methodName(currentValue);
+          let returnedArr = methodName(currentValue);
           return [...buildingUp, returnedArr];
         },
         []
       );
     } else {
       // what do we want to do when extraArgs is not empty it means a value is passed in
+      result = reduce(
+        list,
+        function loopThroughOuterArray(
+          buildingUp,
+          currentValue,
+          currIndex,
+          reduceList
+        ) {
+          let returnArr = methodName(currentValue).bind(null, ...ourArgs);
+          return [...buildingUp, returnArr];
+        },
+        []
+      );
     }
+    return result;
   }
   return {
     each,
@@ -346,9 +362,11 @@ function funcScoped() {
 
 function invoke(list, methodName, ...extraArgs) {
   //another approach get length of each subarrays
+  console.log(extraArgs);
   var copyOfList = list.slice();
   copyOfList = [...copyOfList, extraArgs];
 }
+
 var goal = [
   {
     category: "other",
