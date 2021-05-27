@@ -326,21 +326,40 @@ function funcScoped() {
       );
     } else {
       // what do we want to do when extraArgs is not empty it means a value is passed in
-      result = reduce(
-        list,
-        function loopThroughOuterArray(
-          buildingUp,
-          currentValue,
-          currIndex,
-          reduceList
-        ) {
-          let returnArr = methodName(currentValue).bind(null, ...ourArgs);
-          return [...buildingUp, returnArr];
-        },
-        []
-      );
-    }
-    return result;
+    //   result = reduce(
+    //     list,
+    //     function loopThroughOuterArray(
+    //       buildingUp,
+    //       currentValue,
+    //       currIndex,
+    //       reduceList
+    //     ) {
+    //       // let returnArr = methodName(currentValue).bind(null, ...ourArgs);
+    //       let returnArr = methodName(currentValue).apply(null, ...ourArgs);
+    //       return [...buildingUp, returnArr];
+    //     },
+    //     []
+    //   );
+    // }
+    // return result;
+      /*
+      _.invoke = function(collection, func, args) {
+    return _.map(collection, function(el) {
+        return (func instanceof Function) ? func.apply(el, args) : el[func].apply(el, args);
+    });
+};
+      */
+      /*
+      _.invoke = function(obj, method) {
+    var args = _.rest(arguments, 2);
+    return _.map(obj, function(value) {
+      return (method ? value[method] : value).apply(value, args);
+    });
+  };
+      */
+      return map(copyOfList, function callMethodOnEachValue(valueInput) {
+        
+      });
   }
   return {
     each,
