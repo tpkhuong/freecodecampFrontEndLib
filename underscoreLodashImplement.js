@@ -307,7 +307,7 @@ function funcScoped() {
     var combineListAndExtraArgsIntoArr = [...copyOfList, ...ourArgs];
     let result;
 
-    if (ourArgs.length == 0) {
+    if (ourArgs.length === 0) {
       result = reduce(
         combineListAndExtraArgsIntoArr,
         function loopThroughOuterList(
@@ -358,9 +358,43 @@ function funcScoped() {
   };
       */
       return map(copyOfList, function callMethodOnEachValue(valueInput) {
-        
+        return method ? method.apply(valueInput, ourArgs) : valueInput[method].apply(valueInput, ourArgs);
       });
-  }
+    }
+    function join(list, ...separator) {
+      var resultStr = "";
+      var copyOfSeparators = [...separator];
+      if (copyOfSeparators.length === 0) {
+        each(list, function concatStrValue(eachValue) {
+          var strForm = String(eachValue);
+          resultStr = resultStr + strForm;
+          // resultStr.concat(strForm);
+        });
+        let result = reduce(list, function concatStrValue(buildingUp, currentValue) {
+          var strForm = String(currentValue);
+          buildingUp = buildingUp + strForm;
+          return buildingUp;
+        }, "")
+        return result;
+      } else {
+        var reverseCopyOfSeparators = [];
+        for (let index = copyOfSeparators.length - 1; index >= 0; index--){
+          let element = copyOfSeparators[index];
+          reverseCopyOfSeparators.push(element);
+        }
+        
+        while (reverseCopyOfSeparators.length > 0) {
+          let eachSeparator = String(reverseCopyOfSeparators.pop());
+          resultStr = reduce(list, function concatStrWithSeparators(buildingUp, currentValue) {
+            var strForm = String(currentValue);
+            buildingUp = buildingUp + strForm + eachSeparator;
+            return buildingUp;
+          },"")
+        }
+        // return result;
+      }
+      return resultStr;
+    }
   return {
     each,
     eachRight,
@@ -376,6 +410,7 @@ function funcScoped() {
     some,
     contains,
     invoke,
+    join
   };
 }
 
