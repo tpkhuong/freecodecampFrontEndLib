@@ -326,22 +326,22 @@ function funcScoped() {
       );
     } else {
       // what do we want to do when extraArgs is not empty it means a value is passed in
-    //   result = reduce(
-    //     list,
-    //     function loopThroughOuterArray(
-    //       buildingUp,
-    //       currentValue,
-    //       currIndex,
-    //       reduceList
-    //     ) {
-    //       // let returnArr = methodName(currentValue).bind(null, ...ourArgs);
-    //       let returnArr = methodName(currentValue).apply(null, ...ourArgs);
-    //       return [...buildingUp, returnArr];
-    //     },
-    //     []
-    //   );
-    // }
-    // return result;
+      //   result = reduce(
+      //     list,
+      //     function loopThroughOuterArray(
+      //       buildingUp,
+      //       currentValue,
+      //       currIndex,
+      //       reduceList
+      //     ) {
+      //       // let returnArr = methodName(currentValue).bind(null, ...ourArgs);
+      //       let returnArr = methodName(currentValue).apply(null, ...ourArgs);
+      //       return [...buildingUp, returnArr];
+      //     },
+      //     []
+      //   );
+      // }
+      // return result;
       /*
       _.invoke = function(collection, func, args) {
     return _.map(collection, function(el) {
@@ -358,9 +358,12 @@ function funcScoped() {
   };
       */
       return map(copyOfList, function callMethodOnEachValue(valueInput) {
-        return method ? method.apply(valueInput, ourArgs) : valueInput[method].apply(valueInput, ourArgs);
+        return method
+          ? method.apply(valueInput, ourArgs)
+          : valueInput[method].apply(valueInput, ourArgs);
       });
     }
+
     function join(list, ...separator) {
       var resultStr = "";
       var copyOfSeparators = [...separator];
@@ -370,31 +373,40 @@ function funcScoped() {
           resultStr = resultStr + strForm;
           // resultStr.concat(strForm);
         });
-        let result = reduce(list, function concatStrValue(buildingUp, currentValue) {
-          var strForm = String(currentValue);
-          buildingUp = buildingUp + strForm;
-          return buildingUp;
-        }, "")
+        let result = reduce(
+          list,
+          function concatStrValue(buildingUp, currentValue) {
+            var strForm = String(currentValue);
+            buildingUp = buildingUp + strForm;
+            return buildingUp;
+          },
+          ""
+        );
         return result;
       } else {
         var reverseCopyOfSeparators = [];
-        for (let index = copyOfSeparators.length - 1; index >= 0; index--){
+        for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
           let element = copyOfSeparators[index];
           reverseCopyOfSeparators.push(element);
         }
-        
+
         while (reverseCopyOfSeparators.length > 0) {
           let eachSeparator = String(reverseCopyOfSeparators.pop());
-          resultStr = reduce(list, function concatStrWithSeparators(buildingUp, currentValue) {
-            var strForm = String(currentValue);
-            buildingUp = buildingUp + strForm + eachSeparator;
-            return buildingUp;
-          },"")
+          resultStr = reduce(
+            list,
+            function concatStrWithSeparators(buildingUp, currentValue) {
+              var strForm = String(currentValue);
+              buildingUp = buildingUp + strForm + eachSeparator;
+              return buildingUp;
+            },
+            ""
+          );
         }
         // return result;
       }
       return resultStr;
     }
+  }
   return {
     each,
     eachRight,
@@ -410,7 +422,7 @@ function funcScoped() {
     some,
     contains,
     invoke,
-    join
+    join,
   };
 }
 
@@ -471,3 +483,44 @@ var testObj = {
   reason:
     "For its public service in publishing in full so many official reports documents and speeches by European statesmen relating to the progress and conduct of the war.",
 };
+
+alert("join func works");
+function join(list, ...separator) {
+  var resultStr = "";
+  var copyOfSeparators = [...separator];
+  if (copyOfSeparators.length === 0) {
+    list.forEach(function concatStrValue(eachValue) {
+      var strForm = String(eachValue);
+      resultStr = resultStr + strForm;
+      // resultStr.concat(strForm);
+    });
+    // each(list, );
+    let result = list.reduce(function concatStrValue(buildingUp, currentValue) {
+      var strForm = String(currentValue);
+      buildingUp = buildingUp + strForm;
+      return buildingUp;
+    }, "");
+    return result;
+  } else {
+    var reverseCopyOfSeparators = [];
+    for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
+      let element = copyOfSeparators[index];
+      reverseCopyOfSeparators.push(element);
+    }
+
+    while (reverseCopyOfSeparators.length > 0) {
+      let eachSeparator = String(reverseCopyOfSeparators.pop());
+      resultStr = list.reduce(function concatStrWithSeparators(
+        buildingUp,
+        currentValue
+      ) {
+        var strForm = String(currentValue);
+        buildingUp = buildingUp + strForm + eachSeparator;
+        return buildingUp;
+      },
+      "");
+    }
+    // return result;
+  }
+  return resultStr;
+}
