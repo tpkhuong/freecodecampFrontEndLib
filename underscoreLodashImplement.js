@@ -366,6 +366,7 @@ function funcScoped() {
 
     function join(list, ...separator) {
       var resultStr = "";
+      var arrOfStrCombinedWithSeparator = [];
       var copyOfSeparators = [...separator];
       if (copyOfSeparators.length === 0) {
         each(list, function concatStrValue(eachValue) {
@@ -401,6 +402,8 @@ function funcScoped() {
             },
             ""
           );
+
+          arrOfStrCombinedWithSeparator.push(resultStr);
         }
         // return result;
       }
@@ -483,10 +486,11 @@ var testObj = {
   reason:
     "For its public service in publishing in full so many official reports documents and speeches by European statesmen relating to the progress and conduct of the war.",
 };
-
-alert("join func works");
+alert("test if join func works");
 function join(list, ...separator) {
   var resultStr = "";
+  var arrOfStrCombinedWithSeparator = [];
+
   var copyOfSeparators = [...separator];
   if (copyOfSeparators.length === 0) {
     list.forEach(function concatStrValue(eachValue) {
@@ -519,6 +523,7 @@ function join(list, ...separator) {
         return buildingUp;
       },
       "");
+      arrOfStrCombinedWithSeparator.push(resultStr);
     }
     // return result;
   }
