@@ -396,11 +396,23 @@ function funcScoped() {
           resultStr = reduce(
             list,
             function concatStrWithSeparators(buildingUp, currentValue) {
-              var strForm = String(currentValue);
-              buildingUp = buildingUp + strForm + eachSeparator;
-              return buildingUp;
+              // one way is to loop through currentvalue which will be our subarray.
+              var buildOurStr = reduce(
+                currentValue,
+                function loopingThroughSubarray(buildingUp, currentValue) {
+                  //inner reduce
+                  //in this reduce our currentvalue will be each value in the subarray
+                  var strForm = String(currentValue);
+                  buildingUp = buildingUp + strForm + eachSeparator;
+                  return buildingUp;
+                },
+                ""
+              );
+              // outer reduce
+              // buildingUp = [...buildingUp, buildOurStr];
+              buildingUp.push(buildOurStr);
             },
-            ""
+            []
           );
 
           arrOfStrCombinedWithSeparator.push(resultStr);
@@ -486,7 +498,7 @@ var testObj = {
   reason:
     "For its public service in publishing in full so many official reports documents and speeches by European statesmen relating to the progress and conduct of the war.",
 };
-alert("test if join func works");
+
 function join(list, ...separator) {
   var resultStr = "";
   var arrOfStrCombinedWithSeparator = [];
