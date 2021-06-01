@@ -498,6 +498,7 @@ var testObj = {
   reason:
     "For its public service in publishing in full so many official reports documents and speeches by European statesmen relating to the progress and conduct of the war.",
 };
+alert("join looks complete");
 
 function join(list, ...separator) {
   var resultStr = "";
@@ -526,18 +527,61 @@ function join(list, ...separator) {
 
     while (reverseCopyOfSeparators.length > 0) {
       let eachSeparator = String(reverseCopyOfSeparators.pop());
-      resultStr = list.reduce(function concatStrWithSeparators(
-        buildingUp,
-        currentValue
-      ) {
-        var strForm = String(currentValue);
-        buildingUp = buildingUp + strForm + eachSeparator;
-        return buildingUp;
-      },
-      "");
-      arrOfStrCombinedWithSeparator.push(resultStr);
+
+      // let subarray = list.reduce(function addSubarrayToArr(
+      //   buildingUp,
+      //   currentValue
+      // ) {
+      //   //each currentValue is our subarray
+      //   var builtUpStr = currentValue.reduce(function concatStrWithSeparators(
+      //     buildingUp,
+      //     currentValue
+      //   ) {
+      //     //each currentValue is our individual str
+      //     var strForm = String(currentValue);
+      //     buildingUp = buildingUp + strForm + eachSeparator;
+      //     return buildingUp;
+      //   },
+      //   "");
+      //   buildingUp.push([builtUpStr]);
+      //   // buildingUp = [...buildingUp, [builtUpStr]];
+      //   return buildingUp;
+      // },
+      // []);
+      //line below is if we didnt use reduce
+      // arrOfStrCombinedWithSeparator.push(resultStr);
+      /***** use map and reduce: using these methods and our algorithm we will return an array with the length according to the number of args passed in
+       * the subarray will be the length of the number of values of the array passed into join
+       *  *****/
+
+      var subarray = list.map(function builtUpSubarray(innerArray) {
+        //innerArray is our subarray
+        return innerArray.reduce(function buildUpStr(buildingUp, currentValue) {
+          var strForm = String(currentValue);
+          buildingUp = buildingUp + strForm + eachSeparator;
+          return buildingUp;
+        }, "");
+      });
+
+      /***** use map and reduce: using these methods and our algorithm we will return an array with the length according to the number of args passed in
+       * the subarray will be the length of the number of values of the array passed into join
+       *  *****/
+      arrOfStrCombinedWithSeparator.push(subarray);
+      /***** we can loop through the array passed in use reduce to build the string, push each string we build to an array that is outside of our while loop
+       * which means we will have an array of strings instead of an array with subarrays with string values
+       *  *****/
+
+      for (let subarray of list) {
+      }
+
+      for (let index = 0; index < list.length; index++) {}
+
+      list.forEach(function loopThroughArray(subarray) {});
+      /***** we can loop through the array passed in use reduce to build the string, push each string we build to an array that is outside of our while loop
+       * which means we will have an array of strings instead of an array with subarrays with string values
+       *  *****/
     }
     // return result;
   }
-  return resultStr;
+  return arrOfStrCombinedWithSeparator;
 }
