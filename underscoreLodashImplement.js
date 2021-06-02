@@ -567,17 +567,53 @@ function join(list, ...separator) {
        * the subarray will be the length of the number of values of the array passed into join
        *  *****/
       arrOfStrCombinedWithSeparator.push(subarray);
-      /***** we can loop through the array passed in use reduce to build the string, push each string we build to an array that is outside of our while loop
+      /***** we can loop through the array passed in, use reduce to build the string, push each string we build to an array that is outside of our while loop
        * which means we will have an array of strings instead of an array with subarrays with string values
        *  *****/
 
       for (let subarray of list) {
+        var buildOurStr = subarray.reduce(function ourString(
+          buildingUp,
+          currentValue
+        ) {
+          var strForm = String(currentValue);
+          buildingUp = buildingUp + strForm + eachSeparator;
+          return buildingUp;
+        },
+        "");
+
+        arrOfStrCombinedWithSeparator.push(buildOurStr);
       }
 
-      for (let index = 0; index < list.length; index++) {}
+      for (let index = 0; index < list.length; index++) {
+        var subarray = list[index];
+        var buildOurStr = subarray.reduce(function ourString(
+          buildingUp,
+          currentValue
+        ) {
+          var strForm = String(currentValue);
+          buildingUp = buildingUp + strForm + eachSeparator;
+          return buildingUp;
+        },
+        "");
 
-      list.forEach(function loopThroughArray(subarray) {});
-      /***** we can loop through the array passed in use reduce to build the string, push each string we build to an array that is outside of our while loop
+        arrOfStrCombinedWithSeparator.push(buildOurStr);
+      }
+
+      list.forEach(function loopThroughArray(subarray) {
+        var buildOurStr = subarray.reduce(function ourString(
+          buildingUp,
+          currentValue
+        ) {
+          var strForm = String(currentValue);
+          buildingUp = buildingUp + strForm + eachSeparator;
+          return buildingUp;
+        },
+        "");
+
+        arrOfStrCombinedWithSeparator.push(buildOurStr);
+      });
+      /***** we can loop through the array passed in, use reduce to build the string, push each string we build to an array that is outside of our while loop
        * which means we will have an array of strings instead of an array with subarrays with string values
        *  *****/
     }
@@ -585,3 +621,31 @@ function join(list, ...separator) {
   }
   return arrOfStrCombinedWithSeparator;
 }
+
+
+/***** using recursion: our recursive func wil be a nested func inside of join() *****/
+
+function join(list, ...separator) {
+  var resultStr = "";
+  var arrOfStrCombinedWithSeparator = [];
+
+  var copyOfSeparators = [...separator];
+  if (copyOfSeparators.length === 0) {
+    list.forEach(function concatStrValue(eachValue) {
+      var strForm = String(eachValue);
+      resultStr = resultStr + strForm;
+      // resultStr.concat(strForm);
+    });
+    // each(list, );
+    let result = list.reduce(function concatStrValue(buildingUp, currentValue) {
+      var strForm = String(currentValue);
+      buildingUp = buildingUp + strForm;
+      return buildingUp;
+    }, "");
+    return result;
+  } else {
+    /***** recursive approach *****/ 
+  return arrOfStrCombinedWithSeparator;
+}
+
+/***** using recursion: our recursive func wil be a nested func inside of join() *****/ 
