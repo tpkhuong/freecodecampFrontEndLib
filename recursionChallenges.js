@@ -668,12 +668,12 @@ function binarySearch(sortedArray, key) {
   return -1;
 }
 
-/***** just if an input is an object *****/
+/***** check if an input is an object *****/
 
 Object.prototype.toString.call(null);
 // then use a conditional
 
-/***** just if an input is an object *****/
+/***** check if an input is an object *****/
 
 // binarySearch(singleBook, 'Bb')
 // binarySearch(library, 'Bb')
