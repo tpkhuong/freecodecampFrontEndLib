@@ -622,7 +622,6 @@ function join(list, ...separator) {
   return arrOfStrCombinedWithSeparator;
 }
 
-
 /***** using recursion: our recursive func wil be a nested func inside of join() *****/
 
 function join(list, ...separator) {
@@ -644,8 +643,34 @@ function join(list, ...separator) {
     }, "");
     return result;
   } else {
-    /***** recursive approach *****/ 
-  return arrOfStrCombinedWithSeparator;
-}
+    /***** recursive approach *****/
+    function joinRecursive(list, arrOfSeparators) {
+      var result = [];
+    }
+    function innerRecursive(list, arrOfSeparators) {
+      if (copyOfSeparators.length === 0) {
+        return;
+      }
 
-/***** using recursion: our recursive func wil be a nested func inside of join() *****/ 
+      var removeFromEndSeparator = copyOfSeparators.pop();
+    }
+
+    function secondInnerRecur(list, popSeparator) {
+      if (list.length === 0) {
+        return;
+      }
+
+      var removeFromEndList = list.pop();
+    }
+
+    function thirdInnerRecur(popSubarrayOfList, separator) {
+      if (popSubarrayOfList.length === 0) {
+        return;
+      }
+
+      var removedValuedFromList = popSubarrayOfList.pop();
+    }
+    return arrOfStrCombinedWithSeparator;
+  }
+}
+/***** using recursion: our recursive func wil be a nested func inside of join() *****/
