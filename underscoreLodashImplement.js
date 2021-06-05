@@ -648,27 +648,61 @@ function join(list, ...separator) {
       var result = [];
     }
     function innerRecursive(list, arrOfSeparators) {
+      //([["a","b"],["c","d"],["e","f"]], ["#","$","%"]);
       if (copyOfSeparators.length === 0) {
         return;
       }
 
-      var removeFromEndSeparator = copyOfSeparators.pop();
+      var removeFromEndSeparator = copyOfSeparators.pop(); //%;
+      //recursive call innerRecursive
+      //call secondInnerRecur in innerRecursive
     }
 
-    function secondInnerRecur(list, popSeparator) {
+    function secondInnerRecur(list, poppedSeparator) {
+      //([["a","b"],["c","d"],["e","f"]], %);
       if (list.length === 0) {
-        return;
+        return "";
       }
 
-      var removeFromEndList = list.pop();
+      var removeFromEndList = list.pop(); //["e","f"]
+      /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
+       * "a%b%c%d%e%f%"
+       *  *****/
+      var buildUpStrWithSeparator = thirdInnerRecur(
+        removeFromEndList,
+        poppedSeparator
+      );
+      /*return*/ secondInnerRecur(list, poppedSeparator) +
+        buildUpStrWithSeparator;
+      /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
+       * "a%b%c%d%e%f%"
+       *  *****/
+      /***** we want to make a string with the separator for each subarray/nested arrays *****/
+
+      var buildUpStrWithSeparator = thirdInnerRecur(
+        removeFromEndList,
+        poppedSeparator
+      );
+
+      //add buildupStr using thirdInnerRecur to our array that we want to return
+      arrOfStrCombinedWithSeparator.shift(buildUpStrWithSeparator);
+      return secondInnerRecur(list, poppedSeparator);
+
+      /***** we want to make a string with the separator for each subarray/nested arrays *****/
     }
 
-    function thirdInnerRecur(popSubarrayOfList, separator) {
-      if (popSubarrayOfList.length === 0) {
-        return;
+    function thirdInnerRecur(poppedSubarrayOfList, separator) {
+      //(["e","f"],%)
+      if (poppedSubarrayOfList.length === 0) {
+        return "";
       }
 
-      var removedValuedFromList = popSubarrayOfList.pop();
+      var removedValuedFromList = poppedSubarrayOfList.pop(); //f
+      var buildStrWithSeparator = removedValuedFromList + separator;
+      //recursively call thirdInnerRecur
+      return (
+        thirdInnerRecur(poppedSubarrayOfList, separator) + buildStrWithSeparator
+      );
     }
     return arrOfStrCombinedWithSeparator;
   }
