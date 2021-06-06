@@ -644,66 +644,77 @@ function join(list, ...separator) {
     return result;
   } else {
     /***** recursive approach *****/
+    alert("test out join recursive Let's gooooo!");
+    joinRecursive(list, copyOfSeparators);
     function joinRecursive(list, arrOfSeparators) {
       var result = [];
-    }
-    function innerRecursive(list, arrOfSeparators) {
-      //([["a","b"],["c","d"],["e","f"]], ["#","$","%"]);
-      if (copyOfSeparators.length === 0) {
-        return;
+      innerRecursive(list, arrOfSeparators);
+
+      function innerRecursive(list, arrOfSeparators) {
+        //([["a","b"],["c","d"],["e","f"]], ["#","$","%"]);
+        if (arrOfSeparators.length === 0) {
+          return;
+        }
+
+        var removeFromEndSeparator = arrOfSeparators.pop(); //%;
+        //recursive call innerRecursive
+        //call secondInnerRecur in innerRecursive
+        secondInnerRecur(list, removeFromEndSeparator);
+        innerRecursive(list, arrOfSeparators);
       }
 
-      var removeFromEndSeparator = copyOfSeparators.pop(); //%;
-      //recursive call innerRecursive
-      //call secondInnerRecur in innerRecursive
-    }
+      function secondInnerRecur(secondList, poppedSeparator) {
+        //([["a","b"],["c","d"],["e","f"]], %);
+        if (secondList.length === 0) {
+          // return "" from our secondInnerRecur if we want to return a string of the subarray combined with the separator
+          // "a%b%c%d%e%f%"
+          return;
+        }
 
-    function secondInnerRecur(list, poppedSeparator) {
-      //([["a","b"],["c","d"],["e","f"]], %);
-      if (list.length === 0) {
-        return "";
+        var removeFromEndList = secondList.pop(); //["e","f"]
+        /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
+         * "a%b%c%d%e%f%"
+         *  *****/
+        var buildUpStrWithSeparator = thirdInnerRecur(
+          removeFromEndList,
+          poppedSeparator
+        );
+        /*return*/ secondInnerRecur(secondList, poppedSeparator) +
+          buildUpStrWithSeparator;
+        /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
+         * "a%b%c%d%e%f%"
+         *  *****/
+        /***** we want to make a string with the separator for each subarray/nested arrays *****/
+
+        var buildUpStrWithSeparator = thirdInnerRecur(
+          removeFromEndList,
+          poppedSeparator
+        );
+
+        //add buildupStr using thirdInnerRecur to our array that we want to return
+        result.shift(buildUpStrWithSeparator);
+        // we don't have to return anything from our secondInnerRecur
+        /*return*/ secondInnerRecur(secondList, poppedSeparator);
+
+        /***** we want to make a string with the separator for each subarray/nested arrays *****/
       }
 
-      var removeFromEndList = list.pop(); //["e","f"]
-      /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
-       * "a%b%c%d%e%f%"
-       *  *****/
-      var buildUpStrWithSeparator = thirdInnerRecur(
-        removeFromEndList,
-        poppedSeparator
-      );
-      /*return*/ secondInnerRecur(list, poppedSeparator) +
-        buildUpStrWithSeparator;
-      /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
-       * "a%b%c%d%e%f%"
-       *  *****/
-      /***** we want to make a string with the separator for each subarray/nested arrays *****/
+      function thirdInnerRecur(poppedSubarrayOfList, separator) {
+        //(["e","f"],%)
+        if (poppedSubarrayOfList.length === 0) {
+          return "";
+        }
 
-      var buildUpStrWithSeparator = thirdInnerRecur(
-        removeFromEndList,
-        poppedSeparator
-      );
-
-      //add buildupStr using thirdInnerRecur to our array that we want to return
-      arrOfStrCombinedWithSeparator.shift(buildUpStrWithSeparator);
-      return secondInnerRecur(list, poppedSeparator);
-
-      /***** we want to make a string with the separator for each subarray/nested arrays *****/
-    }
-
-    function thirdInnerRecur(poppedSubarrayOfList, separator) {
-      //(["e","f"],%)
-      if (poppedSubarrayOfList.length === 0) {
-        return "";
+        var removedValuedFromList = poppedSubarrayOfList.pop(); //f
+        var buildStrWithSeparator = removedValuedFromList + separator;
+        //recursively call thirdInnerRecur
+        return (
+          thirdInnerRecur(poppedSubarrayOfList, separator) +
+          buildStrWithSeparator
+        );
       }
-
-      var removedValuedFromList = poppedSubarrayOfList.pop(); //f
-      var buildStrWithSeparator = removedValuedFromList + separator;
-      //recursively call thirdInnerRecur
-      return (
-        thirdInnerRecur(poppedSubarrayOfList, separator) + buildStrWithSeparator
-      );
     }
+
     return arrOfStrCombinedWithSeparator;
   }
 }
