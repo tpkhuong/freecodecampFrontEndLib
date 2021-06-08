@@ -1095,106 +1095,89 @@ function learningIsAwesome() {
 }
 /***** what wil happen if we didnt make a copy of original list array passed into joinRecursive *****/
 
-/***** we can also solve implement joinRecur without mutating the list, we can pass in an index for secondInnerRecur and thirdInnerRecur
+/***** we can also implement joinRecur without mutating the list, we can pass in an index for secondInnerRecur and thirdInnerRecur
  * each time we call secondInnerRecur or thirdInnerRecur we want to increment that index then we will break when our index === arr.length - 1
  *  *****/
 
 function joinRecursive(list, arrOfSeparators) {
   var result = [];
-  /* have a copy of the list array outside the scope of the innerRecursive func. 
-      when we had the copy of the list array in innerRecursive, when we remove from the end it mutated the original list too
-      when we call innerRecursive we want to pass in the original list array with nothing removed
-      */
-  // var copyOfList = [...list];
-  /* find a way to make this work without mutating the array */
-  // var notMutated = list.slice();
-  // var mutateThisList = [...list];
-  innerRecursive(list, arrOfSeparators);
-  /***** what if we just passed the original array to secondInnerRecur *****/
-  function innerRecursive(innerList, arrOfSeparators) {
-    //work with copy of original passed in list
-    // var copyOfList = innerList.slice();
-    // var copyOfList = [...list];
-    // var copyOfList = [].concat(list);
-    // var copyOfList = innerList.slice();
+
+  //default value for our index should be 0
+  function innerRecursive(innerList, arrOfSeparators, innerRecurIndex = 0) {
     //([["a","b"],["c","d"],["e","f"]], ["#","$","%"]);
-    if (arrOfSeparators.length === 0) {
+    //["#","$","%"]
+    var lengthOfArrOfSeparators = arrOfSeparators.length;
+    //our base case
+    //innerRecurIndex will start at 0
+    //if innerRecurIndex == arrOfSeparators.length return;
+    if (innerRecurIndex == lengthOfArrOfSeparators) {
       return;
     }
 
-    var removeFromEndSeparator = arrOfSeparators.pop(); //%;
-    //recursive call innerRecursive
-    //call secondInnerRecur in innerRecursive
-
-    secondInnerRecur(innerList, removeFromEndSeparator);
-    //when we call innerRecursive we want to pass the original array into secondInnerRecur
-    //in our secondInnerRecur we are removing from the end / mutating the array to get the length of the array length to 0 so we can break out of our recursive call
-    //but our top recursive or innerRecursive we want to call innerRecursive with the list of subarray [["a","b"],["c","d"],["e","f"]] and an array with
-    //separator decrement by one item from the end because we need to break out of our innerRecur func that is our base case for innerRecur
-    //when this array ["#","$","%"] becomes []
-    innerRecursive(innerList, arrOfSeparators);
+    var copyValueOfArrOfSeparatorsAtZero = arrOfSeparators[innerRecurIndex];
+    //when we call innerRecur we want to increment innerRecurIndex by 1
+    secondInnerRecur(innerList, copyValueOfArrOfSeparatorsAtZero);
+    innerRecurIndex(innerList, copyValueOfArrOfSeparators, innerRecurIndex + 1);
   }
-
-  function secondInnerRecur(secondList, poppedSeparator) {
-    //copy list in this func
-    // var mutateList = secondList.slice();
-    //([["a","b"],["c","d"],["e","f"]], %);
-    //work with copy of original passed in list
-    if (secondList.length === 0) {
-      // return "" from our secondInnerRecur if we want to return a string of the subarray combined with the separator
-      // "a%b%c%d%e%f%"
+  //default value for our index should be 0
+  function secondInnerRecur(
+    secondList,
+    copiedSeparatorStartingLeft,
+    secondRecurIndex = 0
+  ) {
+    //[["a","b"],["c","d"],["e","f"]]
+    var lengthOfSecondList = secondList.length;
+    //base case
+    //when secondRecurIndex == lengthOfSecondList we break
+    if (secondRecurIndex == lengthOfSecondList) {
       return;
     }
-    /* code below we are mutated the original array: */
-    var removeFromEndList = secondList.pop(); //["e","f"]
-    /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
-     * "a%b%c%d%e%f%"
-     *  *****/
-    //we should send a copy of ["e","f"] in to call of thirdInnerRecur
-    var copyOfArrRemovedFromList = removeFromEndList.slice();
-    var buildUpStrWithSeparator = thirdInnerRecur(
-      removeFromEndList,
-      poppedSeparator
+    var copySubarrayOfListStartingAtZero = secondList[secondRecurIndex];
+    //we want to pass in the copid subarray of the original list into thirdRecr with the copiedSeparatorStartingLeft
+    //thirdInnerRecur(["a","b"], "#", 0);
+    var builtUpStrFromThirdInnerRecur = thirdInnerRecur(
+      copySubarrayOfListStartingAtZero,
+      copiedSeparatorStartingLeft
     );
-    /*return*/ secondInnerRecur(secondList, poppedSeparator) +
-      buildUpStrWithSeparator;
-    /***** these algorithm is for when we want to combine the values in the nested array with the separator into one string
-     * "a%b%c%d%e%f%"
-     *  *****/
-    /***** we want to make a string with the separator for each subarray/nested arrays *****/
-
-    //we should send a copy of ["e","f"] in to call of thirdInnerRecur
-    var copyOfArrRemovedFromList = removeFromEndList.slice();
-
-    var buildUpStrWithSeparator = thirdInnerRecur(
-      copyOfArrRemovedFromList,
-      poppedSeparator
+    //then add the string builtUp in thirdRecur to our result array
+    //we are using push add to the end instead of using unshift add the beginnging because we are copying each subarray starting at 0
+    //first time running we will be working with this subarray ["a","b"] then ["c","d"]
+    //first adding to result: ["a#b#", "c#d#", "e#f#"]
+    //if we starting at the end of [["a","b"],["c","d"],["e","f"]]
+    //it will be this: ["e","f"] then ["c","d"]
+    //then use unshift to result: ["c#d#","e#f#"]
+    result.push(builtUpStrFromThirdInnerRecur);
+    //then we want to call secondInnerRecur
+    secondInnerRecur(
+      secondList,
+      copiedSeparatorStartingLeft,
+      secondRecurIndex + 1
     );
-
-    //add buildupStr using thirdInnerRecur to our array that we want to return
-    //unshift to add shift to remove
-    result.unshift(buildUpStrWithSeparator);
-    // we don't have to return anything from our secondInnerRecur
-    /*return*/ secondInnerRecur(secondList, poppedSeparator);
-
-    /***** we want to make a string with the separator for each subarray/nested arrays *****/
   }
 
-  function thirdInnerRecur(poppedSubarrayOfList, separator) {
-    //(["e","f"],%)
-    if (poppedSubarrayOfList.length === 0) {
+  function thirdInnerRecur(
+    copiedSubarrayOfList,
+    separator,
+    thirdRecurIndex = 0
+  ) {
+    //(["a","b"],%, 0)
+    var lengthOfSubarrayOfList = copiedSubarrayOfList.length;
+
+    //base case
+    if (thirdRecurIndex == lengthOfSubarrayOfList) {
       return "";
     }
-
-    var removedValuedFromList = poppedSubarrayOfList.pop(); //f
-    var buildStrWithSeparator = removedValuedFromList + separator;
-    //recursively call thirdInnerRecur
+    var valueOfSubarrayStartingAtZero =
+      copiedSeparatorStartingLeft[thirdRecurIndex];
+    var valueConcatWithSeparator = valueOfSubarrayStartingAtZero + separator;
     return (
-      thirdInnerRecur(poppedSubarrayOfList, separator) + buildStrWithSeparator
+      valueConcatWithSeparator +
+      thirdInnerRecur(copiedSubarrayOfList, separator, thirdRecurIndex + 1)
     );
   }
 }
 
-/***** we can also solve implement joinRecur without mutating the list, we can pass in an index for secondInnerRecur and thirdInnerRecur
+alert("test this tomorrow morning");
+/***** we can also implement joinRecur without mutating the list, we can pass in an index for secondInnerRecur and thirdInnerRecur
  * each time we call secondInnerRecur or thirdInnerRecur we want to increment that index then we will break when our index === arr.length - 1
  *  *****/
