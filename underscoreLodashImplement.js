@@ -841,6 +841,7 @@ function joinRecursiveCopiedListInnerRecurOneParamater(list, arrOfSeparators) {
       thirdInnerRecur(poppedSubarrayOfList, separator) + buildStrWithSeparator
     );
   }
+  return result;
 }
 
 function weLearned() {
@@ -874,7 +875,7 @@ function weLearned() {
 /***** using recursion: our recursive func wil be a nested func inside of join() *****/
 
 /***** testing our understanding and see what happens: pass an array into innerRecur then make a copy of the array/list passed into innerRecur *****/
-function joinRecursiveCopiedOriginalListInsideInnerRecur(
+function joinRecursivePassingOriginalListIntoInnerRecurAsValue(
   list,
   arrOfSeparators
 ) {
@@ -971,6 +972,7 @@ function joinRecursiveCopiedOriginalListInsideInnerRecur(
       thirdInnerRecur(poppedSubarrayOfList, separator) + buildStrWithSeparator
     );
   }
+  return result;
 }
 
 /***** testing our understanding and see what happens: pass an array into innerRecur then make a copy of the array/list passed into innerRecur *****/
@@ -1083,6 +1085,7 @@ function joinRecursiveDidnotCopyOriginalList(list, arrOfSeparators) {
       thirdInnerRecur(poppedSubarrayOfList, separator) + buildStrWithSeparator
     );
   }
+  return result;
 }
 
 function learningIsAwesome() {
@@ -1102,6 +1105,7 @@ function learningIsAwesome() {
 function joinRecursive(list, arrOfSeparators) {
   var result = [];
 
+  innerRecursive(list, arrOfSeparators);
   //default value for our index should be 0
   function innerRecursive(innerList, arrOfSeparators, innerRecurIndex = 0) {
     //([["a","b"],["c","d"],["e","f"]], ["#","$","%"]);
@@ -1117,7 +1121,7 @@ function joinRecursive(list, arrOfSeparators) {
     var copyValueOfArrOfSeparatorsAtZero = arrOfSeparators[innerRecurIndex];
     //when we call innerRecur we want to increment innerRecurIndex by 1
     secondInnerRecur(innerList, copyValueOfArrOfSeparatorsAtZero);
-    innerRecurIndex(innerList, copyValueOfArrOfSeparators, innerRecurIndex + 1);
+    innerRecursive(innerList, arrOfSeparators, innerRecurIndex + 1);
   }
   //default value for our index should be 0
   function secondInnerRecur(
@@ -1167,17 +1171,18 @@ function joinRecursive(list, arrOfSeparators) {
     if (thirdRecurIndex == lengthOfSubarrayOfList) {
       return "";
     }
-    var valueOfSubarrayStartingAtZero =
-      copiedSeparatorStartingLeft[thirdRecurIndex];
+    var valueOfSubarrayStartingAtZero = copiedSubarrayOfList[thirdRecurIndex];
     var valueConcatWithSeparator = valueOfSubarrayStartingAtZero + separator;
     return (
       valueConcatWithSeparator +
       thirdInnerRecur(copiedSubarrayOfList, separator, thirdRecurIndex + 1)
     );
   }
+  //result will have these values ["a#b#","c#d#","e#f#","a$b$","c$d$","e$f$","a%b%","c%d%","e%f%"]
+  //from passing these arrays into joinRecursive ([["a","b"],["c","d"],["e","f"]], ["#","$","%"]);
+  return result;
 }
 
-alert("test this tomorrow morning");
 /***** we can also implement joinRecur without mutating the list, we can pass in an index for secondInnerRecur and thirdInnerRecur
  * each time we call secondInnerRecur or thirdInnerRecur we want to increment that index then we will break when our index === arr.length - 1
  *  *****/
