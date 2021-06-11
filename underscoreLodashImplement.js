@@ -1186,3 +1186,40 @@ function joinRecursive(list, arrOfSeparators) {
 /***** we can also implement joinRecur without mutating the list, we can pass in an index for secondInnerRecur and thirdInnerRecur
  * each time we call secondInnerRecur or thirdInnerRecur we want to increment that index then we will break when our index === arr.length - 1
  *  *****/
+
+/***** implement reverse string in place *****/
+
+function reverseStrInPlace(strInput) {
+  var convertToArrOfStrChars = strInput.split("");
+  // [1,2,3,4,5,6,7,8]
+  //  0 1 2 3 4 5 6 7
+  // [1,2,3,4,5,6,7,8].length - 1
+  // 8 - 1 = 7
+  var leftPointer = 0;
+  //1
+  var rightPointer = convertToArrOfStrChars.length - 1;
+  //8
+  //[1,2,3,4,5];
+  //swap 1 and 5
+  //arr[0] and arr[6 - 1]
+  while (leftPointer != rightPointer) {
+    swapHelper(convertToArrOfStrChars, leftPointer, rightPointer);
+    leftPointer += 1;
+    rightPointer -= 1;
+  }
+
+  return convertToArrOfStrChars;
+}
+
+function swapHelper(arrInput, firstIndex, secondIndex) {
+  //we might not have to return the array;
+  // return ([arrInput[firstIndex], arrInput[secondIndex]] = [
+  //   arrInput[secondIndex],
+  //   arrInput[firstIndex],
+  // ]);
+  [arrInput[firstIndex], arrInput[secondIndex]] = [
+    arrInput[secondIndex],
+    arrInput[firstIndex],
+  ];
+}
+/***** implement reverse string in place *****/
