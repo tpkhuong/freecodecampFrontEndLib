@@ -1223,3 +1223,17 @@ function swapHelper(arrInput, firstIndex, secondIndex) {
   ];
 }
 /***** implement reverse string in place *****/
+
+function changeTheValue(arrInput, value) {
+  var key = "a";
+  var indexOfSubarray;
+  arrInput.forEach(function findValue(subarray, index) {
+    var eachKey = subarray[0];
+    if (eachKey === key) {
+      indexOfSubarray = index;
+    }
+  });
+  var mutateSubarray = arrInput[indexOfSubarray];
+  mutateSubarray[1] = value;
+  console.log(arrInput);
+}
