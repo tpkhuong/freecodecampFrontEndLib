@@ -1235,5 +1235,7 @@ function changeTheValue(arrInput, value) {
   });
   var mutateSubarray = arrInput[indexOfSubarray];
   mutateSubarray[1] = value;
+  // var [, ourValue] = arrInput[indexOfSubarray];
+  // ourValue = value;
   console.log(arrInput);
 }
