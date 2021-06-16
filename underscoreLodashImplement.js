@@ -355,73 +355,76 @@ function funcScoped() {
     return _.map(obj, function(value) {
       return (method ? value[method] : value).apply(value, args);
     });
-  };
-      */
+    */
       return map(copyOfList, function callMethodOnEachValue(valueInput) {
-        return method
-          ? method.apply(valueInput, ourArgs)
-          : valueInput[method].apply(valueInput, ourArgs);
+        return methodName
+          ? methodName.apply(valueInput, ourArgs)
+          : valueInput[methodName].apply(valueInput, ourArgs);
       });
     }
-
-    function join(list, ...separator) {
-      var resultStr = "";
-      var arrOfStrCombinedWithSeparator = [];
-      var copyOfSeparators = [...separator];
-      if (copyOfSeparators.length === 0) {
-        each(list, function concatStrValue(eachValue) {
-          var strForm = String(eachValue);
-          resultStr = resultStr + strForm;
-          // resultStr.concat(strForm);
-        });
-        let result = reduce(
-          list,
-          function concatStrValue(buildingUp, currentValue) {
-            var strForm = String(currentValue);
-            buildingUp = buildingUp + strForm;
-            return buildingUp;
-          },
-          ""
-        );
-        return result;
-      } else {
-        var reverseCopyOfSeparators = [];
-        for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
-          let element = copyOfSeparators[index];
-          reverseCopyOfSeparators.push(element);
-        }
-
-        while (reverseCopyOfSeparators.length > 0) {
-          let eachSeparator = String(reverseCopyOfSeparators.pop());
-          resultStr = reduce(
-            list,
-            function concatStrWithSeparators(buildingUp, currentValue) {
-              // one way is to loop through currentvalue which will be our subarray.
-              var buildOurStr = reduce(
-                currentValue,
-                function loopingThroughSubarray(buildingUp, currentValue) {
-                  //inner reduce
-                  //in this reduce our currentvalue will be each value in the subarray
-                  var strForm = String(currentValue);
-                  buildingUp = buildingUp + strForm + eachSeparator;
-                  return buildingUp;
-                },
-                ""
-              );
-              // outer reduce
-              // buildingUp = [...buildingUp, buildOurStr];
-              buildingUp.push(buildOurStr);
-            },
-            []
-          );
-
-          arrOfStrCombinedWithSeparator.push(resultStr);
-        }
-        // return result;
-      }
-      return resultStr;
-    }
   }
+
+  function join(list, ...separator) {
+    /***** this is where we used two reduce inside a while loop. our while loop will loop while reverseCopyOfSeparators.length is greater than 0
+     *
+     * *****/
+    var resultStr = "";
+    var arrOfStrCombinedWithSeparator = [];
+    var copyOfSeparators = [...separator];
+    if (copyOfSeparators.length === 0) {
+      each(list, function concatStrValue(eachValue) {
+        var strForm = String(eachValue);
+        resultStr = resultStr + strForm;
+        // resultStr.concat(strForm);
+      });
+      let result = reduce(
+        list,
+        function concatStrValue(buildingUp, currentValue) {
+          var strForm = String(currentValue);
+          buildingUp = buildingUp + strForm;
+          return buildingUp;
+        },
+        ""
+      );
+      return result;
+    } else {
+      var reverseCopyOfSeparators = [];
+      for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
+        let element = copyOfSeparators[index];
+        reverseCopyOfSeparators.push(element);
+      }
+
+      while (reverseCopyOfSeparators.length > 0) {
+        let eachSeparator = String(reverseCopyOfSeparators.pop());
+        resultStr = reduce(
+          list,
+          function concatStrWithSeparators(buildingUp, currentValue) {
+            // one way is to loop through currentvalue which will be our subarray.
+            var buildOurStr = reduce(
+              currentValue,
+              function loopingThroughSubarray(buildingUp, currentValue) {
+                //inner reduce
+                //in this reduce our currentvalue will be each value in the subarray
+                var strForm = String(currentValue);
+                buildingUp = buildingUp + strForm + eachSeparator;
+                return buildingUp;
+              },
+              ""
+            );
+            // outer reduce
+            // buildingUp = [...buildingUp, buildOurStr];
+            buildingUp.push(buildOurStr);
+          },
+          []
+        );
+
+        arrOfStrCombinedWithSeparator.push(resultStr);
+      }
+      // return result;
+    }
+    return resultStr;
+  }
+
   return {
     each,
     eachRight,
@@ -1227,6 +1230,14 @@ function swapHelper(arrInput, firstIndex, secondIndex) {
 function changeTheValue(arrInput, value) {
   var key = "a";
   var indexOfSubarray;
+  console.log(this);
+  for (let eachKey in this) {
+    //when we pass a "hello" string into changeTheValue using .call()
+    //it will be like calling new String("hello"). when we save the returned value of new String("hello"), it will return String("hello");
+    //each key will be str 0,1,2,3,4
+    let eachStr = this[eachKey];
+    console.log(eachStr);
+  }
   arrInput.forEach(function findValue(subarray, index) {
     var eachKey = subarray[0];
     if (eachKey === key) {
@@ -1239,3 +1250,18 @@ function changeTheValue(arrInput, value) {
   // ourValue = value;
   console.log(arrInput);
 }
+
+var arrOfSubarrays = [
+  ["a", "b"],
+  ["c", "d"],
+  ["e", "f"],
+];
+
+var testArr = [1, 2, 3, 4, 5];
+
+/***** keyword this in .call()  will be wrapper with the new String("hello") the String form *****/
+changeTheValue.call("hello", arr, value);
+/***** keyword this in .call()  will be wrapper with the new Number(8). the obj form *****/
+changeTheValue.call(8, arr, value);
+/***** keyword this will .apply below will be testArr which is [1,2,3,4,5] *****/
+changeTheValue.apply(testArr, arrOfSubarrays, value);
