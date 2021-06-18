@@ -680,3 +680,25 @@ Object.prototype.toString.call(null);
 // binarySearch(bigLibrary, 'x')
 
 /***** code and coffee *****/
+
+/***** inclusive design code testing *****/
+
+function splitStr(strInput) {
+  var arrOfStr = strInput.split(", ");
+  console.log(arrOfStr);
+}
+
+splitStr("84, Beacon St, Boston, MA 02108, United States");
+
+//hacky solution because not all address will end with the country at the end
+//better solution put the address information in an obj
+
+var address = {
+  building: "85-87",
+  street: "Gwydir St",
+  city: "Cambridge",
+  country: "UK",
+  zipOrPostcode: "CB1 2LG",
+};
+
+/***** inclusive design code testing *****/

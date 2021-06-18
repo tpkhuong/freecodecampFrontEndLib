@@ -304,26 +304,31 @@ function funcScoped() {
     //another approach get length of each subarrays
     var ourArgs = [...extraArgs];
     var copyOfList = list.slice();
-    var combineListAndExtraArgsIntoArr = [...copyOfList, ...ourArgs];
+    var combineListAndExtraArgsIntoArr = [...copyOfList, ourArgs];
     let result;
 
     if (ourArgs.length === 0) {
-      result = reduce(
-        combineListAndExtraArgsIntoArr,
-        function loopThroughOuterList(
-          buildingUp,
-          currentValue,
-          currIndex,
-          list
-        ) {
-          //buildingUp is our array
-          //each value in the array will be called with methodName
-          // var funcReference = methodName.bind(null, currentValue, ourArgs);
-          let returnedArr = methodName(currentValue);
-          return [...buildingUp, returnedArr];
-        },
-        []
-      );
+      //we want to loop through list and call each value in the list with methodName, using reduce might not be best solution
+      // result = reduce(
+      //   combineListAndExtraArgsIntoArr,
+      //   function loopThroughOuterList(
+      //     buildingUp,
+      //     currentValue,
+      //     currIndex,
+      //     list
+      //   ) {
+      //     //buildingUp is our array
+      //     //each value in the array will be called with methodName
+      //     // var funcReference = methodName.bind(null, currentValue, ourArgs);
+      //     let returnedArr = methodName(currentValue);
+      //     return [...buildingUp, returnedArr];
+      //   },
+      //   []
+      // );
+      each(list, function callMethodName(subarray) {
+        //the keyword this in bind() will be subarray ["a","b"];
+        methodName.call(subarray);
+      });
     } else {
       // what do we want to do when extraArgs is not empty it means a value is passed in
       //   result = reduce(
@@ -358,7 +363,7 @@ function funcScoped() {
     */
       return map(copyOfList, function callMethodOnEachValue(valueInput) {
         return methodName
-          ? methodName.apply(valueInput, ourArgs)
+          ? methodName.apply(valueInput, [...ourArgs])
           : valueInput[methodName].apply(valueInput, ourArgs);
       });
     }
@@ -377,16 +382,18 @@ function funcScoped() {
         resultStr = resultStr + strForm;
         // resultStr.concat(strForm);
       });
-      let result = reduce(
-        list,
-        function concatStrValue(buildingUp, currentValue) {
-          var strForm = String(currentValue);
-          buildingUp = buildingUp + strForm;
-          return buildingUp;
-        },
-        ""
-      );
-      return result;
+      /***** code below we are using reduce to build up our string  *****/
+      // let result = reduce(
+      //   list,
+      //   function concatStrValue(buildingUp, currentValue) {
+      //     var strForm = String(currentValue);
+      //     buildingUp = buildingUp + strForm;
+      //     return buildingUp;
+      //   },
+      //   ""
+      //   );
+      //   return result;
+      /***** code below we are using reduce to build up our string  *****/
     } else {
       var reverseCopyOfSeparators = [];
       for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
