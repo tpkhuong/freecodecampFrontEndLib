@@ -325,9 +325,28 @@ function funcScoped() {
       //   },
       //   []
       // );
+      /***** when we call methodName in invoke how do we pass in the callback argument/value to that methodName call/execution
+       * most array method takes a value and a callback
+       *  *****/
+      alert("test why our invoke didnt work");
       each(list, function callMethodName(subarray) {
         //the keyword this in bind() will be subarray ["a","b"];
         methodName.call(subarray);
+      });
+      alert("test why our invoke didnt work");
+      return map(list, function (element) {
+        //[["a", "b"],["c", "d"],["e", "f"],];
+        return methodName instanceof Function
+          ? /***** since we are using map, it will return an array with the same length as list that is passed into map *****/
+            /***** element will be each subarray that is passed into invoke ["a","b"] *****/
+            /***** ourArgs will be the 3rd args passed into invoke *****/
+            /***** when we passed in each as methodName our invoke return [undefined,undefined,undefined] because each does not return anything *****/
+            /***** we were on the right track, we had this
+             * each(list, function callMethodName(subarray) {
+             * methodName.call(subarray); *****/
+            methodName.apply(element, ourArgs)
+          : /***** element[methodName] will be undefined so it will be undefined.apply(element, ourArgs) *****/
+            element[methodName].apply(element, ourArgs);
       });
     } else {
       // what do we want to do when extraArgs is not empty it means a value is passed in
@@ -361,11 +380,16 @@ function funcScoped() {
       return (method ? value[method] : value).apply(value, args);
     });
     */
-      return map(copyOfList, function callMethodOnEachValue(valueInput) {
-        return methodName
-          ? methodName.apply(valueInput, [...ourArgs])
-          : valueInput[methodName].apply(valueInput, ourArgs);
-      });
+      /***** one way to implement invoke *****/
+      // return map(copyOfList, function callMethodOnEachValue(valueInput) {
+      //   return methodName
+      //     ? methodName.apply(valueInput, [...ourArgs])
+      //     : valueInput[methodName].apply(valueInput, ourArgs);
+      // });
+      /***** another way to implement invoke *****/
+      // return map(list, function (element) {
+      //   return (methodName instanceof Function) ? methodName.apply(element, ourArgs) : element[methodName].apply(element, ourArgs);
+      // });
     }
   }
 
