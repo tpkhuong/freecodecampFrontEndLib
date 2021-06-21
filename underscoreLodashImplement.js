@@ -300,6 +300,14 @@ function funcScoped() {
     // It's like do obj.methodName('#', 2, false, '--')
     */
 
+  function addTwo(list) {
+    //we pass in subarray ["a","b"]
+    return map(list, function (value, index, innerList) {
+      //inside of map our each() will check if list is an array. ["a","b"] is an array so it won't go into the else statement.
+      return (value += 2);
+    });
+  }
+
   function invoke(list, methodName, ...extraArgs) {
     //another approach get length of each subarrays
     var ourArgs = [...extraArgs];
@@ -328,14 +336,25 @@ function funcScoped() {
       /***** when we call methodName in invoke how do we pass in the callback argument/value to that methodName call/execution
        * most array method takes a value and a callback
        *  *****/
-      alert("test why our invoke didnt work");
-      each(list, function callMethodName(subarray) {
-        //the keyword this in bind() will be subarray ["a","b"];
-        methodName.call(subarray);
-      });
-      alert("test why our invoke didnt work");
+
+      // each(list, function callMethodName(subarray) {
+      //   //the keyword this in bind() will be subarray ["a","b"];
+      //   methodName.call(subarray, ourArgs);
+      // });
+
+      /*********github INVOKE*********/
+      // _.invoke = function (collection, func, args) {
+      //   return _.map(collection, function (el) {
+      //     return func instanceof Function
+      //       ? func.apply(el, args)
+      //       : el[func].apply(el, args);
+      //   });
+      // };
+      /*********INVOKE*********/
+
       return map(list, function (element) {
         //[["a", "b"],["c", "d"],["e", "f"],];
+        //element parameter will be the subarrays ["a","b"]
         return methodName instanceof Function
           ? /***** since we are using map, it will return an array with the same length as list that is passed into map *****/
             /***** element will be each subarray that is passed into invoke ["a","b"] *****/
@@ -344,9 +363,18 @@ function funcScoped() {
             /***** we were on the right track, we had this
              * each(list, function callMethodName(subarray) {
              * methodName.call(subarray); *****/
-            methodName.apply(element, ourArgs)
+            //when we passed in addTwo into invoke. our addTwo func declaration was addTwo(list, callback)
+            //.apply() will pass in an array of arg into the addTwo func call. the element was subarray [1,2]
+            //inside addTwo call it was calling addTwo(1, 2). one is the list and 2 is the callback
+            // methodName.apply(null, element, ourArgs)
+            /***** using .call instead of .apply() when we call methodName(our addTwo() method) we will be working with an array when addTwo is called by this map()
+             * our addTwo's map method won't go in to the else statement of the each because map method takes these parameters map(list, callback) then we pass list to the each()
+             * inside each() we check if list is an array or not.
+             * *****/
+            methodName.call(null, element, ourArgs)
           : /***** element[methodName] will be undefined so it will be undefined.apply(element, ourArgs) *****/
-            element[methodName].apply(element, ourArgs);
+            // element[methodName].apply(null, element, ourArgs);
+            element[methodName].call(null, element, ourArgs);
       });
     } else {
       // what do we want to do when extraArgs is not empty it means a value is passed in
@@ -470,6 +498,7 @@ function funcScoped() {
     every,
     some,
     contains,
+    addTwo,
     invoke,
     join,
   };
@@ -1286,6 +1315,12 @@ var arrOfSubarrays = [
   ["a", "b"],
   ["c", "d"],
   ["e", "f"],
+];
+
+var arrOfNums = [
+  [1, 2],
+  [3, 4],
+  [5, 6],
 ];
 
 var testArr = [1, 2, 3, 4, 5];
