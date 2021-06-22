@@ -377,6 +377,11 @@ function funcScoped() {
             element[methodName].call(null, element, ourArgs);
       });
     } else {
+      return map(list, function (element) {
+        return methodName instanceof Function
+          ? methodName.call(null, element, ourArgs)
+          : element[methodName].call(null, element, ourArgs);
+      });
       // what do we want to do when extraArgs is not empty it means a value is passed in
       //   result = reduce(
       //     list,
@@ -421,11 +426,23 @@ function funcScoped() {
     }
   }
 
+  /*
+  
+    var manyThings = [ 
+    ['apple', 'banana', 'mango'],
+    ['pepsi', 'fanta', 'sprite'],
+    ['bear', 'wolf', 'parrot'] 
+  ];
+  join(manyThings, "#")
+  return ["apple#banana#mango", "pepsi#fanta#sprite", "bear#wolf#parrot"]
+
+  we could use map()
+  */
   function join(list, ...separator) {
     /***** this is where we used two reduce inside a while loop. our while loop will loop while reverseCopyOfSeparators.length is greater than 0
      *
      * *****/
-    var resultStr = "";
+    // var resultStr = "";
     var arrOfStrCombinedWithSeparator = [];
     var copyOfSeparators = [...separator];
     if (copyOfSeparators.length === 0) {
@@ -453,16 +470,30 @@ function funcScoped() {
         reverseCopyOfSeparators.push(element);
       }
 
+      alert("find a way to make this work with reduce and map");
       while (reverseCopyOfSeparators.length > 0) {
-        let eachSeparator = String(reverseCopyOfSeparators.pop());
-        resultStr = reduce(
+        //["#","$","%"]
+        let eachSeparator = String(reverseCopyOfSeparators.pop()); //"%"
+        let resultStr = reduce(
+          /*
+          [
+            ["a", "b"],
+            ["c", "d"],
+            ["e", "f"],
+          ];
+          */
           list,
           function concatStrWithSeparators(buildingUp, currentValue) {
+            //building is our empty array
+            //currentValue will start with ["a","b"]
             // one way is to loop through currentvalue which will be our subarray.
+            //buildOurStr will be "a%b%" after working with "%""
             var buildOurStr = reduce(
               currentValue,
               function loopingThroughSubarray(buildingUp, currentValue) {
                 //inner reduce
+                //buildingUp will be ""
+                //curentValue will start as "a"
                 //in this reduce our currentvalue will be each value in the subarray
                 var strForm = String(currentValue);
                 buildingUp = buildingUp + strForm + eachSeparator;
@@ -472,16 +503,26 @@ function funcScoped() {
             );
             // outer reduce
             // buildingUp = [...buildingUp, buildOurStr];
-            buildingUp.push(buildOurStr);
+            // buildingUp.push(buildOurStr);
+            //since we're not going to return an array, we want to use concat or buildingUp which starts as an empty str with the string that is return from reduce() and saved/assigned to buildOurStr
+            //variable
+            //concat our strings:
+            buildingUp = buildingUp + buildOurStr;
+            //or
+            // buildingUp.concat(buildOurStr)
+            return buildingUp;
           },
-          []
+          null
         );
-
+        //resultStr should be "a%b%c%d%e%f%" after working with first separator
         arrOfStrCombinedWithSeparator.push(resultStr);
       }
+      alert(
+        "do we want to return ['a$b$', 'c$d$', 'e$f$'] or [['a$b$', 'c$d$', 'e$f$']]"
+      );
       // return result;
     }
-    return resultStr;
+    return arrOfStrCombinedWithSeparator;
   }
 
   return {
@@ -874,7 +915,8 @@ function joinRecursiveCopiedListInnerRecurOneParamater(list, arrOfSeparators) {
      *  *****/
     /***** we want to make a string with the separator for each subarray/nested arrays *****/
 
-    //we should send a copy of ["e","f"] in to call of thirdInnerRecur
+    //we should send a copy of ["e","f"] in to call of thirdInnerRecur since we are using .pop() or mutating the ["e","f"] we want to work with a copied version in thirdRecur scope
+    //or else when we work with the second value in arrOfSeparator the subarrays in list [["e","f"]] will be empty [[],[],[]]
     var copyOfArrRemovedFromList = removeFromEndList.slice();
 
     var buildUpStrWithSeparator = thirdInnerRecur(
