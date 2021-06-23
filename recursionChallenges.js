@@ -702,3 +702,61 @@ var address = {
 };
 
 /***** inclusive design code testing *****/
+
+/***** sum of subarrays *****/
+
+function sum_array(arr) {
+  // store our final answer
+  var sum = 0;
+
+  // loop through entire array
+  for (var i = 0; i < arr.length; i++) {
+    // loop through each inner array
+    for (var j = 0; j < arr[i].length; j++) {
+      // add this number to the current final sum
+      sum += arr[i][j];
+    }
+  }
+
+  return sum;
+}
+
+sum_array([[3, 2], [1], [4, 12]]);
+
+/***** sum of subarrays *****/
+
+function sumArray(arr) {
+  //[[3, 2], [1], [4, 12]]
+  //final answer
+  var total = 0;
+
+  firstRecur(arr); //[[3, 2], [1], [4, 12]]
+
+  function firstRecur(arr, index = 0) {
+    var lengthOfArr = arr.length;
+    if (index === lengthOfArr) {
+      return;
+    }
+
+    var subarray = arr[index]; //[3,2]
+    var sumOfSubarray = secondRecur(subarray); //[3,2]
+
+    total += sumOfSubarray;
+    firstRecur(arr, index + 1);
+  }
+
+  return total;
+}
+
+function secondRecur(arr, index = 0) {
+  var lengthOfArr = arr.length;
+  if (index === lengthOfArr) {
+    return 0;
+  }
+
+  var valueOfSubarray = arr[index]; //3
+
+  return secondRecur(arr, index + 1) + valueOfSubarray;
+}
+
+sumArray([[3, 2], [1], [4, 12]]);
