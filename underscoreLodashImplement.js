@@ -470,8 +470,8 @@ function funcScoped() {
         reverseCopyOfSeparators.push(element);
       }
 
-      alert("find a way to make this work with reduce and map");
       while (reverseCopyOfSeparators.length > 0) {
+        alert("make this work with map method");
         //["#","$","%"]
         let eachSeparator = String(reverseCopyOfSeparators.pop()); //"%"
         let resultStr = reduce(
@@ -507,19 +507,21 @@ function funcScoped() {
             //since we're not going to return an array, we want to use concat or buildingUp which starts as an empty str with the string that is return from reduce() and saved/assigned to buildOurStr
             //variable
             //concat our strings:
-            buildingUp = buildingUp + buildOurStr;
+            buildingUp.push(buildOurStr);
             //or
             // buildingUp.concat(buildOurStr)
             return buildingUp;
           },
-          null
+          []
         );
-        //resultStr should be "a%b%c%d%e%f%" after working with first separator
-        arrOfStrCombinedWithSeparator.push(resultStr);
+        //after working with first separator arrOfStrCombineWithSeparator, [["a$b$", "c$d$", "e$f$"]]
+        // arrOfStrCombinedWithSeparator.push(resultStr);
+        //use spread operator if we want arrOfStrCombinedWithSeparator to be an array of strings
+        arrOfStrCombinedWithSeparator = [
+          ...arrOfStrCombinedWithSeparator,
+          ...resultStr,
+        ];
       }
-      alert(
-        "do we want to return ['a$b$', 'c$d$', 'e$f$'] or [['a$b$', 'c$d$', 'e$f$']]"
-      );
       // return result;
     }
     return arrOfStrCombinedWithSeparator;
