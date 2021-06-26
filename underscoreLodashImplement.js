@@ -471,9 +471,45 @@ function funcScoped() {
       }
 
       while (reverseCopyOfSeparators.length > 0) {
-        alert("make this work with map method");
+        alert("map and reduce both work");
         //["#","$","%"]
         let eachSeparator = String(reverseCopyOfSeparators.pop()); //"%"
+        /***** map() version *****/
+        // map will return an array of the same length but the value inside that array can be anything we want
+        //so inside our map we use reduce method to loop through ["a","b"] build up our str "a#b#" assigned/save to a variable then after we build up our str we return that string
+        var resultStrMap = map(
+          list,
+          function loopThroughSubarray(value, index) {
+            /*
+          list will be
+          [
+            ["a", "b"],
+            ["c", "d"],
+            ["e", "f"],
+          ];
+          */
+            //value will be subarrays: first subarray will be ["a","b"]
+            var buildUpStrMapVersion = reduce(
+              value,
+              function concatValueWithSeparator(buildingUp, currentValue) {
+                //currentValue will be each value in our subarray. buildingUp will start as in empty string
+                //what do we want to return
+                var buildOurStr =
+                  buildingUp + String(currentValue) + eachSeparator;
+                //first loop through subarray
+                //"" + "a" + "%"
+                //second loop through subarray
+                //"a%" + "b" + "%"
+                return buildOurStr;
+              },
+              ""
+            );
+            // buildUpStrMapVersion will be "a%b%"
+            return buildUpStrMapVersion;
+            //resultStrMap after first iteration will be ["a%b%"];
+          }
+        );
+        /***** reduce() version *****/
         let resultStr = reduce(
           /*
           [
@@ -482,6 +518,7 @@ function funcScoped() {
             ["e", "f"],
           ];
           */
+
           list,
           function concatStrWithSeparators(buildingUp, currentValue) {
             //building is our empty array
@@ -514,13 +551,20 @@ function funcScoped() {
           },
           []
         );
-        //after working with first separator arrOfStrCombineWithSeparator, [["a$b$", "c$d$", "e$f$"]]
         // arrOfStrCombinedWithSeparator.push(resultStr);
+        //after working with first separator arrOfStrCombineWithSeparator, [["a$b$", "c$d$", "e$f$"]]
         //use spread operator if we want arrOfStrCombinedWithSeparator to be an array of strings
+        // arrOfStrCombinedWithSeparator = [...[], ...["a$b$", "c$d$", "e$f$"]] => ["a$b$", "c$d$", "e$f$"]
+        //map version
         arrOfStrCombinedWithSeparator = [
           ...arrOfStrCombinedWithSeparator,
-          ...resultStr,
+          ...resultStrMap,
         ];
+        //reduce version
+        // arrOfStrCombinedWithSeparator = [
+        //   ...arrOfStrCombinedWithSeparator,
+        //   ...resultStr,
+        // ];
       }
       // return result;
     }
