@@ -377,10 +377,15 @@ function funcScoped() {
             element[methodName].call(null, element, ourArgs);
       });
     } else {
+      //using map method because we are returning an array with the same length as the list/collection passed in
       return map(list, function (element) {
         return methodName instanceof Function
-          ? methodName.call(null, element, ourArgs)
-          : element[methodName].call(null, element, ourArgs);
+          ? //list will be [["a", "b"],["c", "d"],["e", "f"]];
+            //with how our join method is implemented, when we call methodName we want element to be [["a", "b"],["c", "d"],["e", "f"]]
+            methodName.call(element, ourArgs)
+          : // element will be ["a","b"]
+            //ourArgs will be the values passed in when we called ourFunc.invoke(arr, methodName, "%", "$", "&") in an array ["%", "$", "&"]
+            element[methodName].call(element, ourArgs);
       });
       // what do we want to do when extraArgs is not empty it means a value is passed in
       //   result = reduce(
@@ -471,7 +476,6 @@ function funcScoped() {
       }
 
       while (reverseCopyOfSeparators.length > 0) {
-        alert("map and reduce both work");
         //["#","$","%"]
         let eachSeparator = String(reverseCopyOfSeparators.pop()); //"%"
         /***** map() version *****/
@@ -591,6 +595,20 @@ function funcScoped() {
   };
 }
 
+alert(
+  "join method should accept two parameters, a list/collection/array and the second parameter is optional it will be the separator"
+);
+alert("if user passed in ['a','b'], '%'");
+alert("join will concat a%b%");
+alert(
+  "our invoke will take an array with subarrays, methodName(join), optional additional args"
+);
+alert(
+  "invoke will call join passing each subarray of the array passed into invoke with the separator"
+);
+alert(
+  "out current code our join method is doing that. more fun with invoke =)"
+);
 function invoke(list, methodName, ...extraArgs) {
   //another approach get length of each subarrays
   console.log(extraArgs);
