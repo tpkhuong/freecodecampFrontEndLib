@@ -594,6 +594,45 @@ function funcScoped() {
     join,
   };
 }
+alert("run our code see if join refactor made our algorithm better");
+/***** implementing join without passing multiple separators. we will pass the extra separators when we execute/call invoke. invoke(arr/list, methodName, ...separators)  *****/
+function join(list, separator = ",") {
+  //["a","b","c","d","e"]
+  var result;
+  var resultStr = "";
+  if (separator === "") {
+    //use reduce
+    result = reduce(
+      list,
+      function buildStr(buildingUp, currentValue) {
+        //buildingUp will be ""
+        //currentValue will be values in list. first it will be "a"
+        buildingUp = buildingUp + String(currentValue);
+        return buildingUp;
+      },
+      ""
+    );
+    //for each
+    each(list, function buildingOurStr(eachStr) {
+      resultStr = resultStr + String(eachStr);
+    });
+  } else {
+    //use reduce
+    result = reduce(
+      list,
+      function buildingStrWithReduce(buildingUp, currentValue) {
+        buildingUp = buildingUp + String(currentValue) + separator;
+        return buildingUp;
+      },
+      ""
+    );
+    //use for each
+    each(list, function buildingOurStrWithForEach(eachStr) {
+      resultStr = resultStr + String(eachStr) + separator;
+    });
+  }
+  return result;
+}
 
 alert(
   "join method should accept two parameters, a list/collection/array and the second parameter is optional it will be the separator"
