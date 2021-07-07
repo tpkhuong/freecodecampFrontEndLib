@@ -594,7 +594,9 @@ function funcScoped() {
     join,
   };
 }
-alert("run our code see if join refactor made our algorithm better");
+alert(
+  "run our code see if join refactor made our algorithm better. tested and worked! Let's GOOOOO"
+);
 /***** implementing join without passing multiple separators. we will pass the extra separators when we execute/call invoke. invoke(arr/list, methodName, ...separators)  *****/
 function join(list, separator = ",") {
   //["a","b","c","d","e"]
@@ -620,15 +622,31 @@ function join(list, separator = ",") {
     //use reduce
     result = reduce(
       list,
-      function buildingStrWithReduce(buildingUp, currentValue) {
-        buildingUp = buildingUp + String(currentValue) + separator;
-        return buildingUp;
+      function buildingStrWithReduce(
+        buildingUp,
+        currentValue,
+        currIndex,
+        listOfReduce
+      ) {
+        var lengthOfList = listOfReduce.length;
+        if (currIndex == lengthOfList - 1) {
+          buildingUp = buildingUp + String(currentValue);
+          return buildingUp;
+        } else {
+          buildingUp = buildingUp + String(currentValue) + separator;
+          return buildingUp;
+        }
       },
       ""
     );
     //use for each
-    each(list, function buildingOurStrWithForEach(eachStr) {
-      resultStr = resultStr + String(eachStr) + separator;
+    each(list, function buildingOurStrWithForEach(eachStr, index, listOfEach) {
+      var lengthOfList = listOfEach.length;
+      if (index == lengthOfList - 1) {
+        resultStr = resultStr + String(eachStr);
+      } else {
+        resultStr = resultStr + String(eachStr) + separator;
+      }
     });
   }
   return result;
