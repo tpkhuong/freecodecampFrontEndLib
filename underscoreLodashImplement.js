@@ -352,6 +352,17 @@ function funcScoped() {
       // };
       /*********INVOKE*********/
 
+      /*
+      
+      if Array.isArray(container)
+      for element in container
+        element[methodName].apply(element, [].slice.call(arguments, 2))
+    else
+      for key of container
+        container[key][methodName].apply(container[key], [].slice.call(arguments, 2))
+
+      */
+
       return map(list, function (element) {
         //[["a", "b"],["c", "d"],["e", "f"],];
         //element parameter will be the subarrays ["a","b"]
@@ -371,10 +382,14 @@ function funcScoped() {
              * our addTwo's map method won't go in to the else statement of the each because map method takes these parameters map(list, callback) then we pass list to the each()
              * inside each() we check if list is an array or not.
              * *****/
-            methodName.call(null, element, ourArgs)
+            methodName.apply(element, [].slice.call(arguments, 2), ourArgs)
           : /***** element[methodName] will be undefined so it will be undefined.apply(element, ourArgs) *****/
             // element[methodName].apply(null, element, ourArgs);
-            element[methodName].call(null, element, ourArgs);
+            element[methodName].apply(
+              element,
+              [].slice.call(arguments, 2),
+              ourArgs
+            );
       });
     } else {
       //using map method because we are returning an array with the same length as the list/collection passed in
@@ -382,10 +397,14 @@ function funcScoped() {
         return methodName instanceof Function
           ? //list will be [["a", "b"],["c", "d"],["e", "f"]];
             //with how our join method is implemented, when we call methodName we want element to be [["a", "b"],["c", "d"],["e", "f"]]
-            methodName.call(element, ourArgs)
+            methodName.apply(element, [].slice.call(arguments, 2), ourArgs)
           : // element will be ["a","b"]
             //ourArgs will be the values passed in when we called ourFunc.invoke(arr, methodName, "%", "$", "&") in an array ["%", "$", "&"]
-            element[methodName].call(element, ourArgs);
+            element[methodName].apply(
+              element,
+              [].slice.call(arguments, 2),
+              ourArgs
+            );
       });
       // what do we want to do when extraArgs is not empty it means a value is passed in
       //   result = reduce(
@@ -443,137 +462,199 @@ function funcScoped() {
 
   we could use map()
   */
-  function join(list, ...separator) {
-    /***** this is where we used two reduce inside a while loop. our while loop will loop while reverseCopyOfSeparators.length is greater than 0
-     *
-     * *****/
-    // var resultStr = "";
-    var arrOfStrCombinedWithSeparator = [];
-    var copyOfSeparators = [...separator];
-    if (copyOfSeparators.length === 0) {
-      each(list, function concatStrValue(eachValue) {
-        var strForm = String(eachValue);
-        resultStr = resultStr + strForm;
-        // resultStr.concat(strForm);
-      });
-      /***** code below we are using reduce to build up our string  *****/
-      // let result = reduce(
-      //   list,
-      //   function concatStrValue(buildingUp, currentValue) {
-      //     var strForm = String(currentValue);
-      //     buildingUp = buildingUp + strForm;
-      //     return buildingUp;
-      //   },
-      //   ""
-      //   );
-      //   return result;
-      /***** code below we are using reduce to build up our string  *****/
+
+  //join without multiple separators
+
+  /***** implementing join without passing multiple separators. we will pass the extra separators when we execute/call invoke. invoke(arr/list, methodName, ...separators)  *****/
+  function join(list, separator = ",") {
+    //["a","b","c","d","e"]
+    var result;
+    var resultStr = "";
+    if (separator === "") {
+      //use reduce
+      result = reduce(
+        list,
+        function buildStr(buildingUp, currentValue) {
+          //buildingUp will be ""
+          //currentValue will be values in list. first it will be "a"
+          buildingUp = buildingUp + String(currentValue);
+          return buildingUp;
+        },
+        ""
+      );
+      //for each
+      // each(list, function buildingOurStr(eachStr) {
+      //   resultStr = resultStr + String(eachStr);
+      // });
     } else {
-      var reverseCopyOfSeparators = [];
-      for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
-        let element = copyOfSeparators[index];
-        reverseCopyOfSeparators.push(element);
-      }
-
-      while (reverseCopyOfSeparators.length > 0) {
-        //["#","$","%"]
-        let eachSeparator = String(reverseCopyOfSeparators.pop()); //"%"
-        /***** map() version *****/
-        // map will return an array of the same length but the value inside that array can be anything we want
-        //so inside our map we use reduce method to loop through ["a","b"] build up our str "a#b#" assigned/save to a variable then after we build up our str we return that string
-        var resultStrMap = map(
-          list,
-          function loopThroughSubarray(value, index) {
-            /*
-          list will be
-          [
-            ["a", "b"],
-            ["c", "d"],
-            ["e", "f"],
-          ];
-          */
-            //value will be subarrays: first subarray will be ["a","b"]
-            var buildUpStrMapVersion = reduce(
-              value,
-              function concatValueWithSeparator(buildingUp, currentValue) {
-                //currentValue will be each value in our subarray. buildingUp will start as in empty string
-                //what do we want to return
-                var buildOurStr =
-                  buildingUp + String(currentValue) + eachSeparator;
-                //first loop through subarray
-                //"" + "a" + "%"
-                //second loop through subarray
-                //"a%" + "b" + "%"
-                return buildOurStr;
-              },
-              ""
-            );
-            // buildUpStrMapVersion will be "a%b%"
-            return buildUpStrMapVersion;
-            //resultStrMap after first iteration will be ["a%b%"];
-          }
-        );
-        /***** reduce() version *****/
-        let resultStr = reduce(
-          /*
-          [
-            ["a", "b"],
-            ["c", "d"],
-            ["e", "f"],
-          ];
-          */
-
-          list,
-          function concatStrWithSeparators(buildingUp, currentValue) {
-            //building is our empty array
-            //currentValue will start with ["a","b"]
-            // one way is to loop through currentvalue which will be our subarray.
-            //buildOurStr will be "a%b%" after working with "%""
-            var buildOurStr = reduce(
-              currentValue,
-              function loopingThroughSubarray(buildingUp, currentValue) {
-                //inner reduce
-                //buildingUp will be ""
-                //curentValue will start as "a"
-                //in this reduce our currentvalue will be each value in the subarray
-                var strForm = String(currentValue);
-                buildingUp = buildingUp + strForm + eachSeparator;
-                return buildingUp;
-              },
-              ""
-            );
-            // outer reduce
-            // buildingUp = [...buildingUp, buildOurStr];
-            // buildingUp.push(buildOurStr);
-            //since we're not going to return an array, we want to use concat or buildingUp which starts as an empty str with the string that is return from reduce() and saved/assigned to buildOurStr
-            //variable
-            //concat our strings:
-            buildingUp.push(buildOurStr);
-            //or
-            // buildingUp.concat(buildOurStr)
+      //use reduce
+      result = reduce(
+        list,
+        function buildingStrWithReduce(
+          buildingUp,
+          currentValue,
+          currIndex,
+          listOfReduce
+        ) {
+          var lengthOfList = listOfReduce.length;
+          if (currIndex == lengthOfList - 1) {
+            buildingUp = buildingUp + String(currentValue);
             return buildingUp;
-          },
-          []
-        );
-        // arrOfStrCombinedWithSeparator.push(resultStr);
-        //after working with first separator arrOfStrCombineWithSeparator, [["a$b$", "c$d$", "e$f$"]]
-        //use spread operator if we want arrOfStrCombinedWithSeparator to be an array of strings
-        // arrOfStrCombinedWithSeparator = [...[], ...["a$b$", "c$d$", "e$f$"]] => ["a$b$", "c$d$", "e$f$"]
-        //map version
-        arrOfStrCombinedWithSeparator = [
-          ...arrOfStrCombinedWithSeparator,
-          ...resultStrMap,
-        ];
-        //reduce version
-        // arrOfStrCombinedWithSeparator = [
-        //   ...arrOfStrCombinedWithSeparator,
-        //   ...resultStr,
-        // ];
-      }
-      // return result;
+          } else {
+            buildingUp = buildingUp + String(currentValue) + separator;
+            return buildingUp;
+          }
+        },
+        ""
+      );
+      //use for each
+      // each(
+      //   list,
+      //   function buildingOurStrWithForEach(eachStr, index, listOfEach) {
+      //     var lengthOfList = listOfEach.length;
+      //     if (index == lengthOfList - 1) {
+      //       resultStr = resultStr + String(eachStr);
+      //     } else {
+      //       resultStr = resultStr + String(eachStr) + separator;
+      //     }
+      //   }
+      // );
     }
-    return arrOfStrCombinedWithSeparator;
+    return result;
   }
+
+  //join with multiple separators
+  // function join(list, ...separator) {
+  //   /***** this is where we used two reduce inside a while loop. our while loop will loop while reverseCopyOfSeparators.length is greater than 0
+  //    *
+  //    * *****/
+  //   // var resultStr = "";
+  //   var arrOfStrCombinedWithSeparator = [];
+  //   var copyOfSeparators = [...separator];
+  //   if (copyOfSeparators.length === 0) {
+  //     each(list, function concatStrValue(eachValue) {
+  //       var strForm = String(eachValue);
+  //       resultStr = resultStr + strForm;
+  //       // resultStr.concat(strForm);
+  //     });
+  //     /***** code below we are using reduce to build up our string  *****/
+  //     // let result = reduce(
+  //     //   list,
+  //     //   function concatStrValue(buildingUp, currentValue) {
+  //     //     var strForm = String(currentValue);
+  //     //     buildingUp = buildingUp + strForm;
+  //     //     return buildingUp;
+  //     //   },
+  //     //   ""
+  //     //   );
+  //     //   return result;
+  //     /***** code below we are using reduce to build up our string  *****/
+  //   } else {
+  //     var reverseCopyOfSeparators = [];
+  //     for (let index = copyOfSeparators.length - 1; index >= 0; index--) {
+  //       let element = copyOfSeparators[index];
+  //       reverseCopyOfSeparators.push(element);
+  //     }
+
+  //     while (reverseCopyOfSeparators.length > 0) {
+  //       //["#","$","%"]
+  //       let eachSeparator = String(reverseCopyOfSeparators.pop()); //"%"
+  //       /***** map() version *****/
+  //       // map will return an array of the same length but the value inside that array can be anything we want
+  //       //so inside our map we use reduce method to loop through ["a","b"] build up our str "a#b#" assigned/save to a variable then after we build up our str we return that string
+  //       var resultStrMap = map(
+  //         list,
+  //         function loopThroughSubarray(value, index) {
+  //           /*
+  //         list will be
+  //         [
+  //           ["a", "b"],
+  //           ["c", "d"],
+  //           ["e", "f"],
+  //         ];
+  //         */
+  //           //value will be subarrays: first subarray will be ["a","b"]
+  //           var buildUpStrMapVersion = reduce(
+  //             value,
+  //             function concatValueWithSeparator(buildingUp, currentValue) {
+  //               //currentValue will be each value in our subarray. buildingUp will start as in empty string
+  //               //what do we want to return
+  //               var buildOurStr =
+  //                 buildingUp + String(currentValue) + eachSeparator;
+  //               //first loop through subarray
+  //               //"" + "a" + "%"
+  //               //second loop through subarray
+  //               //"a%" + "b" + "%"
+  //               return buildOurStr;
+  //             },
+  //             ""
+  //           );
+  //           // buildUpStrMapVersion will be "a%b%"
+  //           return buildUpStrMapVersion;
+  //           //resultStrMap after first iteration will be ["a%b%"];
+  //         }
+  //       );
+  //       /***** reduce() version *****/
+  //       let resultStr = reduce(
+  //         /*
+  //         [
+  //           ["a", "b"],
+  //           ["c", "d"],
+  //           ["e", "f"],
+  //         ];
+  //         */
+
+  //         list,
+  //         function concatStrWithSeparators(buildingUp, currentValue) {
+  //           //building is our empty array
+  //           //currentValue will start with ["a","b"]
+  //           // one way is to loop through currentvalue which will be our subarray.
+  //           //buildOurStr will be "a%b%" after working with "%""
+  //           var buildOurStr = reduce(
+  //             currentValue,
+  //             function loopingThroughSubarray(buildingUp, currentValue) {
+  //               //inner reduce
+  //               //buildingUp will be ""
+  //               //curentValue will start as "a"
+  //               //in this reduce our currentvalue will be each value in the subarray
+  //               var strForm = String(currentValue);
+  //               buildingUp = buildingUp + strForm + eachSeparator;
+  //               return buildingUp;
+  //             },
+  //             ""
+  //           );
+  //           // outer reduce
+  //           // buildingUp = [...buildingUp, buildOurStr];
+  //           // buildingUp.push(buildOurStr);
+  //           //since we're not going to return an array, we want to use concat or buildingUp which starts as an empty str with the string that is return from reduce() and saved/assigned to buildOurStr
+  //           //variable
+  //           //concat our strings:
+  //           buildingUp.push(buildOurStr);
+  //           //or
+  //           // buildingUp.concat(buildOurStr)
+  //           return buildingUp;
+  //         },
+  //         []
+  //       );
+  //       // arrOfStrCombinedWithSeparator.push(resultStr);
+  //       //after working with first separator arrOfStrCombineWithSeparator, [["a$b$", "c$d$", "e$f$"]]
+  //       //use spread operator if we want arrOfStrCombinedWithSeparator to be an array of strings
+  //       // arrOfStrCombinedWithSeparator = [...[], ...["a$b$", "c$d$", "e$f$"]] => ["a$b$", "c$d$", "e$f$"]
+  //       //map version
+  //       arrOfStrCombinedWithSeparator = [
+  //         ...arrOfStrCombinedWithSeparator,
+  //         ...resultStrMap,
+  //       ];
+  //       //reduce version
+  //       // arrOfStrCombinedWithSeparator = [
+  //       //   ...arrOfStrCombinedWithSeparator,
+  //       //   ...resultStr,
+  //       // ];
+  //     }
+  //     // return result;
+  //   }
+  //   return arrOfStrCombinedWithSeparator;
+  // }
 
   return {
     each,
@@ -594,62 +675,16 @@ function funcScoped() {
     join,
   };
 }
-alert(
-  "run our code see if join refactor made our algorithm better. tested and worked! Let's GOOOOO"
-);
-/***** implementing join without passing multiple separators. we will pass the extra separators when we execute/call invoke. invoke(arr/list, methodName, ...separators)  *****/
-function join(list, separator = ",") {
-  //["a","b","c","d","e"]
-  var result;
-  var resultStr = "";
-  if (separator === "") {
-    //use reduce
-    result = reduce(
-      list,
-      function buildStr(buildingUp, currentValue) {
-        //buildingUp will be ""
-        //currentValue will be values in list. first it will be "a"
-        buildingUp = buildingUp + String(currentValue);
-        return buildingUp;
-      },
-      ""
-    );
-    //for each
-    each(list, function buildingOurStr(eachStr) {
-      resultStr = resultStr + String(eachStr);
-    });
-  } else {
-    //use reduce
-    result = reduce(
-      list,
-      function buildingStrWithReduce(
-        buildingUp,
-        currentValue,
-        currIndex,
-        listOfReduce
-      ) {
-        var lengthOfList = listOfReduce.length;
-        if (currIndex == lengthOfList - 1) {
-          buildingUp = buildingUp + String(currentValue);
-          return buildingUp;
-        } else {
-          buildingUp = buildingUp + String(currentValue) + separator;
-          return buildingUp;
-        }
-      },
-      ""
-    );
-    //use for each
-    each(list, function buildingOurStrWithForEach(eachStr, index, listOfEach) {
-      var lengthOfList = listOfEach.length;
-      if (index == lengthOfList - 1) {
-        resultStr = resultStr + String(eachStr);
-      } else {
-        resultStr = resultStr + String(eachStr) + separator;
-      }
-    });
-  }
-  return result;
+
+function thisWorked() {
+  // return map(list, function (element) {
+  // return methodName instanceof Function
+  //   ? //list will be [["a", "b"],["c", "d"],["e", "f"]];
+  //     //with how our join method is implemented, when we call methodName we want element to be [["a", "b"],["c", "d"],["e", "f"]]
+  //     methodName.call(null, element, ...ourArgs)
+  //   : // element will be ["a","b"]
+  //     //ourArgs will be the values passed in when we called ourFunc.invoke(arr, methodName, "%", "$", "&") in an array ["%", "$", "&"]
+  //     element[methodName].call(null, element, ...ourArgs);
 }
 
 alert(
