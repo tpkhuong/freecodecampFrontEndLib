@@ -360,12 +360,11 @@ function funcScoped() {
     else
       for key of container
         container[key][methodName].apply(container[key], [].slice.call(arguments, 2))
-
       */
-
       return map(list, function (element) {
         //[["a", "b"],["c", "d"],["e", "f"],];
         //element parameter will be the subarrays ["a","b"]
+
         return methodName instanceof Function
           ? /***** since we are using map, it will return an array with the same length as list that is passed into map *****/
             /***** element will be each subarray that is passed into invoke ["a","b"] *****/
@@ -382,10 +381,10 @@ function funcScoped() {
              * our addTwo's map method won't go in to the else statement of the each because map method takes these parameters map(list, callback) then we pass list to the each()
              * inside each() we check if list is an array or not.
              * *****/
-            methodName.apply(element, [].slice.call(arguments, 2), ourArgs)
+            methodName.call(element, [].slice.call(arguments, 2).pop(), ourArgs)
           : /***** element[methodName] will be undefined so it will be undefined.apply(element, ourArgs) *****/
             // element[methodName].apply(null, element, ourArgs);
-            element[methodName].apply(
+            element[methodName].call(
               element,
               [].slice.call(arguments, 2),
               ourArgs
@@ -397,10 +396,10 @@ function funcScoped() {
         return methodName instanceof Function
           ? //list will be [["a", "b"],["c", "d"],["e", "f"]];
             //with how our join method is implemented, when we call methodName we want element to be [["a", "b"],["c", "d"],["e", "f"]]
-            methodName.apply(element, [].slice.call(arguments, 2), ourArgs)
+            methodName.call(element, [].slice.call(arguments, 2).pop(), ourArgs)
           : // element will be ["a","b"]
             //ourArgs will be the values passed in when we called ourFunc.invoke(arr, methodName, "%", "$", "&") in an array ["%", "$", "&"]
-            element[methodName].apply(
+            element[methodName].call(
               element,
               [].slice.call(arguments, 2),
               ourArgs
