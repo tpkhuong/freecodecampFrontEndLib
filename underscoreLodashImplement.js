@@ -655,6 +655,36 @@ function funcScoped() {
   //   return arrOfStrCombinedWithSeparator;
   // }
 
+  /* pluck */
+
+  /*
+  pluck_.pluck(list, propertyName)
+A convenient version of what is perhaps the most common use-case for map: extracting a list of property values.
+
+var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+_.pluck(stooges, 'name');
+=> ["moe", "larry", "curly"]
+*/
+  function pluck(list, propertyName) {
+    var result = map(list, function getPropertyOfObj(value) {
+      //value will be an obj
+      return value[propertyName];
+    });
+
+    return result;
+  }
+
+  /* Max */
+  /*
+max_.max(list, [iteratee], [context])
+Returns the maximum value in list. If an iteratee function is provided, it will be used on each value to generate the criterion by which the value is ranked. 
+-Infinity is returned if list is empty, so an isEmpty guard may be required. This function can currently only compare numbers reliably. This function uses operator < (note).
+
+var stooges = [{name: 'moe', age: 40}, {name: 'larry', age: 50}, {name: 'curly', age: 60}];
+_.max(stooges, function(stooge){ return stooge.age; });
+=> {name: 'curly', age: 60};
+  */
+  function max(list, iteratee, context) {}
   return {
     each,
     eachRight,
@@ -672,9 +702,16 @@ function funcScoped() {
     addTwo,
     invoke,
     join,
+    pluck,
+    max,
   };
 }
 
+function pluck(list, propertyName) {
+  return list.map(function getProperty(value) {
+    return value[propertyName];
+  });
+}
 function thisWorked() {
   // return map(list, function (element) {
   // return methodName instanceof Function
