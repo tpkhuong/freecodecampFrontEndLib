@@ -464,6 +464,97 @@ function funcScoped() {
 
   //join without multiple separators
 
+  /*
+  
+  isMatch_.isMatch(object, properties)
+Tells you if the keys and values in properties are contained in object.
+
+var stooge = {name: 'moe', age: 32};
+_.isMatch(stooge, {age: 32});
+=> true
+
+  
+  */
+
+  function isMatch(object, properties = {}) {
+    //convert to array [key,value]
+    //[[key,value], [key,value]]
+    // var keyValuePairSubarray = Object.entries(properties);
+    //check of object contain all keys of properties
+    var keysOfObject = Object.keys(object);
+    var keysOfProperty = Object.keys(properties);
+    if (keysOfProperty.length === 0) return false;
+    if (keysOfProperty.length == 1) {
+      let [keyOfProperty] = keysOfProperty;
+      let [keyOfObject] = keysOfObject;
+
+      if (object[keyOfObject] === properties[keyOfProperty]) return true;
+      return false;
+    }
+    //keysOfProperty.length is greater than 1
+  }
+
+  /*
+
+identity_.identity(value)
+Returns the same value that is used as the argument. In math: f(x) = x
+This function looks useless, but is used throughout Underscore as a default iteratee.
+
+var stooge = {name: 'moe'};
+stooge === _.identity(stooge);
+=> true
+
+*/
+
+  function identity(value) {}
+
+  /*
+
+matcher_.matcher(attrs) Alias: matches
+Returns a predicate function that will tell you if a passed in object contains all of the key/value properties present in attrs.
+
+var ready = _.matcher({selected: true, visible: true});
+var readyToGoList = _.filter(list, ready);
+
+*/
+
+  function matcher(attrs) {}
+
+  /*
+  
+  iteratee_.iteratee(value, [context])
+Generates a callback that can be applied to each element in a collection. _.iteratee supports a number of shorthand syntaxes for common callback use cases.
+Depending upon value's type, _.iteratee will return:
+
+// No value
+_.iteratee();
+=> _.identity()
+
+// Function
+_.iteratee(function(n) { return n * 2; });
+=> function(n) { return n * 2; }
+
+// Object
+_.iteratee({firstName: 'Chelsea'});
+=> _.matcher({firstName: 'Chelsea'});
+
+// Anything else
+_.iteratee('firstName');
+=> _.property('firstName');
+The following Underscore methods transform their predicates through _.iteratee: countBy, every, filter, find, findIndex, findKey,
+findLastIndex, groupBy, indexBy, map, mapObject, max, min, partition, reject, some, sortBy, sortedIndex, and uniq
+
+You may overwrite _.iteratee with your own custom function, if you want additional or different shorthand syntaxes:
+
+// Support `RegExp` predicate shorthand.
+var builtinIteratee = _.iteratee;
+_.iteratee = function(value, context) {
+  if (_.isRegExp(value)) return function(obj) { return value.test(obj) };
+  return builtinIteratee(value, context);
+};
+
+  */
+  function iteratee() {}
   /***** implementing join without passing multiple separators. we will pass the extra separators when we execute/call invoke. invoke(arr/list, methodName, ...separators)  *****/
   function join(list, separator = ",") {
     //["a","b","c","d","e"]
@@ -1565,3 +1656,10 @@ changeTheValue.call("hello", arr, value);
 changeTheValue.call(8, arr, value);
 /***** keyword this will .apply below will be testArr which is [1,2,3,4,5] *****/
 changeTheValue.apply(testArr, arrOfSubarrays, value);
+
+var testObj = {
+  name: "Deadpool",
+  age: 21,
+  location: "Seattle",
+  profession: "Cool Dude",
+};
