@@ -477,9 +477,10 @@ _.isMatch(stooge, {age: 32});
   */
 
   function isMatch(object, properties = {}) {
+    var arrOfBooleans = [];
     //convert to array [key,value]
     //[[key,value], [key,value]]
-    // var keyValuePairSubarray = Object.entries(properties);
+    var keyValuePairSubarray = Object.entries(properties);
     //check of object contain all keys of properties
     var keysOfObject = Object.keys(object);
     var keysOfProperty = Object.keys(properties);
@@ -491,7 +492,40 @@ _.isMatch(stooge, {age: 32});
       if (object[keyOfObject] === properties[keyOfProperty]) return true;
       return false;
     }
+    //looking for a solution where Big O is better than n2
+    //solution of Big O n2. using some method will break once the callback returns true
+    //example at bottom of file
+    var ifTrueReturnFalse = some(
+      keysOfProperty,
+      function checkIfKeysIsInObject(eachKey) {
+        var ourBoolean = object.hasOwnProperty(eachKey);
+        return ourBoolean === false;
+      }
+    );
+
+    if (ifTrueReturnFalse) {
+      return false;
+    }
+    //solution of Big O n2. using every method will break once the callback returns false
+
+    var ifEveryReturnFalseReturnFalse = every(function checkKeysInObj(key) {
+      var ourBoolean = object.hasOwnProperty(key);
+      return ourBoolean === true;
+    });
+
+    if (!ifEveryReturnFalseReturnFalse) {
+      return false;
+    }
     //keysOfProperty.length is greater than 1
+    //use recursion to check if object has keys of properties {}
+    //if our object does not include all the keys of properties return false
+    //loop through properties
+    function recursiveHelper(arrInput, index = 0) {
+      var arrLength = arrInput.length;
+      if (index == arrLength) {
+        return;
+      }
+    }
   }
 
   /*
@@ -794,6 +828,7 @@ _.max(stooges, function(stooge){ return stooge.age; });
     invoke,
     join,
     pluck,
+    isMatch,
     max,
   };
 }
@@ -1663,3 +1698,23 @@ var testObj = {
   location: "Seattle",
   profession: "Cool Dude",
 };
+
+var testObjTwo = {
+  name: "Deadpool",
+  age: 21,
+  location: "Seattle",
+  profession: "Cool Dude",
+  country: "Japan",
+};
+
+var keysOfObjTwo = Object.keys(testObjTwo);
+
+var valueOfSome = keysOfObjTwo.some(function findKey(key) {
+  var ourBoolean = testObj.hasOwnProperty(key);
+  return ourBoolean === false;
+});
+
+var usingEvery = keysOfObjTwo.every(function checkBoolean(key) {
+  var ourBoolean = testObj.hasOwnProperty(key);
+  return ourBoolean === true;
+});
